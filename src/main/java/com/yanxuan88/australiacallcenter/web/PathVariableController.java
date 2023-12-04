@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.yanxuan88.australiacallcenter.demos.web;
+package com.yanxuan88.australiacallcenter.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;

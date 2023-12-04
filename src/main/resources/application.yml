@@ -1,0 +1,91 @@
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    jmx:
+      exposure:
+        include: '*'
+    web:
+      exposure:
+        include: '*'
+server:
+  port: 8080
+  compression:
+    enabled: true
+  undertow:
+    threads:
+      io: 2
+      worker: 8
+    accesslog:
+      enabled: true
+      pattern: "%t %a %r %s (%D ms)"
+      dir: /Volumes/k1/logs/undertow
+      options:
+        server:
+          record-request-start-time: true
+spring:
+  devtools:
+    restart:
+      enabled: true
+  graphql:
+    schema:
+      file-extensions:
+        - .graphql
+        - .graphqls
+        - .gqls
+      printer:
+        enabled: true
+    cors:
+      allowed-methods: POST
+      allowed-headers: '*'
+      allowed-origins: '*'
+  redis:
+    database: 0
+    password: yx123123=
+    host: 192.168.110.108
+    client-type: lettuce
+    lettuce:
+      pool:
+        max-wait: 10s
+        min-idle: 4
+        time-between-eviction-runs: 10s
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://192.168.110.108:3306/aus-call-center?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=GMT%2B8
+    username: root
+    password: shanglian123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      connectionTimeout: 1000
+      validationTimeout: 1000
+      idleTimeout: 30000
+      maxLifetime: 60000
+      maximumPoolSize: 5
+      minimumIdle: 3
+      poolName: "mysql-auscallcenter-pool"
+      loggingMeterPushMetricsStep: 15
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
+        useLocalSessionState: true
+        rewriteBatchedStatements: true
+        cacheResultSetMetadata: true
+        cacheServerConfiguration: true
+        elideSetAutoCommits: true
+        maintainTimeStats: false
+log-home: /Volumes/k1/logs
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    notprivacysafe: INFO
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-delete-field: isDeleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

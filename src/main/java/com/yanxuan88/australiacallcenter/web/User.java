@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.yanxuan88.australiacallcenter.demos.web;
+package com.yanxuan88.australiacallcenter.web;
 
 /**
  * @author <a href="mailto:chenxilzx1@gmail.com">theonefx</a>
