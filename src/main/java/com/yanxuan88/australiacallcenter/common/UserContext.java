@@ -20,17 +20,17 @@ public class UserContext {
     }
 
     public static Long getUserId() {
-        return USER_THREAD_LOCAL.get().getId();
+        return USER_THREAD_LOCAL.get().getUserId();
     }
 
     public static Long getUserIdOrNull() {
         Optional<UserLoginInfo> optional = Optional.ofNullable(USER_THREAD_LOCAL.get());
-        return optional.map(UserLoginInfo::getId).orElse(null);
+        return optional.map(UserLoginInfo::getUserId).orElse(null);
     }
 
     public static Long getUserIdOrDefault() {
         Optional<UserLoginInfo> optional = Optional.ofNullable(USER_THREAD_LOCAL.get());
-        return optional.isPresent() ? optional.get().getId() : 0L;
+        return optional.isPresent() ? optional.get().getUserId() : 0L;
     }
 
     public static long getSysUserId() {

@@ -23,7 +23,7 @@ public class DataOperationInterceptor implements MetaObjectHandler {
     private static final String IS_DELETED = "isDeleted";
 
     private Long getCurrentUserId() {
-        return Optional.ofNullable(UserContext.get()).map(UserLoginInfo::getId).orElse(0L);
+        return Optional.ofNullable(UserContext.get()).map(UserLoginInfo::getUserId).orElse(0L);
     }
 
     @Override

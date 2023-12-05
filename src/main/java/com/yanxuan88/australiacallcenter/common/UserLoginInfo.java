@@ -2,6 +2,7 @@ package com.yanxuan88.australiacallcenter.common;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 用户登录信息
@@ -13,131 +14,117 @@ public class UserLoginInfo implements Serializable {
     /**
      * 用户id
      */
-    private Long id;
-
-    private Long employeeId;
+    private Long userId;
 
     /**
      * 昵称
      */
-    private String nickname;
+    private String username;
 
     /**
-     * 头像
+     * 角色id
      */
-    private String avatar;
+    private List<Long> roleIds;
+
+    /**
+     * 角色名
+     */
+    private List<String> roleNames;
+
+    /**
+     * 盐值
+     */
+    private String salt;
+
+    /**
+     * 邮箱
+     */
+    private String email;
 
     /**
      * 手机号
      */
-    private String phone;
+    private String mobile;
 
     /**
      * 系统
      */
-    private Integer systemId;
+    private Boolean status;
 
     /**
-     * 客户端
+     * 密码
      */
-    private Integer clientId;
+    private String password;
 
-    /**
-     * unionid
-     */
-    private String unionId;
-
-    private LocalDateTime tokenExpireTime;
-
-    private String sessionId;
-
-    private String token;
-
-    public Long getId() {
-        return id;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
-    public Long getEmployeeId() {
-        return employeeId;
+    public String getUsername() {
+        return username;
     }
 
-    public void setEmployeeId(Long employeeId) {
-        this.employeeId = employeeId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getNickname() {
-        return nickname;
+    public List<Long> getRoleIds() {
+        return roleIds;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setRoleIds(List<Long> roleIds) {
+        this.roleIds = roleIds;
     }
 
-    public String getAvatar() {
-        return avatar;
+    public List<String> getRoleNames() {
+        return roleNames;
     }
 
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
+    public void setRoleNames(List<String> roleNames) {
+        this.roleNames = roleNames;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getSalt() {
+        return salt;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
-    public Integer getSystemId() {
-        return systemId;
+    public String getEmail() {
+        return email;
     }
 
-    public void setSystemId(Integer systemId) {
-        this.systemId = systemId;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public Integer getClientId() {
-        return clientId;
+    public String getMobile() {
+        return mobile;
     }
 
-    public void setClientId(Integer clientId) {
-        this.clientId = clientId;
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
-    public String getUnionId() {
-        return unionId;
+    public Boolean getStatus() {
+        return status;
     }
 
-    public void setUnionId(String unionId) {
-        this.unionId = unionId;
+    public void setStatus(Boolean status) {
+        this.status = status;
     }
 
-    public LocalDateTime getTokenExpireTime() {
-        return tokenExpireTime;
+    public String getPassword() {
+        return password;
     }
 
-    public void setTokenExpireTime(LocalDateTime tokenExpireTime) {
-        this.tokenExpireTime = tokenExpireTime;
-    }
-
-    public String getSessionId() {
-        return sessionId;
-    }
-
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
