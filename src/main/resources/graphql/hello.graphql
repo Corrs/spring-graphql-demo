@@ -1,3 +1,4 @@
 type Query {
   hello(name:String = "spring"): String
+  helloLocalDateTime: LocalDateTime
 }
