@@ -25,6 +25,15 @@ server:
         server:
           record-request-start-time: true
 spring:
+  application:
+    name: @artifactId@
+  cache:
+    type: REDIS
+    redis:
+      time-to-live: 15m
+      cache-null-values: false
+      enable-statistics: true
+      key-prefix: 'cache:${spring.application.name}:'
   devtools:
     restart:
       enabled: true
