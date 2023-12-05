@@ -1,4 +1,4 @@
-package com.yanxuan88.australiacallcenter.instrumentation;
+package com.yanxuan88.australiacallcenter.graphql.instrumentation;
 
 import graphql.ExecutionResult;
 import graphql.ExecutionResultImpl;
