@@ -27,6 +27,7 @@ public class RedisCacheValueSerializer extends GenericJackson2JsonRedisSerialize
         Object value = super.deserialize(source);
         if (value instanceof String) {
             String str = value == null ? "" : (String) value;
+            // 以下为LocalDate和LocalDateTime的判断和转换，可以替换为其他更具效率的方式
             try {
                 if (str.length() == 10) {
                     return LocalDate.parse(str, DATE_FORMATTER);
