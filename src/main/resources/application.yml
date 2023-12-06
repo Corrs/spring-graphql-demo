@@ -85,7 +85,7 @@ spring:
         cacheServerConfiguration: true
         elideSetAutoCommits: true
         maintainTimeStats: false
-log-home: /Volumes/k1/logs
+log-home: /Volumes/k1/logs/${spring.application.name}
 logging:
   config: classpath:logback-spring.xml
   level:
