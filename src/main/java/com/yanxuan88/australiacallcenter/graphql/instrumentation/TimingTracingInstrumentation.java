@@ -12,12 +12,9 @@ import graphql.schema.GraphQLNonNull;
 import graphql.schema.GraphQLObjectType;
 import graphql.schema.GraphQLOutputType;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -44,7 +41,7 @@ public class TimingTracingInstrumentation extends SimpleInstrumentation {
     @Override
     public DataFetcher<?> instrumentDataFetcher(DataFetcher<?> dataFetcher, InstrumentationFieldFetchParameters parameters) {
         // We only care about user code
-        if(parameters.isTrivialDataFetcher()) {
+        if (parameters.isTrivialDataFetcher()) {
             return dataFetcher;
         }
 
@@ -53,7 +50,7 @@ public class TimingTracingInstrumentation extends SimpleInstrumentation {
             log.info("Datafetcher {} begin execution", datafetcherTag);
             long startTime = System.currentTimeMillis();
             Object result = dataFetcher.get(environment);
-            if(result instanceof CompletableFuture) {
+            if (result instanceof CompletableFuture) {
                 ((CompletableFuture<?>) result).whenComplete((r, ex) -> {
                     long totalTime = System.currentTimeMillis() - startTime;
                     log.info("Async datafetcher {} took {}ms", datafetcherTag, totalTime);
@@ -70,7 +67,7 @@ public class TimingTracingInstrumentation extends SimpleInstrumentation {
     @Override
     public CompletableFuture<ExecutionResult> instrumentExecutionResult(ExecutionResult executionResult, InstrumentationExecutionParameters parameters) {
         HashMap<Object, Object> extensions = new HashMap<>();
-        if(executionResult.getExtensions() != null) {
+        if (executionResult.getExtensions() != null) {
             extensions.putAll(executionResult.getExtensions());
         }
 
@@ -93,7 +90,7 @@ public class TimingTracingInstrumentation extends SimpleInstrumentation {
             parent = (GraphQLObjectType) type;
         }
 
-        return  parent.getName() + "." + parameters.getExecutionStepInfo().getPath().getSegmentName();
+        return parent.getName() + "." + parameters.getExecutionStepInfo().getPath().getSegmentName();
     }
 
     static class TracingState implements InstrumentationState {
