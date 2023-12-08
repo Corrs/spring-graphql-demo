@@ -73,7 +73,7 @@ public class SecurityConfiguration {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .antMatchers("/actuator/**").hasRole("ADMIN")
+                        .antMatchers("/actuator/**", "/graphiql/**").hasRole("ADMIN")
                         .anyRequest().denyAll()
                 )
                 .httpBasic(withDefaults())
