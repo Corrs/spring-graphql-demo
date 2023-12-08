@@ -2,11 +2,9 @@ package com.yanxuan88.australiacallcenter.config;
 
 import com.zaxxer.hikari.HikariDataSource;
 import com.zaxxer.hikari.metrics.micrometer.MicrometerMetricsTrackerFactory;
-import io.micrometer.core.instrument.Clock;
 import io.micrometer.core.instrument.logging.LoggingMeterRegistry;
 import io.micrometer.core.instrument.logging.LoggingRegistryConfig;
 import io.micrometer.core.instrument.util.NamedThreadFactory;
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
@@ -25,7 +23,6 @@ import static io.micrometer.core.instrument.config.validate.PropertyValidator.ge
  * @author co
  * @since 2023/11/30 上午9:50:38
  */
-@Slf4j
 @Configuration
 @EnableConfigurationProperties({HikariProperties.class})
 public class HikariConfiguration {
