@@ -5,12 +5,9 @@ import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.yanxuan88.australiacallcenter.common.Constant;
-import com.yanxuan88.australiacallcenter.exception.BizException;
 
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
-import java.util.Collections;
 import java.util.Map;
 
 public final class JWTUtil {
