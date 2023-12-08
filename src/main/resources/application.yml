@@ -13,10 +13,14 @@ server:
   port: 8080
   compression:
     enabled: true
+  http2:
+    enabled: true
   undertow:
+    buffer-size: 1024
+    direct-buffers: true
     threads:
-      io: 2
-      worker: 8
+      io: 8
+      worker: 256
     accesslog:
       enabled: true
       pattern: "%t %a %r %s (%D ms)"
@@ -38,6 +42,9 @@ spring:
     restart:
       enabled: true
   graphql:
+#    graphiql:
+#      enabled: true
+#      path: /graphiql
     schema:
       file-extensions:
         - .graphql
@@ -59,6 +66,7 @@ spring:
         max-wait: 10s
         min-idle: 4
         time-between-eviction-runs: 10s
+        enabled: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:mysql://192.168.110.108:3306/aus-call-center?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=GMT%2B8
@@ -66,6 +74,7 @@ spring:
     password: shanglian123
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
+      # 默认值30秒
       connectionTimeout: 1000
       validationTimeout: 1000
       idleTimeout: 30000
