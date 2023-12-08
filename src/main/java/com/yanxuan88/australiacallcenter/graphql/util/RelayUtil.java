@@ -31,9 +31,6 @@ public final class RelayUtil {
             return emptyConnection();
         }
 
-        ConnectionCursor firstPresliceCursor = edges.get(0).getCursor();
-        ConnectionCursor lastPresliceCursor = edges.get(edges.size() - 1).getCursor();
-
         Edge<T> firstEdge = edges.get(0);
         Edge<T> lastEdge = edges.get(edges.size() - 1);
 
