@@ -1,4 +1,30 @@
 type Query {
   hello(name:String = "spring"): String
   helloLocalDateTime: LocalDateTime
+  viewer: User
 }
+
+type User {
+  id: ID!
+  todos(current: Int, size: Int): TodoConnection
+}
+
+type TodoConnection implements Connection{
+  pageInfo: PageInfo!
+  edges: [TodoEdge]
+  total: Long
+}
+
+type TodoEdge implements Edge {
+  cursor: String!
+  node: Todo
+}
+
+type Todo implements EdgeNode {
+  id: Long!
+  text: String
+}
+
+
+
+

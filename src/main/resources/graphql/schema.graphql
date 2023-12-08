@@ -3,3 +3,26 @@ schema {
 }
 
 scalar LocalDateTime
+scalar Long
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+interface Connection {
+  pageInfo: PageInfo!
+  edges: [Edge]
+  total: Long
+}
+
+interface Edge {
+  cursor: String!
+  node: EdgeNode
+}
+
+interface EdgeNode {
+  id: Long!
+}
