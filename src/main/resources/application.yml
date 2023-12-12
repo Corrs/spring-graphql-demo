@@ -42,9 +42,8 @@ spring:
     restart:
       enabled: true
   graphql:
-#    graphiql:
-#      enabled: true
-#      path: /graphiql
+    graphiql:
+      enabled: true
     schema:
       file-extensions:
         - .graphql

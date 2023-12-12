@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.Part;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -73,6 +74,13 @@ public class HelloController {
     @MutationMapping
     public boolean upload2(@Argument Integer id, @Argument List<Part> input) {
         log.info("{}-{}", id, input);
+        input.forEach(f -> {
+            try {
+                f.write("/Volumes/k1/logs/"+f.getSubmittedFileName());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
         return false;
     }
 }

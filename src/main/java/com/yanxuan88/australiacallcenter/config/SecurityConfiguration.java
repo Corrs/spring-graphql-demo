@@ -16,6 +16,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
@@ -41,9 +43,11 @@ public class SecurityConfiguration {
      * @return UserDetailsManager
      */
     @Bean
-    public static InMemoryUserDetailsManager userDetailsService() {
-        User.UserBuilder userBuilder = User.withDefaultPasswordEncoder();
-        UserDetails admin = userBuilder.username("admin").password("admin").roles("ADMIN").build();
+    public static InMemoryUserDetailsManager userDetailsService(PasswordEncoder passwordEncoder) {
+        UserDetails admin = User.withUsername("admin")
+                .password(passwordEncoder.encode("admin"))
+                .roles("ADMIN")
+                .build();
         return new InMemoryUserDetailsManager(admin);
     }
 
@@ -80,6 +84,11 @@ public class SecurityConfiguration {
                 .build();
     }
 
+    /**
+     * 在@PreAuthorize注解使用hasPermission时的处理器
+     *
+     * @return handler
+     */
     @Bean
     DefaultMethodSecurityExpressionHandler expressionHandler() {
         DefaultMethodSecurityExpressionHandler handler = new DefaultMethodSecurityExpressionHandler();
@@ -104,5 +113,10 @@ public class SecurityConfiguration {
             }
         });
         return handler;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 }

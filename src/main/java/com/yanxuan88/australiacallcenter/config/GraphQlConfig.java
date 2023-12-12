@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.graphql.GraphQlProperties;
 import org.springframework.boot.autoconfigure.graphql.GraphQlSourceBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.graphql.execution.RuntimeWiringConfigurer;
 import org.springframework.graphql.server.WebGraphQlHandler;
 import org.springframework.graphql.server.webmvc.GraphQlHttpHandler;
@@ -27,8 +28,7 @@ import java.util.Optional;
 @Slf4j
 @Configuration
 public class GraphQlConfig {
-    private static MediaType[] SUPPORTED_MEDIA_TYPES = new MediaType[]{MediaType.APPLICATION_GRAPHQL,
-            MediaType.APPLICATION_JSON, MediaType.MULTIPART_FORM_DATA};
+    private static MediaType[] SUPPORTED_MEDIA_TYPES = new MediaType[]{MediaType.MULTIPART_FORM_DATA};
 
     /**
      * 自定义类型注册配置器
@@ -67,9 +67,8 @@ public class GraphQlConfig {
     public RouterFunction<ServerResponse> graphQlFileUploadRouterFunction(GraphQlProperties properties, GraphQlHttpHandler httpHandler) {
         String path = properties.getPath();
         log.info("GraphQL file upload endpoint HTTP POST {}", path);
-        RouterFunctions.Builder builder = RouterFunctions.route();
-        builder = builder.POST(path, RequestPredicates.contentType(SUPPORTED_MEDIA_TYPES)
-                .and(RequestPredicates.accept(SUPPORTED_MEDIA_TYPES)), httpHandler::handleRequest);
-        return builder.build();
+        return RouterFunctions.route(RequestPredicates.POST(path)
+                .and(RequestPredicates.accept(SUPPORTED_MEDIA_TYPES))
+                .and(RequestPredicates.contentType(SUPPORTED_MEDIA_TYPES)), httpHandler::handleRequest);
     }
 }
