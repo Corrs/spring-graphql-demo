@@ -1,9 +1,11 @@
 schema {
   query: Query
+  mutation: Mutation
 }
 
 scalar LocalDateTime
 scalar Long
+scalar Upload
 
 type PageInfo {
   hasNextPage: Boolean!

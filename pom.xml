@@ -67,6 +67,11 @@
             <artifactId>graphql-java-extended-scalars</artifactId>
             <version>18.3</version>
         </dependency>
+        <!--<dependency>
+            <groupId>com.graphql-java</groupId>
+            <artifactId>graphql-java-tools</artifactId>
+            <version>5.2.4</version>
+        </dependency>-->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-pool2</artifactId>

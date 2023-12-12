@@ -7,6 +7,7 @@ import graphql.execution.instrumentation.InstrumentationState;
 import graphql.execution.instrumentation.SimpleInstrumentation;
 import graphql.execution.instrumentation.parameters.InstrumentationExecutionParameters;
 import graphql.execution.instrumentation.parameters.InstrumentationFieldFetchParameters;
+import graphql.language.Document;
 import graphql.schema.DataFetcher;
 import graphql.schema.GraphQLNonNull;
 import graphql.schema.GraphQLObjectType;
@@ -29,6 +30,11 @@ public class TimingTracingInstrumentation extends SimpleInstrumentation {
     @Override
     public InstrumentationState createState() {
         return new TracingState();
+    }
+
+    @Override
+    public InstrumentationContext<Document> beginParse(InstrumentationExecutionParameters parameters) {
+        return super.beginParse(parameters);
     }
 
     @Override

@@ -11,12 +11,16 @@ import graphql.relay.Connection;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.Part;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -52,5 +56,23 @@ public class HelloController {
         todo.setText("test text");
         todoPage.setRecords(Lists.newArrayList(todo));
         return RelayUtil.build(todoPage);
+    }
+
+    @MutationMapping
+    public boolean upload(@Argument Integer id, @Argument Part input) {
+        log.info("{}-{}", id, input);
+        return false;
+    }
+
+    @MutationMapping
+    public boolean upload1(@Argument UploadDTO input) {
+        log.info("{}", input);
+        return false;
+    }
+
+    @MutationMapping
+    public boolean upload2(@Argument Integer id, @Argument List<Part> input) {
+        log.info("{}-{}", id, input);
+        return false;
     }
 }

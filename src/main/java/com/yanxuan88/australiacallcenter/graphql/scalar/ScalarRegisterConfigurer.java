@@ -4,7 +4,6 @@ import graphql.scalars.ExtendedScalars;
 import graphql.schema.GraphQLScalarType;
 import graphql.schema.idl.RuntimeWiring;
 import org.springframework.graphql.execution.RuntimeWiringConfigurer;
-import org.springframework.stereotype.Component;
 
 /**
  * GraphQL自定义类型注册
@@ -15,10 +14,8 @@ import org.springframework.stereotype.Component;
 public class ScalarRegisterConfigurer implements RuntimeWiringConfigurer {
     @Override
     public void configure(RuntimeWiring.Builder builder) {
-        GraphQLScalarType localDateTimeScalar = GraphQLScalarType.newScalar()
-                .name("LocalDateTime")
-                .coercing(new LocalDateTimeScalar()).build();
-        builder.scalar(localDateTimeScalar)
+        builder.scalar(GraphQLScalarType.newScalar().name("LocalDateTime").coercing(new LocalDateTimeScalar()).build())
+                .scalar(GraphQLScalarType.newScalar().name("Upload").coercing(new UploadScalar()).build())
                 .scalar(ExtendedScalars.GraphQLLong);
     }
 }

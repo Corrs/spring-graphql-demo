@@ -4,6 +4,17 @@ type Query {
   viewer: User
 }
 
+type Mutation {
+  upload(id: Int, input: Upload): Boolean
+  upload1(input: UploadDTO): Boolean
+  upload2(id: Int, input: [Upload]): Boolean
+}
+
+input UploadDTO {
+  id: Int
+  file: [Upload]
+}
+
 type User {
   id: ID!
   todos(current: Int, size: Int): TodoConnection

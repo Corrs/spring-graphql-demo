@@ -1,21 +1,34 @@
 package com.yanxuan88.australiacallcenter.config;
 
+import com.yanxuan88.australiacallcenter.graphql.MyGraphQlHttpHandler;
 import com.yanxuan88.australiacallcenter.graphql.instrumentation.TimingTracingInstrumentation;
 import com.yanxuan88.australiacallcenter.graphql.scalar.ScalarRegisterConfigurer;
 import graphql.ExecutionInput;
 import graphql.execution.preparsed.persisted.InMemoryPersistedQueryCache;
 import graphql.execution.preparsed.persisted.PersistedQuerySupport;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.graphql.GraphQlProperties;
 import org.springframework.boot.autoconfigure.graphql.GraphQlSourceBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.graphql.execution.RuntimeWiringConfigurer;
+import org.springframework.graphql.server.WebGraphQlHandler;
+import org.springframework.graphql.server.webmvc.GraphQlHttpHandler;
+import org.springframework.http.MediaType;
+import org.springframework.web.servlet.function.RequestPredicates;
+import org.springframework.web.servlet.function.RouterFunction;
+import org.springframework.web.servlet.function.RouterFunctions;
+import org.springframework.web.servlet.function.ServerResponse;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Optional;
 
+@Slf4j
 @Configuration
 public class GraphQlConfig {
+    private static MediaType[] SUPPORTED_MEDIA_TYPES = new MediaType[]{MediaType.APPLICATION_GRAPHQL,
+            MediaType.APPLICATION_JSON, MediaType.MULTIPART_FORM_DATA};
 
     /**
      * 自定义类型注册配置器
@@ -43,5 +56,20 @@ public class GraphQlConfig {
                         })
                         .instrumentation(new TimingTracingInstrumentation())
                 );
+    }
+
+    @Bean
+    public GraphQlHttpHandler graphQlHttpHandler(WebGraphQlHandler webGraphQlHandler) {
+        return new MyGraphQlHttpHandler(webGraphQlHandler);
+    }
+
+    @Bean
+    public RouterFunction<ServerResponse> graphQlFileUploadRouterFunction(GraphQlProperties properties, GraphQlHttpHandler httpHandler) {
+        String path = properties.getPath();
+        log.info("GraphQL file upload endpoint HTTP POST {}", path);
+        RouterFunctions.Builder builder = RouterFunctions.route();
+        builder = builder.POST(path, RequestPredicates.contentType(SUPPORTED_MEDIA_TYPES)
+                .and(RequestPredicates.accept(SUPPORTED_MEDIA_TYPES)), httpHandler::handleRequest);
+        return builder.build();
     }
 }
