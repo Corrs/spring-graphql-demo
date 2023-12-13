@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.graphql.execution.RuntimeWiringConfigurer;
 import org.springframework.graphql.server.WebGraphQlHandler;
-import org.springframework.graphql.server.webmvc.GraphQlHttpHandler;
 import org.springframework.http.MediaType;
 import org.springframework.web.servlet.function.RequestPredicates;
 import org.springframework.web.servlet.function.RouterFunction;
@@ -59,13 +58,10 @@ public class GraphQlConfig {
     }
 
     @Bean
-    public GraphQlHttpHandler graphQlHttpHandler(WebGraphQlHandler webGraphQlHandler) {
-        return new MyGraphQlHttpHandler(webGraphQlHandler);
-    }
-
-    @Bean
-    public RouterFunction<ServerResponse> graphQlFileUploadRouterFunction(GraphQlProperties properties, GraphQlHttpHandler httpHandler) {
+    @Order(1)
+    public RouterFunction<ServerResponse> graphQlFileUploadRouterFunction(GraphQlProperties properties, WebGraphQlHandler webGraphQlHandler) {
         String path = properties.getPath();
+        MyGraphQlHttpHandler httpHandler = new MyGraphQlHttpHandler(webGraphQlHandler);
         log.info("GraphQL file upload endpoint HTTP POST {}", path);
         return RouterFunctions.route(RequestPredicates.POST(path)
                 .and(RequestPredicates.accept(SUPPORTED_MEDIA_TYPES))
