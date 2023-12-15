@@ -32,14 +32,14 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                 AusAuthenticationToken authentication = AusAuthenticationToken.authenticated("", null, Lists.newArrayList(new AusGrantedAuthority("USER", Lists.newArrayList("hello"))));
                 // 将数据放到SecurityContextHolder中
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                filterChain.doFilter(request, response);
             } catch (JWTVerificationException e) {
-                log.error("token校验失败", e);
-                if (e instanceof TokenExpiredException) {
-                    throw new BizException(BaseResultCodeEnum.TOKEN_EXPIRE);
-                }
-                throw new BizException(BaseResultCodeEnum.TOKEN_FAIL);
+                log.error("token校验失败，异常类：{}", e.getClass().getSimpleName());
+//                if (e instanceof TokenExpiredException) {
+//                    throw new BizException(BaseResultCodeEnum.TOKEN_EXPIRE);
+//                }
+//                throw new BizException(BaseResultCodeEnum.TOKEN_FAIL);
             }
         }
+        filterChain.doFilter(request, response);
     }
 }

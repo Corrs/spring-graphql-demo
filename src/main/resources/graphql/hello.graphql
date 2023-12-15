@@ -5,7 +5,6 @@ type Query {
 }
 
 type Mutation {
-  upload(id: Int, input: Upload): Boolean
   upload1(input: UploadDTO): Boolean
   upload2(id: Int, input: [Upload]): Boolean
 }

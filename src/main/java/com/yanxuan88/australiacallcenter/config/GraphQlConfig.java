@@ -41,20 +41,16 @@ public class GraphQlConfig {
 
     @Bean
     public GraphQlSourceBuilderCustomizer sourceBuilderCustomizer() {
-        return (builder) ->
-                builder.configureGraphQl(graphQlBuilder -> graphQlBuilder
-                        // 缓存文档，而不是缓存结果，
-                        // ApolloPersistedQuerySupport需要配合apollo-client使用 https://www.apollographql.com/docs/apollo-server/performance/apq/
-                        // .preparsedDocumentProvider(new ApolloPersistedQuerySupport(InMemoryPersistedQueryCache.newInMemoryPersistedQueryCache().build()))
-                        // 也可以自己去实现PersistedQuerySupport
-                        .preparsedDocumentProvider(new PersistedQuerySupport(InMemoryPersistedQueryCache.newInMemoryPersistedQueryCache().build()) {
-                            @Override
-                            protected Optional<Object> getPersistedQueryId(ExecutionInput executionInput) {
-                                return Optional.ofNullable(Base64.getEncoder().encodeToString(executionInput.getQuery().getBytes(StandardCharsets.UTF_8)));
-                            }
-                        })
-                        .instrumentation(new TimingTracingInstrumentation())
-                );
+        return builder -> builder.configureGraphQl(graphQlBuilder -> graphQlBuilder
+                // 缓存文档，而不是缓存结果，
+                .preparsedDocumentProvider(new PersistedQuerySupport(InMemoryPersistedQueryCache.newInMemoryPersistedQueryCache().build()) {
+                    @Override
+                    protected Optional<Object> getPersistedQueryId(ExecutionInput executionInput) {
+                        return Optional.ofNullable(Base64.getEncoder().encodeToString(executionInput.getQuery().getBytes(StandardCharsets.UTF_8)));
+                    }
+                })
+                .instrumentation(new TimingTracingInstrumentation())
+        );
     }
 
     @Bean

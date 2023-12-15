@@ -18,6 +18,8 @@ package com.yanxuan88.australiacallcenter.graphql;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.math.IntMath;
+import com.google.common.primitives.Ints;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -29,6 +31,7 @@ import org.springframework.http.MediaType;
 import org.springframework.util.AlternativeJdkIdGenerator;
 import org.springframework.util.IdGenerator;
 import org.springframework.util.MultiValueMap;
+import org.springframework.util.NumberUtils;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.server.ServerWebInputException;
 import org.springframework.web.servlet.function.ServerRequest;
@@ -118,16 +121,23 @@ public class MyGraphQlHttpHandler extends GraphQlHttpHandler {
         uploadVariableValues.forEach((k, v) -> {
             String[] ks = k.split("\\.");
             int len = ks.length;
+            String nk = k;
+            try {
+                Ints.stringConverter().convert(ks[len - 1]);
+                len--;
+                nk = k.substring(0, k.lastIndexOf("."));
+            } catch (NumberFormatException e) {}
             if (len == 1) {
-                if (variables.containsKey(k)) {
-                    variables.put(k, v);
+                if (variables.containsKey(nk)) {
+                    variables.put(nk, v);
                 }
             } else {
                 Map<String, Object> m = new HashMap<>();
                 for (int i = 0; i < len - 1; i++) {
                     String key = ks[i];
                     if (i == 0) {
-                        m = (Map<String, Object>) variables.get(key);
+                        Object o = variables.get(key);
+                        m = (Map<String, Object>) o;
                     } else {
                         m = (Map<String, Object>) m.get(key);
                     }

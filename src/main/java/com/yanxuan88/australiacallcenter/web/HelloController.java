@@ -14,9 +14,9 @@ import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.Part;
 import java.io.IOException;
@@ -28,15 +28,14 @@ import java.util.List;
 public class HelloController {
     @Cacheable(cacheNames = {"query.hello"})
     @QueryMapping
-    @PreAuthorize("hasPermission(null, 'hello')")
+    @PreAuthorize("hasAuthority('hello')")
     public String hello(@Argument String name) {
         return "hello " + name;
     }
 
     @Cacheable(cacheNames = {"helloLDT"})
+    @PreAuthorize("isAuthenticated()")
     @QueryMapping
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     public LocalDateTime helloLocalDateTime() {
         return LocalDateTime.now();
     }
@@ -48,7 +47,7 @@ public class HelloController {
         return user;
     }
 
-    @SchemaMapping(typeName="User")
+    @SchemaMapping(typeName = "User")
     public Connection<Todo> todos(@Argument Integer current, @Argument Integer size) {
         log.info("{}-{}", current, size);
         Page<Todo> todoPage = new Page<>(1, 10, 1);
@@ -57,12 +56,6 @@ public class HelloController {
         todo.setText("test text");
         todoPage.setRecords(Lists.newArrayList(todo));
         return RelayUtil.build(todoPage);
-    }
-
-    @MutationMapping
-    public boolean upload(@Argument Integer id, @Argument Part input) {
-        log.info("{}-{}", id, input);
-        return false;
     }
 
     @MutationMapping
@@ -76,7 +69,7 @@ public class HelloController {
         log.info("{}-{}", id, input);
         input.forEach(f -> {
             try {
-                f.write("/Volumes/k1/logs/"+f.getSubmittedFileName());
+                f.write("/Volumes/k1/logs/" + f.getSubmittedFileName());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
