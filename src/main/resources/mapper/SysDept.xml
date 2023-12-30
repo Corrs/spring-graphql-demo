@@ -8,4 +8,7 @@
         on d1.pid=d2.id
         where d1.is_deleted=false
     </select>
+    <select id="selectSubDepts" resultType="com.yanxuan88.australiacallcenter.model.entity.SysDept">
+        select * from sys_dept where is_deleted=false and find_in_set(#{id}, pids)>0
+    </select>
 </mapper>

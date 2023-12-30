@@ -17,4 +17,8 @@ public interface Constant {
     ZoneId DEFAULT_ZONE_ID = ZoneId.of("CTT", SHORT_IDS);
     DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd").withZone(DEFAULT_ZONE_ID);
     DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").withZone(DEFAULT_ZONE_ID);
+    /**
+     * 逗号分割正则表达式
+     */
+    String COMMA_SPLIT_REG = "\\s*,\\s*";
 }
