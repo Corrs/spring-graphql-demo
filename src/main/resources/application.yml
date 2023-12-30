@@ -21,13 +21,6 @@ server:
     threads:
       io: 8
       worker: 256
-    accesslog:
-      enabled: true
-      pattern: "%t %a %r %s (%D ms)"
-      dir: /Volumes/k1/logs/undertow
-      options:
-        server:
-          record-request-start-time: true
 spring:
   application:
     name: @artifactId@
@@ -57,8 +50,8 @@ spring:
       allowed-origins: '*'
   redis:
     database: 0
-    password: yx123123=
-    host: 192.168.110.108
+#    password: yx123123=
+#    host: 192.168.110.108
     client-type: lettuce
     lettuce:
       pool:
@@ -68,9 +61,6 @@ spring:
         enabled: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://192.168.110.108:3306/aus-call-center?useUnicode=true&useSSL=true&serverTimezone=GMT%2B8&characterEncoding=utf-8
-    username: root
-    password: shanglian123
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       # 默认值30秒
@@ -93,7 +83,6 @@ spring:
         cacheServerConfiguration: true
         elideSetAutoCommits: true
         maintainTimeStats: false
-log-home: /Volumes/k1/logs/${spring.application.name}
 logging:
   config: classpath:logback-spring.xml
   level:
@@ -107,3 +96,44 @@ mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     map-underscore-to-camel-case: true
+    
+---
+server:
+  undertow:
+    accesslog:
+      enabled: true
+      pattern: "%t %a %r %s (%D ms)"
+      dir: /Volumes/k1/logs/undertow
+      options:
+        server:
+          record-request-start-time: true
+spring:
+  profiles: mac
+  redis:
+    password: yx123123=
+    host: 192.168.110.108
+  datasource:
+    url: jdbc:mysql://192.168.110.108:3306/aus-call-center?useUnicode=true&useSSL=true&serverTimezone=GMT%2B8&characterEncoding=utf-8
+    username: root
+    password: shanglian123
+log-home: /Volumes/k1/logs/${spring.application.name}
+
+---
+server:
+  undertow:
+    accesslog:
+      enabled: true
+      pattern: "%t %a %r %s (%D ms)"
+      dir: D:/logs/undertow
+      options:
+        server:
+          record-request-start-time: true
+spring:
+  profiles: win
+  redis:
+    host: localhost
+  datasource:
+    url: jdbc:mysql://localhost:3306/aus-call-center?useUnicode=true&useSSL=true&serverTimezone=GMT%2B8&characterEncoding=utf-8
+    username: root
+    password: shanglian123
+log-home: D:/logs/${spring.application.name}
