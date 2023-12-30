@@ -2,6 +2,7 @@ package com.yanxuan88.australiacallcenter.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yanxuan88.australiacallcenter.model.dto.AddDeptDTO;
+import com.yanxuan88.australiacallcenter.model.dto.EditDeptDTO;
 import com.yanxuan88.australiacallcenter.model.entity.SysDept;
 import com.yanxuan88.australiacallcenter.model.vo.DeptVO;
 
@@ -13,4 +14,6 @@ public interface IDeptService extends IService<SysDept> {
     List<DeptVO> depts();
 
     boolean remDept(Long id);
+
+    DeptVO editDept(EditDeptDTO dept);
 }

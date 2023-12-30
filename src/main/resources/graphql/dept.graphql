@@ -8,6 +8,19 @@ extend type Mutation {
   addDept(dept: AddDeptDTO!): Dept!
   "删除部门"
   remDept(id: Long!): Boolean!
+  "编辑部门"
+  editDept(dept: EditDeptDTO!): Dept!
+}
+
+input EditDeptDTO {
+  "部门id"
+  id: Long!
+  "上级ID，可为空，默认为0"
+  pid: Long = 0
+  "部门名称，最多50字"
+  name: String!
+  "排序，默认为0"
+  sort: Int = 0
 }
 
 input AddDeptDTO {

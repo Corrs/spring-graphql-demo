@@ -2,6 +2,7 @@ package com.yanxuan88.australiacallcenter.web;
 
 import com.yanxuan88.australiacallcenter.config.annotation.Authenticated;
 import com.yanxuan88.australiacallcenter.model.dto.AddDeptDTO;
+import com.yanxuan88.australiacallcenter.model.dto.EditDeptDTO;
 import com.yanxuan88.australiacallcenter.model.vo.DeptVO;
 import com.yanxuan88.australiacallcenter.service.IDeptService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +10,8 @@ import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import java.util.List;
 
@@ -29,11 +30,11 @@ public class DeptController {
      * 新增部门数据
      *
      * @param dept 部门数据
-     * @return true/false
+     * @return DeptVO
      */
     @Authenticated
     @MutationMapping
-    public DeptVO addDept(@Argument @Validated AddDeptDTO dept) {
+    public DeptVO addDept(@Argument @Valid AddDeptDTO dept) {
         return deptService.addDept(dept);
     }
 
@@ -52,12 +53,24 @@ public class DeptController {
      * 删除部门
      *
      * @param id 部门id
-     * @return
+     * @return true/false
      */
     @Authenticated
     @MutationMapping
-    public boolean remDept(@Argument @Validated @Min(value = 1L, message = "机构数据不存在") Long id) {
+    public boolean remDept(@Argument @Valid @Min(value = 1L, message = "机构数据不存在") Long id) {
         return deptService.remDept(id);
+    }
+
+    /**
+     * 编辑部门
+     *
+     * @param dept 部门数据
+     * @return DeptVO
+     */
+    @Authenticated
+    @MutationMapping
+    public DeptVO editDept(@Argument @Valid EditDeptDTO dept) {
+        return deptService.editDept(dept);
     }
 
 }

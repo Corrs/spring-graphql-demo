@@ -3,10 +3,15 @@ package com.yanxuan88.australiacallcenter.model.dto;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Data
-public class AddDeptDTO {
+public class EditDeptDTO {
+    @Min(value = 1L, message = "无效的机构标识")
+    @NotNull(message = "机构标识为空")
+    private Long id;
     private Long pid;
     @NotBlank(message = "名称为空")
     @Length(max = 50, message = "名称应为1-50字")
