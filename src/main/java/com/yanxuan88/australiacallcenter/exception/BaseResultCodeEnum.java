@@ -63,6 +63,13 @@ public enum BaseResultCodeEnum implements IResultCode, IDict<String> {
 
     BLOCK_EXCEPTION("BLOCK_EXCEPTION", "接口限流降级"),
 
+    LOGIN_CAPTCHA_EXPIRE("LOGIN_CAPTCHA_EXPIRE", "登录验证码过期"),
+
+    LOGIN_CAPTCHA_FAIL("LOGIN_CAPTCHA_FAIL", "登录验证码校验失败"),
+
+    USER_NOT_FOUND("USER_NOT_FOUND", "用户不存在"),
+
+    PASSWORD_FAIL("PASSWORD_FAIL", "密码错误"),
     ;
 
 

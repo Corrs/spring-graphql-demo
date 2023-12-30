@@ -1,43 +1,32 @@
 package com.yanxuan88.australiacallcenter.common;
 
 
+import com.yanxuan88.australiacallcenter.util.SecurityUtil;
+
 import java.util.Optional;
 
 public class UserContext {
-
-    private static final ThreadLocal<UserLoginInfo> USER_THREAD_LOCAL = new ThreadLocal<>();
-
-    public static void set(UserLoginInfo user) {
-        USER_THREAD_LOCAL.set(user);
-    }
-
     public static UserLoginInfo get() {
-        return USER_THREAD_LOCAL.get();
+        return SecurityUtil.getUserLoginInfo();
     }
 
     public static boolean isLogin() {
-        return Optional.ofNullable(USER_THREAD_LOCAL.get()).isPresent();
+        return Optional.ofNullable(get()).isPresent();
     }
 
     public static Long getUserId() {
-        return USER_THREAD_LOCAL.get().getUserId();
+        return get().getUserId();
     }
 
     public static Long getUserIdOrNull() {
-        Optional<UserLoginInfo> optional = Optional.ofNullable(USER_THREAD_LOCAL.get());
-        return optional.map(UserLoginInfo::getUserId).orElse(null);
+        return Optional.ofNullable(get()).map(UserLoginInfo::getUserId).orElse(null);
     }
 
     public static Long getUserIdOrDefault() {
-        Optional<UserLoginInfo> optional = Optional.ofNullable(USER_THREAD_LOCAL.get());
-        return optional.isPresent() ? optional.get().getUserId() : 0L;
+        return Optional.ofNullable(get()).map(UserLoginInfo::getUserId).orElse(0L);
     }
 
     public static long getSysUserId() {
         return 1L;
-    }
-
-    public static void remove() {
-        USER_THREAD_LOCAL.remove();
     }
 }

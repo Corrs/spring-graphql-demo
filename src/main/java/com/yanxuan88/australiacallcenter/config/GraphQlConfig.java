@@ -1,9 +1,11 @@
 package com.yanxuan88.australiacallcenter.config;
 
-import com.yanxuan88.australiacallcenter.graphql.MyGraphQlHttpHandler;
+import com.yanxuan88.australiacallcenter.graphql.MyExceptionResolver;
+import com.yanxuan88.australiacallcenter.graphql.MyUploadGraphQlHttpHandler;
 import com.yanxuan88.australiacallcenter.graphql.instrumentation.TimingTracingInstrumentation;
 import com.yanxuan88.australiacallcenter.graphql.scalar.ScalarRegisterConfigurer;
 import graphql.ExecutionInput;
+import graphql.com.google.common.collect.Lists;
 import graphql.execution.preparsed.persisted.InMemoryPersistedQueryCache;
 import graphql.execution.preparsed.persisted.PersistedQuerySupport;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.graphql.execution.RuntimeWiringConfigurer;
+import org.springframework.graphql.execution.SecurityDataFetcherExceptionResolver;
 import org.springframework.graphql.server.WebGraphQlHandler;
 import org.springframework.http.MediaType;
 import org.springframework.web.servlet.function.RequestPredicates;
@@ -41,7 +44,9 @@ public class GraphQlConfig {
 
     @Bean
     public GraphQlSourceBuilderCustomizer sourceBuilderCustomizer() {
-        return builder -> builder.configureGraphQl(graphQlBuilder -> graphQlBuilder
+        return builder -> builder
+                .exceptionResolvers(Lists.newArrayList(new SecurityDataFetcherExceptionResolver(), new MyExceptionResolver()))
+                .configureGraphQl(graphQlBuilder -> graphQlBuilder
                 // 缓存文档，而不是缓存结果，
                 .preparsedDocumentProvider(new PersistedQuerySupport(InMemoryPersistedQueryCache.newInMemoryPersistedQueryCache().build()) {
                     @Override
@@ -57,7 +62,7 @@ public class GraphQlConfig {
     @Order(1)
     public RouterFunction<ServerResponse> graphQlFileUploadRouterFunction(GraphQlProperties properties, WebGraphQlHandler webGraphQlHandler) {
         String path = properties.getPath();
-        MyGraphQlHttpHandler httpHandler = new MyGraphQlHttpHandler(webGraphQlHandler);
+        MyUploadGraphQlHttpHandler httpHandler = new MyUploadGraphQlHttpHandler(webGraphQlHandler);
         log.info("GraphQL file upload endpoint HTTP POST {}", path);
         return RouterFunctions.route(RequestPredicates.POST(path)
                 .and(RequestPredicates.accept(SUPPORTED_MEDIA_TYPES))

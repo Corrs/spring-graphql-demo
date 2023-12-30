@@ -1,0 +1,28 @@
+extend type Query {
+  "查询部门列表"
+  depts: [Dept]
+}
+
+extend type Mutation {
+  "新增部门"
+  addDept(dept: AddDeptDTO!): Dept!
+  "删除部门"
+  remDept(id: Long!): Boolean!
+}
+
+input AddDeptDTO {
+  "上级ID，可为空，默认为0"
+  pid: Long = 0
+  "部门名称，最多50字"
+  name: String!
+  "排序，默认为0"
+  sort: Int = 0
+}
+
+type Dept {
+  id: Long!
+  name: String!
+  sort: Int!
+  pid: Long!
+  pname: String
+}

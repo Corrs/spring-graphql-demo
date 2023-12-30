@@ -3,6 +3,9 @@ schema {
   mutation: Mutation
 }
 
+type Query
+type Mutation
+
 scalar LocalDateTime
 scalar Long
 scalar Upload

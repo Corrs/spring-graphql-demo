@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SysUserMapper.xml -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yanxuan88.australiacallcenter.mapper.SysDeptMapper">
+    <select id="selectDepts" resultType="com.yanxuan88.australiacallcenter.model.vo.DeptVO">
+        select d1.name, ifnull(d2.name, '') pname, d1.id, d1.pid, d1.sort
+        from sys_dept d1 left join sys_dept d2
+        on d1.pid=d2.id
+        where d1.is_deleted=false
+    </select>
+</mapper>

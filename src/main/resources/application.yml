@@ -68,7 +68,7 @@ spring:
         enabled: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://192.168.110.108:3306/aus-call-center?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=GMT%2B8
+    url: jdbc:mysql://192.168.110.108:3306/aus-call-center?useUnicode=true&useSSL=true&serverTimezone=GMT%2B8&characterEncoding=utf-8
     username: root
     password: shanglian123
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -106,3 +106,4 @@ mybatis-plus:
       logic-not-delete-value: 0
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true

@@ -18,7 +18,6 @@ package com.yanxuan88.australiacallcenter.graphql;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.math.IntMath;
 import com.google.common.primitives.Ints;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -26,12 +25,10 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.graphql.server.WebGraphQlHandler;
 import org.springframework.graphql.server.WebGraphQlRequest;
 import org.springframework.graphql.server.webmvc.GraphQlHttpHandler;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.util.AlternativeJdkIdGenerator;
 import org.springframework.util.IdGenerator;
 import org.springframework.util.MultiValueMap;
-import org.springframework.util.NumberUtils;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.server.ServerWebInputException;
 import org.springframework.web.servlet.function.ServerRequest;
@@ -54,9 +51,9 @@ import java.util.stream.Collectors;
  * @author co
  * @since 2023-12-12 11:04:51
  */
-public class MyGraphQlHttpHandler extends GraphQlHttpHandler {
+public class MyUploadGraphQlHttpHandler extends GraphQlHttpHandler {
 
-    private static final Log logger = LogFactory.getLog(MyGraphQlHttpHandler.class);
+    private static final Log logger = LogFactory.getLog(MyUploadGraphQlHttpHandler.class);
     private static final ObjectMapper mapper = new ObjectMapper();
 
     private static final List<MediaType> SUPPORTED_MEDIA_TYPES = Arrays.asList(MediaType.MULTIPART_FORM_DATA);
@@ -70,7 +67,7 @@ public class MyGraphQlHttpHandler extends GraphQlHttpHandler {
      *
      * @param graphQlHandler common handler for GraphQL over HTTP requests
      */
-    public MyGraphQlHttpHandler(WebGraphQlHandler graphQlHandler) {
+    public MyUploadGraphQlHttpHandler(WebGraphQlHandler graphQlHandler) {
         super(graphQlHandler);
         this.graphQlHandler = graphQlHandler;
     }
@@ -84,9 +81,8 @@ public class MyGraphQlHttpHandler extends GraphQlHttpHandler {
      *                          {@link HttpMediaTypeNotSupportedException}.
      */
     public ServerResponse handleRequest(ServerRequest serverRequest) throws ServletException {
-        HttpHeaders httpHeaders = serverRequest.headers().asHttpHeaders();
         WebGraphQlRequest graphQlRequest = new WebGraphQlRequest(
-                serverRequest.uri(), httpHeaders, readBody(serverRequest),
+                serverRequest.uri(), serverRequest.headers().asHttpHeaders(), readBody(serverRequest),
                 this.idGenerator.generateId().toString(), LocaleContextHolder.getLocale());
 
         if (logger.isDebugEnabled()) {

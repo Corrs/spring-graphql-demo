@@ -1,0 +1,33 @@
+extend type Query {
+  "获取登录验证码"
+  loginCaptcha: LoginCaptcha
+}
+
+extend type Mutation {
+  "登录，密码需要md5加密"
+  login(username: String!, password: String!, captcha: String!): UserLoginInfoVO
+}
+
+type LoginCaptcha {
+  "验证码图片(base64编码)"
+  image: String!
+  "用户标识"
+  key: String!
+}
+
+type UserLoginInfoVO {
+  user: UserBaseVO!
+  authenticationToken: String!
+  permissions: [UserPermissionVO]
+}
+
+type UserBaseVO {
+  userId: Long!
+  username: String!
+  email: String
+  mobile: String
+}
+
+type UserPermissionVO {
+  id: Long!
+}

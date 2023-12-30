@@ -2,11 +2,9 @@ package com.yanxuan88.australiacallcenter.mysql;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.yanxuan88.australiacallcenter.common.UserContext;
-import com.yanxuan88.australiacallcenter.common.UserLoginInfo;
 import org.apache.ibatis.reflection.MetaObject;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 /**
  * 公共字段自动补全 拦截器
@@ -23,7 +21,7 @@ public class DataOperationInterceptor implements MetaObjectHandler {
     private static final String IS_DELETED = "isDeleted";
 
     private Long getCurrentUserId() {
-        return Optional.ofNullable(UserContext.get()).map(UserLoginInfo::getUserId).orElse(0L);
+        return UserContext.getUserIdOrDefault();
     }
 
     @Override

@@ -1,10 +1,10 @@
-type Query {
+extend type Query {
   hello(name:String = "spring"): String
   helloLocalDateTime: LocalDateTime
   viewer: User
 }
 
-type Mutation {
+extend type Mutation {
   upload1(input: UploadDTO): Boolean
   upload2(id: Int, input: [Upload]): Boolean
 }

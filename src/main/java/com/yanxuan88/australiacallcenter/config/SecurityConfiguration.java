@@ -1,5 +1,6 @@
 package com.yanxuan88.australiacallcenter.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -47,6 +48,8 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfiguration {
+    @Autowired
+    private RedisClient redisClient;
     private static final String CORS_ALLOWED_ALL = "*";
     /**
      * todo 这里要改成从数据库获取用户 权限数据
@@ -83,7 +86,7 @@ public class SecurityConfiguration {
                 )
                 // 使用token，禁用session
                 .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(new TokenAuthenticationFilter(), BasicAuthenticationFilter.class)
+                .addFilterBefore(new TokenAuthenticationFilter(redisClient), BasicAuthenticationFilter.class)
                 .build();
     }
 
