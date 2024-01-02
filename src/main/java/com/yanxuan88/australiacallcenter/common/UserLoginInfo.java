@@ -1,7 +1,8 @@
 package com.yanxuan88.australiacallcenter.common;
 
+import org.springframework.data.relational.core.sql.In;
+
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -20,6 +21,31 @@ public class UserLoginInfo implements Serializable {
      * 昵称
      */
     private String username;
+
+    /**
+     * 真实姓名
+     */
+    private String realName;
+
+    /**
+     * 头像
+     */
+    private String avatar;
+
+    /**
+     * 所属机构id
+     */
+    private Long deptId;
+
+    /**
+     * 是否吵架管理员
+     */
+    private Integer superAdmin;
+
+    /**
+     * 用户登录redis缓存key
+     */
+    private String sessionCacheKey;
 
     /**
      * 角色id
@@ -126,5 +152,45 @@ public class UserLoginInfo implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getSessionCacheKey() {
+        return sessionCacheKey;
+    }
+
+    public void setSessionCacheKey(String sessionCacheKey) {
+        this.sessionCacheKey = sessionCacheKey;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public Long getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(Long deptId) {
+        this.deptId = deptId;
+    }
+
+    public Integer getSuperAdmin() {
+        return superAdmin;
+    }
+
+    public void setSuperAdmin(Integer superAdmin) {
+        this.superAdmin = superAdmin;
     }
 }

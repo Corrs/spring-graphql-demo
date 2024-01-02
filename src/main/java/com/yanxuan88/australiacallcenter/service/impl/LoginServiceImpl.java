@@ -10,6 +10,7 @@ import com.yanxuan88.australiacallcenter.model.vo.UserLoginInfoVO;
 import com.yanxuan88.australiacallcenter.service.ILoginService;
 import com.yanxuan88.australiacallcenter.service.IUserService;
 import com.yanxuan88.australiacallcenter.util.JWTUtil;
+import com.yanxuan88.australiacallcenter.util.SecurityUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.Collections;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -85,7 +87,7 @@ public class LoginServiceImpl implements ILoginService {
             throw new BizException(USER_NOT_FOUND);
         }
 
-        if (!passwordEncoder.matches(password, user.getPassword())) {
+        if (!passwordEncoder.matches(SecurityUtil.pwd(user.getSalt(), password), user.getPassword())) {
             throw new BizException(PASSWORD_FAIL);
         }
 
@@ -99,12 +101,26 @@ public class LoginServiceImpl implements ILoginService {
         String authenticationToken = JWTUtil.generateToken(Collections.singletonMap(TOKEN_UUID, uuid));
 
         UserLoginInfoVO result = new UserLoginInfoVO()
-                .setAuthenticationToken(authenticationToken)
                 .setUser(new UserBaseVO().setMobile(user.getMobile())
                         .setEmail(user.getEmail())
                         .setUsername(user.getUsername())
+                        .setRealName(user.getRealName())
+                        .setAvatar(user.getAvatar())
+                        .setDeptId(user.getDeptId())
+                        .setSuperAdmin(user.getSuperAdmin())
                         .setUserId(user.getUserId()));
         redisClient.set(SESSION_KEY.concat(uuid), result, SESSION_EXPIRE, SESSION_EXPIRE_UNIT);
-        return result;
+        return result.setAuthenticationToken(authenticationToken);
+    }
+
+    @Override
+    public boolean logout() {
+        Optional.ofNullable(SecurityUtil.getUserLoginInfo())
+                .ifPresent(user -> {
+                    String name = StringUtils.hasText(user.getRealName()) ? user.getRealName() : user.getUsername();
+                    log.info("用户【{}】退出登录", name);
+                    redisClient.delete(user.getSessionCacheKey());
+                });
+        return true;
     }
 }

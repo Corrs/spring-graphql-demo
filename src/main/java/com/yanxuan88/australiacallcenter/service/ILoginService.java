@@ -7,4 +7,7 @@ public interface ILoginService {
     LoginCaptchaVO createLoginCaptcha(String loginCaptchaKey);
 
     UserLoginInfoVO login(String username, String password, String captcha, String captchaKey);
+
+    boolean logout();
+
 }

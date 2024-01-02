@@ -51,6 +51,11 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                     credentials.setUserId(userBase.getUserId());
                     credentials.setEmail(userBase.getEmail());
                     credentials.setMobile(userBase.getMobile());
+                    credentials.setSessionCacheKey(sessionCacheKey);
+                    credentials.setRealName(userBase.getRealName());
+                    credentials.setAvatar(userBase.getAvatar());
+                    credentials.setDeptId(userBase.getDeptId());
+                    credentials.setSuperAdmin(userBase.getSuperAdmin());
                     AusAuthenticationToken authentication = AusAuthenticationToken.authenticated("", credentials, Lists.newArrayList(new AusGrantedAuthority("USER", Lists.newArrayList("hello"))));
                     // 将数据放到SecurityContextHolder中
                     SecurityContextHolder.getContext().setAuthentication(authentication);

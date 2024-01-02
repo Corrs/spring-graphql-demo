@@ -1,5 +1,6 @@
 package com.yanxuan88.australiacallcenter.web;
 
+import com.yanxuan88.australiacallcenter.config.annotation.Authenticated;
 import com.yanxuan88.australiacallcenter.model.vo.LoginCaptchaVO;
 import com.yanxuan88.australiacallcenter.model.vo.UserLoginInfoVO;
 import com.yanxuan88.australiacallcenter.service.ILoginService;
@@ -9,7 +10,6 @@ import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.annotation.Validated;
 
 import static com.yanxuan88.australiacallcenter.common.Constant.HEADER_CAPTCHA_KEY;
 
@@ -46,5 +46,16 @@ public class LoginController {
     @MutationMapping
     public UserLoginInfoVO login(@Argument String username, @Argument String password, @Argument String captcha) {
         return loginService.login(username, password, captcha, (String) RequestAttrUtil.getAttribute(HEADER_CAPTCHA_KEY));
+    }
+
+    /**
+     * 退出登录
+     *
+     * @return true/false
+     */
+    @Authenticated
+    @MutationMapping
+    public boolean logout() {
+        return loginService.logout();
     }
 }

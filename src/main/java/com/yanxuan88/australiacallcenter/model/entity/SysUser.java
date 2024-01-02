@@ -13,8 +13,12 @@ public class SysUser extends BaseEntity {
     private String mobile;
     private String password;
     private String username;
+    private String realName;
+    private String avatar;
+    private Long deptId;
+    private Integer superAdmin;
     private String salt;
-    private Boolean status;
+    private Integer status;
     @TableField(fill = FieldFill.INSERT)
     private Boolean isDeleted;
 }

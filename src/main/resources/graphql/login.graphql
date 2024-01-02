@@ -6,6 +6,8 @@ extend type Query {
 extend type Mutation {
   "登录，密码需要md5加密"
   login(username: String!, password: String!, captcha: String!): UserLoginInfoVO
+  "退出登录"
+  logout: Boolean
 }
 
 type LoginCaptcha {
@@ -24,6 +26,10 @@ type UserLoginInfoVO {
 type UserBaseVO {
   userId: Long!
   username: String!
+  realName: String
+  avatar: String
+  deptId: Long
+  superAdmin: Int
   email: String
   mobile: String
 }

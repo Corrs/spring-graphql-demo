@@ -16,6 +16,10 @@ import java.io.Serializable;
 public class UserBaseVO implements Serializable {
     private Long userId;
     private String username;
+    private String realName;
+    private String avatar;
+    private Integer superAdmin;
+    private Long deptId;
     private String email;
     private String mobile;
 }

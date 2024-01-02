@@ -31,7 +31,7 @@ class AustraliaCallCenterApplicationTests {
 
     @Test
     void testDefaultPwd() {
-        System.out.println(passwordEncoder.encode("14e1b600b1fd579f47433b88e8d85291"));
+        System.out.println(passwordEncoder.encode("3eea4ff3a0217332d2eef34bc4bfab06"));
     }
 
     static class Person implements Serializable {

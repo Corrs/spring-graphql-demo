@@ -210,16 +210,20 @@ DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user` (
   `user_id` bigint NOT NULL AUTO_INCREMENT,
   `username` varchar(50) NOT NULL COMMENT '用户名',
+  `real_name` varchar(50) COMMENT '姓名',
+  `avatar` varchar(200) COMMENT '头像',
   `password` varchar(100) DEFAULT NULL COMMENT '密码',
   `salt` varchar(20) DEFAULT NULL COMMENT '盐',
   `email` varchar(100) DEFAULT NULL COMMENT '邮箱',
   `mobile` varchar(100) DEFAULT NULL COMMENT '手机号',
+  `dept_id` bigint COMMENT '部门ID',
+  `super_admin` tinyint unsigned COMMENT '超级管理员   0：否   1：是',
   `status` tinyint DEFAULT NULL COMMENT '状态  0：禁用   1：正常',
   `create_time` datetime NOT NULL,
   `update_time` datetime DEFAULT NULL,
   `create_user` bigint NOT NULL,
   `update_user` bigint DEFAULT NULL,
-  `is_deleted` tinyint(1) NOT NULL,
+  `is_deleted` bit NOT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `username` (`username`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='系统用户';
@@ -231,7 +235,7 @@ CREATE TABLE `sys_user` (
 
 LOCK TABLES `sys_user` WRITE;
 /*!40000 ALTER TABLE `sys_user` DISABLE KEYS */;
-INSERT INTO `sys_user` VALUES (1,'admin','{bcrypt}$2a$10$qxymYygjAJFM4bVux4ktQe/7l4Wxam6JXJewo31tpVprSqhhyH/oK','YzcmCZNvbXocrsz9dm8e','test@xxx.com','13612345678',1,'2023-11-11 11:11:11',NULL,1,NULL,0);
+INSERT INTO `sys_user` VALUES (1,'admin','管理员','','{bcrypt}$2a$10$umbdzri52hrdtA6KMcmakOOCFbGku9LQHdZlWAUwUMEDYYNPKayta','4b083d8bff412020','test@xxx.com','13612345678',1,1,1,'2023-11-11 11:11:11',NULL,0,NULL,0);
 /*!40000 ALTER TABLE `sys_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
