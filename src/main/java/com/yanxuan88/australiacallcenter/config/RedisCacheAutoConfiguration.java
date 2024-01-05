@@ -11,6 +11,7 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import org.springframework.boot.autoconfigure.cache.CacheManagerCustomizers;
 import org.springframework.boot.autoconfigure.cache.CacheProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.CacheManager;
@@ -96,12 +97,21 @@ public class RedisCacheAutoConfiguration extends CachingConfigurerSupport {
     @Bean
     @Override
     public CacheManager cacheManager() {
-        CacheProperties.Redis redisCacheProperties = cacheProperties.getRedis();
-        RedisCacheManager.RedisCacheManagerBuilder builder = RedisCacheManager.builder(connectionFactory).cacheDefaults(redisCacheConfiguration(redisCacheProperties)).transactionAware().cacheWriter(RedisCacheWriter.nonLockingRedisCacheWriter(connectionFactory, BatchStrategies.scan(1000)));
-        if (redisCacheProperties.isEnableStatistics()) {
-            builder.enableStatistics();
-        }
-        return builder.build();
+        // 使用spring提供的RedisCacheManager，不能对缓存设置不同的ttl
+//        CacheProperties.Redis redisCacheProperties = cacheProperties.getRedis();
+//        RedisCacheManager.RedisCacheManagerBuilder builder = RedisCacheManager.builder(connectionFactory)
+//                .cacheDefaults(redisCacheConfiguration(redisCacheProperties))
+//                .transactionAware()
+//                .cacheWriter(RedisCacheWriter.nonLockingRedisCacheWriter(connectionFactory, BatchStrategies.scan(1000)));
+//        if (redisCacheProperties.isEnableStatistics()) {
+//            builder.enableStatistics();
+//        }
+//        return customizerInvoker.customize(builder.build());
+        // 使用自定义的RedisTtlCacheManager，对@Cacheable等注解做了增强
+        RedisCacheWriter cacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(connectionFactory, BatchStrategies.scan(1000));
+        RedisTtlCacheManager cacheManager = new RedisTtlCacheManager(cacheWriter, redisCacheConfiguration(cacheProperties.getRedis()));
+        cacheManager.setTransactionAware(true);
+        return cacheManager;
     }
 
     /**
@@ -139,9 +149,6 @@ public class RedisCacheAutoConfiguration extends CachingConfigurerSupport {
         RedisCacheConfiguration cacheConfig = RedisCacheConfiguration.defaultCacheConfig().serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new RedisCacheValueSerializer()));
         if (redisCacheProperties.getTimeToLive() != null) {
             cacheConfig = cacheConfig.entryTtl(redisCacheProperties.getTimeToLive());
-        }
-        if (redisCacheProperties.getKeyPrefix() != null) {
-            cacheConfig = cacheConfig.prefixCacheNameWith(redisCacheProperties.getKeyPrefix());
         }
         if (!redisCacheProperties.isCacheNullValues()) {
             cacheConfig = cacheConfig.disableCachingNullValues();

@@ -22,20 +22,20 @@ import java.util.List;
 @Slf4j
 @Controller
 public class HelloController {
-    @Cacheable(cacheNames = {"query.hello"})
     @QueryMapping
-    @PreAuthorize("hasAuthority('hello')")
+//    @PreAuthorize("hasPermission(null, 'hello1')")
+    @PreAuthorize("hasAuthority('hello1')")
     public String hello(@Argument String name) {
         return "hello " + name;
     }
 
-    @Cacheable(cacheNames = {"helloLDT"})
-    @Authenticated
+    @Cacheable(cacheNames = "helloLocalDateTime#1m")
     @QueryMapping
     public LocalDateTime helloLocalDateTime() {
         return LocalDateTime.now();
     }
 
+    @Cacheable(cacheNames = {"viewer#3m"})
     @QueryMapping
     public User viewer() {
         User user = new User();
@@ -43,6 +43,7 @@ public class HelloController {
         return user;
     }
 
+    @Authenticated
     @SchemaMapping(typeName = "User")
     public Connection<Todo> todos(@Argument Integer current, @Argument Integer size) {
         log.info("{}-{}", current, size);

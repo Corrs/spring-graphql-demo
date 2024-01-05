@@ -7,6 +7,8 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -59,10 +61,10 @@ public class SecurityConfiguration {
         return new InMemoryUserDetailsManager(admin);
     }
 
-//    @Bean
-//    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-//        return authenticationConfiguration.getAuthenticationManager();
-//    }
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
 
     @Bean
     @Order(1)
@@ -122,10 +124,7 @@ public class SecurityConfiguration {
                 if (authentication instanceof AusAuthenticationToken) {
                     AusAuthenticationToken token = (AusAuthenticationToken) authentication;
                     Collection<GrantedAuthority> authorities = token.getAuthorities();
-                    return authorities.stream().anyMatch(ga -> {
-                        AusGrantedAuthority authority = (AusGrantedAuthority) ga;
-                        return authority.getPermissions().contains(String.valueOf(permission));
-                    });
+                    return authorities.stream().map(GrantedAuthority::getAuthority).anyMatch(authority -> authority.equals(String.valueOf(permission)));
                 }
                 return false;
             }
