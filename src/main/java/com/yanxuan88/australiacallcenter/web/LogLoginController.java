@@ -2,7 +2,7 @@ package com.yanxuan88.australiacallcenter.web;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.yanxuan88.australiacallcenter.config.annotation.Authenticated;
+import com.yanxuan88.australiacallcenter.annotation.Authenticated;
 import com.yanxuan88.australiacallcenter.graphql.util.RelayUtil;
 import com.yanxuan88.australiacallcenter.model.dto.LogLoginQueryDTO;
 import com.yanxuan88.australiacallcenter.model.entity.SysLogLogin;
@@ -15,7 +15,6 @@ import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 /**

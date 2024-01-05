@@ -1,6 +1,6 @@
 package com.yanxuan88.australiacallcenter.web;
 
-import com.yanxuan88.australiacallcenter.config.annotation.Authenticated;
+import com.yanxuan88.australiacallcenter.annotation.Authenticated;
 import com.yanxuan88.australiacallcenter.model.vo.LoginCaptchaVO;
 import com.yanxuan88.australiacallcenter.model.vo.UserLoginInfoVO;
 import com.yanxuan88.australiacallcenter.service.ILoginService;
@@ -12,7 +12,6 @@ import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
 import static com.yanxuan88.australiacallcenter.common.Constant.HEADER_CAPTCHA_KEY;
-import static com.yanxuan88.australiacallcenter.common.Constant.IP;
 
 /**
  * 用户登录控制器

@@ -2,7 +2,7 @@ package com.yanxuan88.australiacallcenter.web;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.Lists;
-import com.yanxuan88.australiacallcenter.config.annotation.Authenticated;
+import com.yanxuan88.australiacallcenter.annotation.Authenticated;
 import com.yanxuan88.australiacallcenter.graphql.util.RelayUtil;
 import graphql.relay.Connection;
 import lombok.extern.slf4j.Slf4j;

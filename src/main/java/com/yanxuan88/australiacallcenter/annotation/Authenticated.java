@@ -1,4 +1,4 @@
-package com.yanxuan88.australiacallcenter.config.annotation;
+package com.yanxuan88.australiacallcenter.annotation;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 

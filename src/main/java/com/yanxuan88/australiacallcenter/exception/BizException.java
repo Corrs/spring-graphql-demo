@@ -28,6 +28,12 @@ public class BizException extends RuntimeException {
         this.msg = message;
     }
 
+    public BizException(Throwable cause) {
+        super(cause);
+        this.code = BaseResultCodeEnum.BIZ_ERROR.getCode();
+        this.msg = cause.getMessage();
+    }
+
 
     public String getCode() {
         return code;

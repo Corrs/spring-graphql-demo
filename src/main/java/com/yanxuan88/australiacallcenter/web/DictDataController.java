@@ -1,6 +1,6 @@
 package com.yanxuan88.australiacallcenter.web;
 
-import com.yanxuan88.australiacallcenter.config.annotation.Authenticated;
+import com.yanxuan88.australiacallcenter.annotation.Authenticated;
 import com.yanxuan88.australiacallcenter.graphql.util.RelayUtil;
 import com.yanxuan88.australiacallcenter.model.dto.AddDictDataDTO;
 import com.yanxuan88.australiacallcenter.model.dto.DictDataQueryDTO;
