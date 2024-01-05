@@ -70,6 +70,7 @@ public enum BaseResultCodeEnum implements IResultCode, IDict<String> {
     USER_NOT_FOUND("USER_NOT_FOUND", "用户不存在"),
 
     PASSWORD_FAIL("PASSWORD_FAIL", "密码错误"),
+    ACCOUNT_DISABLE("ACCOUNT_DISABLE", "账号已锁定"),
     ;
 
 

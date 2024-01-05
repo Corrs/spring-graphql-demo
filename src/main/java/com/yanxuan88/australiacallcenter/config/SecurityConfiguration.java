@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
@@ -22,12 +21,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.security.web.header.Header;
-import org.springframework.security.web.header.writers.CrossOriginOpenerPolicyHeaderWriter;
-import org.springframework.security.web.header.writers.StaticHeadersWriter;
-import org.springframework.security.web.server.header.CrossOriginEmbedderPolicyServerHttpHeadersWriter;
-import org.springframework.security.web.server.header.CrossOriginOpenerPolicyServerHttpHeadersWriter;
-import org.springframework.security.web.server.header.CrossOriginResourcePolicyServerHttpHeadersWriter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -51,6 +44,7 @@ public class SecurityConfiguration {
     @Autowired
     private RedisClient redisClient;
     private static final String CORS_ALLOWED_ALL = "*";
+
     /**
      * todo 这里要改成从数据库获取用户 权限数据
      *

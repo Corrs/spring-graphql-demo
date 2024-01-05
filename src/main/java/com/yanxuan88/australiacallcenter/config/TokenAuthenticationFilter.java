@@ -7,8 +7,10 @@ import com.yanxuan88.australiacallcenter.common.Constant;
 import com.yanxuan88.australiacallcenter.common.UserLoginInfo;
 import com.yanxuan88.australiacallcenter.model.vo.UserBaseVO;
 import com.yanxuan88.australiacallcenter.model.vo.UserLoginInfoVO;
+import com.yanxuan88.australiacallcenter.util.IPUtil;
 import com.yanxuan88.australiacallcenter.util.JWTUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -21,11 +23,11 @@ import java.io.IOException;
 import java.util.List;
 
 import static com.yanxuan88.australiacallcenter.common.Constant.*;
-import static com.yanxuan88.australiacallcenter.common.Constant.SESSION_EXPIRE_UNIT;
 
 @Slf4j
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
     private final RedisClient redisClient;
+
     public TokenAuthenticationFilter(RedisClient redisClient) {
         this.redisClient = redisClient;
     }
@@ -33,6 +35,8 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         request.setAttribute(HEADER_CAPTCHA_KEY, request.getHeader(HEADER_CAPTCHA_KEY));
+        request.setAttribute(IP, IPUtil.getIpAddress(request));
+        request.setAttribute(HttpHeaders.USER_AGENT, request.getHeader(HttpHeaders.USER_AGENT));
         String token = request.getHeader(Constant.HEADER_TOKEN_KEY);
         if (StringUtils.hasText(token)) {
             try {
@@ -44,7 +48,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                     redisClient.expire(sessionCacheKey, SESSION_EXPIRE, SESSION_EXPIRE_UNIT);
                 });
                 UserLoginInfoVO user = (UserLoginInfoVO) objects.get(0);
-                if (user != null && token.equals(user.getAuthenticationToken())) {
+                if (user != null) {
                     UserBaseVO userBase = user.getUser();
                     UserLoginInfo credentials = new UserLoginInfo();
                     credentials.setUsername(userBase.getUsername());
@@ -62,10 +66,6 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                 }
             } catch (JWTVerificationException e) {
                 log.error("token校验失败，异常类：{}", e.getClass().getSimpleName());
-//                if (e instanceof TokenExpiredException) {
-//                    throw new BizException(BaseResultCodeEnum.TOKEN_EXPIRE);
-//                }
-//                throw new BizException(BaseResultCodeEnum.TOKEN_FAIL);
             }
         }
         filterChain.doFilter(request, response);

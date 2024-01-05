@@ -1,0 +1,39 @@
+extend type Query {
+  loginLogs(cond: LogLoginQueryDTO!): LoginLogConnection
+}
+
+input LogLoginQueryDTO {
+  "登录时间"
+  startTime: LocalDateTime!
+  "登录时间"
+  endTime: LocalDateTime!
+  "用户名"
+  username: String
+  "状态，0失败 1成功 2账号已锁定"
+  status: Int
+  "页码，默认1"
+  current: Long=1
+  "行数，默认10"
+  limit: Long=10
+}
+
+type LoginLogConnection implements Connection {
+  pageInfo: PageInfo!
+  edges: [LoginLogEdge]
+  total: Long
+}
+
+type LoginLogEdge implements Edge {
+  cursor: String!
+  node: LoginLogVO
+}
+
+type LoginLogVO implements EdgeNode {
+  id: Long!
+  username: String
+  operation: Int
+  status: Int
+  userAgent: String
+  ip: String
+  createTime: LocalDateTime
+}

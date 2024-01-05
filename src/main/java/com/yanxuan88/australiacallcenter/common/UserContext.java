@@ -26,6 +26,16 @@ public class UserContext {
         return Optional.ofNullable(get()).map(UserLoginInfo::getUserId).orElse(0L);
     }
 
+    public static String getUsernameOrDefault() {
+        return Optional.ofNullable(get())
+                .map(user -> {
+                    String realName = user.getRealName();
+                    String username = user.getUsername();
+                    return (realName == null || realName.trim().length() <= 0) ? username : realName;
+                })
+                .orElse("");
+    }
+
     public static long getSysUserId() {
         return 1L;
     }

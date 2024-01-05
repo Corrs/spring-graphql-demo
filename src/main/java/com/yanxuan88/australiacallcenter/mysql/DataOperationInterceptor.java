@@ -16,18 +16,24 @@ public class DataOperationInterceptor implements MetaObjectHandler {
 
     private static final String CREATE_TIME = "createTime";
     private static final String CREATE_USER = "createUser";
+    private static final String CREATE_NAME = "createName";
     private static final String UPDATE_TIME = "updateTime";
     private static final String UPDATE_USER = "updateUser";
+    private static final String UPDATE_NAME = "updateName";
     private static final String IS_DELETED = "isDeleted";
 
     private Long getCurrentUserId() {
         return UserContext.getUserIdOrDefault();
+    }
+    private String getCurrentUsername() {
+        return UserContext.getUsernameOrDefault();
     }
 
     @Override
     public void insertFill(MetaObject metaObject) {
         this.strictInsertFill(metaObject, CREATE_TIME, LocalDateTime::now, LocalDateTime.class);
         this.strictInsertFill(metaObject, UPDATE_TIME, LocalDateTime::now, LocalDateTime.class);
+        this.strictInsertFill(metaObject, CREATE_NAME, this::getCurrentUsername, String.class);
         this.strictInsertFill(metaObject, CREATE_USER, this::getCurrentUserId, Long.class);
         this.strictInsertFill(metaObject, IS_DELETED, () -> Boolean.FALSE, Boolean.class);
     }
@@ -36,5 +42,6 @@ public class DataOperationInterceptor implements MetaObjectHandler {
     public void updateFill(MetaObject metaObject) {
         this.strictUpdateFill(metaObject, UPDATE_TIME, LocalDateTime::now, LocalDateTime.class);
         this.strictUpdateFill(metaObject, UPDATE_USER, this::getCurrentUserId, Long.class);
+        this.strictInsertFill(metaObject, UPDATE_NAME, this::getCurrentUsername, String.class);
     }
 }

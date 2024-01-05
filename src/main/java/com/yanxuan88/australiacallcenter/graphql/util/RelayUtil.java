@@ -26,6 +26,7 @@ public final class RelayUtil {
      * @return connection
      */
     public static <T> Connection<T> build(Page<T> page) {
+        if (page == null) return emptyConnection();
         List<Edge<T>> edges = buildEdges(page.getRecords());
         if (edges.size() == 0) {
             return emptyConnection();

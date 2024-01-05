@@ -1,0 +1,125 @@
+extend type Query {
+  "字典管理分页查询"
+  dictTypes(p: Page!, query: DictTypeQueryDTO): DictTypeConnection
+  "字典数据分页查询"
+  dictDatas(p: Page!, query: DictDataQueryDTO!): DictDataConnection
+}
+
+extend type Mutation {
+  "新增字典"
+  addDictType(dictType: AddDictTypeDTO!): Boolean
+  "编辑字典"
+  editDictType(dictType: EditDictTypeDTO!): Boolean
+  "删除字典"
+  remDictType(id: Long!): Boolean
+  "新增字典数据"
+  addDictData(dictData: AddDictDataDTO!): Boolean
+  "编辑字典数据"
+  editDictData(dictData: EditDictDataDTO!): Boolean
+  "删除字典数据"
+  remDictData(ids: [Long!]!): Boolean
+}
+
+input EditDictDataDTO {
+  id: Long!
+  dictLabel: String!
+  dictValue: String!
+  remark: String
+  sort: Int! = 0
+}
+
+input DictDataQueryDTO {
+  dictTypeId: Long!
+  dictValue: String
+  dictLabel: String
+}
+
+type DictDataConnection implements Connection {
+  pageInfo: PageInfo!
+  edges: [DictDataEdge]
+  total: Long
+}
+
+type DictDataEdge implements Edge {
+  cursor: String!
+  node: DictDataVO
+}
+
+type DictDataVO implements EdgeNode {
+  id: Long!
+  "字典值"
+  dictValue: String
+  "字典标签"
+  dictLabel: String
+  "排序"
+  sort: Int
+  "备注"
+  remark: String
+  "创建时间"
+  createTime: LocalDateTime
+  dictTypeId: Long
+}
+
+input AddDictDataDTO {
+  dictTypeId: Long!
+  dictLabel: String!
+  dictValue: String!
+  remark: String
+  sort: Int! = 0
+}
+
+input EditDictTypeDTO {
+  id: Long!
+  "排序，默认为0"
+  sort: Int=0
+  "字典类型，长度100，必须唯一"
+  dictType: String!
+  "字典名称，长度255"
+  dictName: String!
+  "备注，长度255"
+  remark: String
+}
+
+input AddDictTypeDTO {
+  "排序，默认为0"
+  sort: Int=0
+  "字典类型，长度100，必须唯一"
+  dictType: String!
+  "字典名称，长度255"
+  dictName: String!
+  "备注，长度255"
+  remark: String
+}
+
+"字典管理分页查询参数"
+input DictTypeQueryDTO {
+  "字典名称"
+  dictName: String
+  "字典类型"
+  dictType: String
+}
+
+type DictTypeConnection implements Connection {
+  pageInfo: PageInfo!
+  edges: [DictTypeEdge]
+  total: Long
+}
+
+type DictTypeEdge implements Edge {
+  cursor: String!
+  node: DictTypeVO
+}
+
+type DictTypeVO implements EdgeNode {
+  id: Long!
+  "字典名称"
+  dictName: String
+  "字典类型"
+  dictType: String
+  "排序"
+  sort: Int
+  "备注"
+  remark: String
+  "创建时间"
+  createTime: LocalDateTime
+}

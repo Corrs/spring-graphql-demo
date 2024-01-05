@@ -7,8 +7,10 @@ import java.util.concurrent.TimeUnit;
 import static java.time.ZoneId.SHORT_IDS;
 
 public interface Constant {
+    long SUPER_ADMIN = 1L;
     String HEADER_TOKEN_KEY = "Authentication";
     String TOKEN_UUID = "uuid";
+    String IP = "ip";
     String SESSION_KEY = "cache:session:";
     Long SESSION_EXPIRE = 2L;
     TimeUnit SESSION_EXPIRE_UNIT = TimeUnit.HOURS;

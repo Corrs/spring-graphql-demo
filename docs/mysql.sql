@@ -79,6 +79,125 @@ INSERT INTO `sys_dept` VALUES (1,0,'0','瑞声达集团',0,0,'2023-12-29 09:04:2
 UNLOCK TABLES;
 
 --
+-- Table structure for table `sys_dict_type`
+--
+DROP TABLE IF EXISTS `sys_dict_type`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+-- 字典类型
+create table sys_dict_type
+(
+    id                   bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+    dict_type            varchar(100) NOT NULL COMMENT '字典类型',
+    dict_name            varchar(255) NOT NULL COMMENT '字典名称',
+    remark               varchar(255) COMMENT '备注',
+    sort                 int unsigned COMMENT '排序',
+    create_user          bigint COMMENT '创建者',
+    create_time          datetime COMMENT '创建时间',
+    update_user          bigint COMMENT '更新者',
+    update_time          datetime COMMENT '更新时间',
+    primary key (id),
+    UNIQUE KEY(dict_type),
+    key idx_sort (sort)
+)ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COMMENT='字典类型';
+
+--
+-- Table structure for table `sys_dict_data`
+--
+DROP TABLE IF EXISTS `sys_dict_data`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+-- 字典数据
+create table sys_dict_data
+(
+    id                   bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+    dict_type_id         bigint unsigned NOT NULL COMMENT '字典类型ID',
+    dict_label           varchar(255) NOT NULL COMMENT '字典标签',
+    dict_value           varchar(255) COMMENT '字典值',
+    remark               varchar(255) COMMENT '备注',
+    sort                 int unsigned COMMENT '排序',
+    create_user              bigint COMMENT '创建者',
+    create_time          datetime COMMENT '创建时间',
+    update_user              bigint COMMENT '更新者',
+    update_time          datetime COMMENT '更新时间',
+    primary key (id),
+    unique key uk_dict_type_value (dict_type_id, dict_value),
+    key idx_sort (sort)
+)ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COMMENT='字典数据';
+
+--
+-- Table structure for table `sys_log_login`
+--
+DROP TABLE IF EXISTS `sys_log_login`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+-- 登录日志
+create table `sys_log_login`
+(
+  id                   bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+  operation            tinyint unsigned COMMENT '用户操作   0：用户登录   1：用户退出',
+  `status`              tinyint unsigned NOT NULL COMMENT '状态  0：失败    1：成功    2：账号已锁定',
+  user_agent           varchar(500) COMMENT '用户代理',
+  ip                   varchar(32) COMMENT '操作IP',
+  create_name         varchar(50) COMMENT '用户名',
+  create_user          bigint COMMENT '创建者',
+  create_time          datetime COMMENT '创建时间',
+  primary key (id),
+  key idx_status (status),
+  key idx_create_time (create_time)
+)ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COMMENT='登录日志';
+
+--
+-- Table structure for table `sys_log_operation`
+--
+DROP TABLE IF EXISTS `sys_log_operation`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+-- 操作日志
+create table sys_log_operation
+(
+  id                   bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+  operation            varchar(50) COMMENT '用户操作',
+  request_uri          varchar(200) COMMENT '请求URI',
+  request_method       varchar(20) COMMENT '请求方式',
+  request_params       text COMMENT '请求参数',
+  request_time         int unsigned NOT NULL COMMENT '请求时长(毫秒)',
+  user_agent           varchar(500) COMMENT '用户代理',
+  ip                   varchar(32) COMMENT '操作IP',
+  status               tinyint unsigned NOT NULL COMMENT '状态  0：失败   1：成功',
+  create_name         varchar(50) COMMENT '用户名',
+  create_user              bigint COMMENT '创建者',
+  create_time          datetime COMMENT '创建时间',
+  primary key (id),
+  key idx_create_time (create_time)
+)ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COMMENT='操作日志';
+
+--
+-- Table structure for table `sys_log_error`
+--
+DROP TABLE IF EXISTS `sys_log_error`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+-- 异常日志
+create table sys_log_error
+(
+  id                   bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+  request_uri          varchar(200) COMMENT '请求URI',
+  request_method       varchar(20) COMMENT '请求方式',
+  request_params       text COMMENT '请求参数',
+  user_agent           varchar(500) COMMENT '用户代理',
+  ip                   varchar(32) COMMENT '操作IP',
+  error_info           text COMMENT '异常信息',
+  create_user          bigint COMMENT '创建者',
+  create_time          datetime COMMENT '创建时间',
+  primary key (id),
+  key idx_create_time (create_time)
+)ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COMMENT='异常日志';
+
+
+
+
+--
 -- Table structure for table `sys_log`
 --
 
@@ -120,9 +239,9 @@ CREATE TABLE `sys_menu` (
   `name` varchar(50) DEFAULT NULL COMMENT '菜单名称',
   `url` varchar(200) DEFAULT NULL COMMENT '菜单URL',
   `perms` varchar(500) DEFAULT NULL COMMENT '授权(多个用逗号分隔，如：user:list,user:create)',
-  `type` int DEFAULT NULL COMMENT '类型   0：目录   1：菜单   2：按钮',
+  `type` int DEFAULT NULL COMMENT '类型   1：菜单   2：按钮',
   `icon` varchar(50) DEFAULT NULL COMMENT '菜单图标',
-  `order_num` int DEFAULT NULL COMMENT '排序',
+  `sort` int DEFAULT NULL COMMENT '排序',
   `create_time` datetime NOT NULL,
   `update_time` datetime DEFAULT NULL,
   `create_user` bigint NOT NULL,

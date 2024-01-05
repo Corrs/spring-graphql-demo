@@ -12,6 +12,7 @@ import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
 import static com.yanxuan88.australiacallcenter.common.Constant.HEADER_CAPTCHA_KEY;
+import static com.yanxuan88.australiacallcenter.common.Constant.IP;
 
 /**
  * 用户登录控制器
@@ -45,7 +46,7 @@ public class LoginController {
      */
     @MutationMapping
     public UserLoginInfoVO login(@Argument String username, @Argument String password, @Argument String captcha) {
-        return loginService.login(username, password, captcha, (String) RequestAttrUtil.getAttribute(HEADER_CAPTCHA_KEY));
+        return loginService.login(username, password, captcha);
     }
 
     /**
@@ -58,4 +59,5 @@ public class LoginController {
     public boolean logout() {
         return loginService.logout();
     }
+
 }

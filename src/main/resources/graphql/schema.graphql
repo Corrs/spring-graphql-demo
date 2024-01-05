@@ -31,3 +31,14 @@ interface Edge {
 interface EdgeNode {
   id: Long!
 }
+
+input Page {
+  "页码"
+  current: Long=0
+  "行数"
+  limit: Long=10
+  "排序字段"
+  column: String
+  "正序 or 降序"
+  asc: Boolean
+}
