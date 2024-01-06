@@ -14,10 +14,10 @@ public class EditMenuDTO {
     @Range(min = 1, max = 2, message = "无效的类型")
     private Integer type;
     @NotNull(message = "菜单标识不能为空")
-    @Min(value = 1, message = "无效的菜单标识")
+    @Min(value = 1, message = "菜单不存在")
     private Long id;
     @NotNull(message = "上级菜单不能为空")
-    @Min(value = 0, message = "无效的上级菜单")
+    @Min(value = 0, message = "上级菜单不存在")
     private Long parentId;
     @NotBlank(message = "名称不能为空")
     @Length(max = 50, message = "名称长度应在50字以内")

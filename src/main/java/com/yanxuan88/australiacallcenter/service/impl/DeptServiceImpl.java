@@ -8,13 +8,16 @@ import com.yanxuan88.australiacallcenter.mapper.SysDeptMapper;
 import com.yanxuan88.australiacallcenter.model.dto.AddDeptDTO;
 import com.yanxuan88.australiacallcenter.model.dto.EditDeptDTO;
 import com.yanxuan88.australiacallcenter.model.entity.SysDept;
+import com.yanxuan88.australiacallcenter.model.entity.SysUser;
 import com.yanxuan88.australiacallcenter.model.vo.DeptVO;
 import com.yanxuan88.australiacallcenter.service.IDeptService;
+import com.yanxuan88.australiacallcenter.service.IUserService;
 import graphql.com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +29,8 @@ import static com.yanxuan88.australiacallcenter.common.Constant.COMMA_SPLIT_REG;
 public class DeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> implements IDeptService {
     @Autowired
     private TransactionTemplate transactionTemplate;
+    @Autowired
+    private IUserService userService;
 
     /**
      * 创建部门，暂时先不加分布式锁
@@ -104,7 +109,11 @@ public class DeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impleme
         if (child != null) {
             throw new BizException("请先删除子机构");
         }
-        // todo 判断部门下是否有用户
+        // 判断部门下是否有用户
+        List<SysUser> users = userService.queryByDept(id);
+        if (!CollectionUtils.isEmpty(users)) {
+            throw new BizException("请先移除部门下的用户数据");
+        }
 
         return removeById(id);
     }

@@ -14,6 +14,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -65,7 +67,8 @@ public class MenuController {
      */
     @PreAuthorize("hasAuthority('sys:menu:delete')")
     @MutationMapping
-    public boolean remMenu(@Argument Long id) {
+    public boolean remMenu(@Argument @Valid @NotNull(message = "菜单标识不能为空")
+                               @Min(value = 1, message = "菜单不存在") Long id) {
         return menuService.rem(id);
     }
 }

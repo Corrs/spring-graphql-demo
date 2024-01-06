@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 
 @Data
 public class EditDictDataDTO {
-    @Min(value = 1L, message = "无效的字典数据标识")
+    @Min(value = 1L, message = "字典数据不存在")
     @NotNull(message = "字典数据标识不能为空")
     private Long id;
     @NotBlank(message = "字典标签不能为空")

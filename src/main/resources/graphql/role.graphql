@@ -1,0 +1,47 @@
+extend type Query {
+    "分页查询角色"
+    roles(p: Page!, roleName: String): RoleConnection
+}
+
+extend type Mutation {
+    "新增角色"
+    addRole(role: AddRoleDTO!): Boolean
+    "编辑角色"
+    editRole(role: EditRoleDTO!): Boolean
+    "删除角色"
+    remRole(id: Long!): Boolean
+}
+
+input AddRoleDTO {
+    "角色名称，50字以内"
+    roleName: String!
+    "备注，100字以内"
+    remark: String
+}
+
+input EditRoleDTO {
+    "角色id"
+    id: Long!
+    "角色名称，50字以内"
+    roleName: String!
+    "备注，100字以内"
+    remark: String
+}
+
+type RoleConnection implements Connection {
+    pageInfo: PageInfo!
+    edges: [RoleEdge]
+    total: Long
+}
+
+type RoleEdge implements Edge {
+    cursor: String!
+    node: RoleVO
+}
+
+type RoleVO implements EdgeNode{
+    id: Long!
+    roleName: String
+    remark: String
+    createTime: LocalDateTime
+}

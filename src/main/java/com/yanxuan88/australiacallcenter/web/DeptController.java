@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -57,7 +58,8 @@ public class DeptController {
      */
     @Authenticated
     @MutationMapping
-    public boolean remDept(@Argument @Valid @Min(value = 1L, message = "机构数据不存在") Long id) {
+    public boolean remDept(@Argument @Valid @NotNull(message = "机构标识不能为空")
+                               @Min(value = 1L, message = "机构不存在") Long id) {
         return deptService.remDept(id);
     }
 

@@ -389,7 +389,8 @@ CREATE TABLE `sys_user` (
   `update_user` bigint DEFAULT NULL,
   `is_deleted` bit(1) NOT NULL,
   PRIMARY KEY (`user_id`),
-  UNIQUE KEY `username` (`username`)
+  UNIQUE KEY `username` (`username`),
+  INDEX idx_dept(dept_id)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='系统用户';
 /*!40101 SET character_set_client = @saved_cs_client */;
 

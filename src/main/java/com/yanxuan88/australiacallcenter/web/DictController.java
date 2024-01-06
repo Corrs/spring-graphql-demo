@@ -16,6 +16,8 @@ import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 /**
  * 字典控制器
@@ -73,7 +75,8 @@ public class DictController {
      */
     @Authenticated
     @MutationMapping
-    public boolean remDictType(@Argument Long id) {
+    public boolean remDictType(@Argument @Valid @NotNull(message = "字典标识不能为空")
+                                   @Min(value = 1, message = "字典不存在") Long id) {
         return dictTypeService.rem(id);
     }
 }

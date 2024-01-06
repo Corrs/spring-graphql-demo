@@ -9,7 +9,7 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class AddDeptDTO {
 
-    @Min(value = 0L, message = "无效的上级机构")
+    @Min(value = 0L, message = "上级机构不存在")
     private Long pid;
     @NotBlank(message = "名称为空")
     @Length(max = 50, message = "名称应为1-50字")

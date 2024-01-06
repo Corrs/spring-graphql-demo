@@ -9,10 +9,10 @@ import javax.validation.constraints.NotNull;
 
 @Data
 public class EditDeptDTO {
-    @Min(value = 1L, message = "无效的机构标识")
-    @NotNull(message = "机构标识为空")
+    @Min(value = 1L, message = "机构不存在")
+    @NotNull(message = "机构标识不能为空")
     private Long id;
-    @Min(value = 0L, message = "无效的上级机构")
+    @Min(value = 0L, message = "上级机构不存在")
     private Long pid;
     @NotBlank(message = "名称为空")
     @Length(max = 50, message = "名称应为1-50字")

@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 
 @Data
 public class EditDictTypeDTO {
-    @Min(value = 1L, message = "无效的字典标识")
+    @Min(value = 1L, message = "字典不存在")
     @NotNull(message = "字典标识不能为空")
     private Long id;
     @Length(max = 255, message = "字典名称长度应在255字以内")
