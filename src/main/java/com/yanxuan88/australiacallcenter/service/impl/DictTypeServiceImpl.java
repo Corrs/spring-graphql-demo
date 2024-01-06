@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.base.Strings;
+import com.yanxuan88.australiacallcenter.annotation.SysLog;
 import com.yanxuan88.australiacallcenter.exception.BizException;
 import com.yanxuan88.australiacallcenter.mapper.SysDictTypeMapper;
 import com.yanxuan88.australiacallcenter.model.dto.AddDictTypeDTO;
@@ -20,7 +21,6 @@ import org.springframework.util.StringUtils;
 
 import java.util.stream.Collectors;
 
-@Slf4j
 @Service
 public class DictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDictType> implements IDictTypeService {
     @Override
@@ -48,12 +48,11 @@ public class DictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDictT
     }
 
     @Override
+    @SysLog("新增字典")
     public synchronized boolean add(AddDictTypeDTO dictType) {
-        log.info("新增字典");
         String type = Strings.nullToEmpty(dictType.getDictType()).trim();
         SysDictType record = getOne(Wrappers.<SysDictType>lambdaQuery().eq(SysDictType::getDictType, type), false);
         if (record != null) {
-            log.info("{}类型的字典已存在", type);
             throw new BizException("字典类型重复");
         }
         SysDictType entity = new SysDictType();
@@ -65,18 +64,16 @@ public class DictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDictT
     }
 
     @Override
+    @SysLog("修改字典")
     public synchronized boolean edit(EditDictTypeDTO dictType) {
-        log.info("修改字典");
         SysDictType entity = getById(dictType.getId());
         if (entity == null) {
             throw new BizException("字典数据不存在");
         }
         String type = Strings.nullToEmpty(dictType.getDictType()).trim();
         if (!entity.getDictType().equals(type)) {
-            log.info("修改了字典类型，校验类型是否唯一");
             SysDictType record = getOne(Wrappers.<SysDictType>lambdaQuery().eq(SysDictType::getDictType, type), false);
             if (record != null) {
-                log.info("{}类型的字典已存在", type);
                 throw new BizException("字典类型重复");
             }
         }
@@ -88,6 +85,7 @@ public class DictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDictT
     }
 
     @Override
+    @SysLog("删除字典")
     public synchronized boolean rem(Long id) {
         // 暂时不级联删除 字典项数据
         return removeById(id);

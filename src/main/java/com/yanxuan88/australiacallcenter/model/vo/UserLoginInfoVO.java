@@ -15,6 +15,7 @@ import java.util.List;
 @Data
 @Accessors(chain = true)
 public class UserLoginInfoVO implements Serializable {
+    private String role;
     private String authenticationToken;
     private UserBaseVO user;
     private List<UserPermissionVO> permissions;

@@ -7,6 +7,7 @@ import com.yanxuan88.australiacallcenter.common.Constant;
 import com.yanxuan88.australiacallcenter.common.UserLoginInfo;
 import com.yanxuan88.australiacallcenter.model.vo.UserBaseVO;
 import com.yanxuan88.australiacallcenter.model.vo.UserLoginInfoVO;
+import com.yanxuan88.australiacallcenter.model.vo.UserPermissionVO;
 import com.yanxuan88.australiacallcenter.util.IPUtil;
 import com.yanxuan88.australiacallcenter.util.JWTUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +21,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.yanxuan88.australiacallcenter.common.Constant.*;
 
@@ -60,7 +66,15 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                     credentials.setAvatar(userBase.getAvatar());
                     credentials.setDeptId(userBase.getDeptId());
                     credentials.setSuperAdmin(userBase.getSuperAdmin());
-                    AusAuthenticationToken authentication = AusAuthenticationToken.authenticated("", credentials, Lists.newArrayList(new AusGrantedAuthority("USER", Lists.newArrayList("hello"))));
+                    List<String> permissions = Optional.ofNullable(user.getPermissions()).orElseGet(Collections::emptyList)
+                            .stream()
+                            .map(UserPermissionVO::getPerms)
+                            .flatMap(e -> Stream.of(e.split(",")))
+                            .filter(StringUtils::hasText)
+                            .map(String::trim)
+                            .collect(Collectors.toList());
+                    AusGrantedAuthority authority = new AusGrantedAuthority(user.getRole(), permissions);
+                    AusAuthenticationToken authentication = AusAuthenticationToken.authenticated("", credentials, authority);
                     // 将数据放到SecurityContextHolder中
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }

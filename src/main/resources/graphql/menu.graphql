@@ -1,0 +1,60 @@
+extend type Query {
+    "查询菜单列表"
+    menus: [MenuVO]
+}
+
+extend type Mutation {
+    "新增菜单"
+    addMenu(menu: AddMenuDTO!): Boolean
+    "编辑菜单"
+    editMenu(menu: EditMenuDTO!): Boolean
+    "删除菜单"
+    remMenu(id: Long!): Boolean
+}
+
+type MenuVO {
+    id: Long
+    name: String
+    type: Int
+    sort: Int
+    url: String
+    perms: String
+    icon: String
+    parentId: Long
+}
+
+input AddMenuDTO {
+    "上级菜单"
+    parentId: Long!=0
+    "菜单名称"
+    name: String!
+    "路由"
+    url: String
+    "授权标识"
+    perms: String
+    "类型，1菜单 2按钮"
+    type: Int!
+    "图标"
+    icon: String
+    "排序"
+    sort: Int
+}
+
+input EditMenuDTO {
+    "菜单标识"
+    id: Long!
+    "上级菜单"
+    parentId: Long!=0
+    "菜单名称"
+    name: String!
+    "路由"
+    url: String
+    "授权标识"
+    perms: String
+    "类型，1菜单 2按钮"
+    type: Int!
+    "图标"
+    icon: String
+    "排序"
+    sort: Int
+}

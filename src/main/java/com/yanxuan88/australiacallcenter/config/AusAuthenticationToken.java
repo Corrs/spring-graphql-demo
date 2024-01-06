@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 public class AusAuthenticationToken extends AbstractAuthenticationToken {
@@ -13,8 +14,8 @@ public class AusAuthenticationToken extends AbstractAuthenticationToken {
     private UserLoginInfo credentials;
 
     private AusAuthenticationToken(String principal, UserLoginInfo credentials,
-                                   Collection<AusGrantedAuthority> authorities) {
-        super(authorities);
+                                   AusGrantedAuthority authority) {
+        super(Collections.singletonList(authority));
         this.principal = principal;
         this.credentials = credentials;
         super.setAuthenticated(true); // must use super, as we override
@@ -22,8 +23,8 @@ public class AusAuthenticationToken extends AbstractAuthenticationToken {
 
     public static AusAuthenticationToken authenticated(String principal,
                                                        UserLoginInfo credentials,
-                                                       Collection<AusGrantedAuthority> authorities) {
-        return new AusAuthenticationToken(principal, credentials, authorities);
+                                                       AusGrantedAuthority authority) {
+        return new AusAuthenticationToken(principal, credentials, authority);
     }
 
 
@@ -40,10 +41,10 @@ public class AusAuthenticationToken extends AbstractAuthenticationToken {
     @Override
     public Collection<GrantedAuthority> getAuthorities() {
         return super.getAuthorities().stream()
-                .flatMap(e -> {
-                    AusGrantedAuthority authority = (AusGrantedAuthority) e;
-                    return authority.getPermissions().stream();
-                })
+                .findFirst()
+                .map(e -> ((AusGrantedAuthority) e).getPermissions())
+                .orElseGet(Collections::emptyList)
+                .stream()
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }

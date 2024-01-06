@@ -36,4 +36,11 @@ type UserBaseVO {
 
 type UserPermissionVO {
   id: Long!
+  parentId: Long
+  name: String
+  url: String
+  sort: Int
+  type: Int
+  icon: String
+  perms: String
 }

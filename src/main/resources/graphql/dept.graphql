@@ -1,15 +1,15 @@
 extend type Query {
   "查询部门列表"
-  depts: [Dept]
+  depts: [DeptVO]
 }
 
 extend type Mutation {
   "新增部门"
-  addDept(dept: AddDeptDTO!): Dept!
+  addDept(dept: AddDeptDTO!): DeptVO!
   "删除部门"
   remDept(id: Long!): Boolean!
   "编辑部门"
-  editDept(dept: EditDeptDTO!): Dept!
+  editDept(dept: EditDeptDTO!): DeptVO!
 }
 
 input EditDeptDTO {
@@ -32,7 +32,7 @@ input AddDeptDTO {
   sort: Int = 0
 }
 
-type Dept {
+type DeptVO {
   id: Long!
   name: String!
   sort: Int!

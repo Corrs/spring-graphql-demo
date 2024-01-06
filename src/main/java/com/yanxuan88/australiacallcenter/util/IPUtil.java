@@ -19,30 +19,29 @@ public class IPUtil {
         String ipAddress;
         try {
             ipAddress = request.getHeader("X-Forwarded-For");
-            builder.append("X-Forwarded-For:").append(ipAddress).append(".");
+            builder.append("\nX-Forwarded-For:").append(ipAddress).append(".");
             if (isBlank(ipAddress) || UNKNOWN.equalsIgnoreCase(ipAddress)) {
                 ipAddress = request.getHeader("X-Real-IP");
-                builder.append("X-Real-IP:").append(ipAddress).append(".");
+                builder.append("\nX-Real-IP:").append(ipAddress).append(".");
             }
             if (isBlank(ipAddress) || UNKNOWN.equalsIgnoreCase(ipAddress)) {
                 ipAddress = request.getHeader("Proxy-Client-IP");
-                builder.append("Proxy-Client-IP:").append(ipAddress).append(".");
+                builder.append("\nProxy-Client-IP:").append(ipAddress).append(".");
             }
             if (isBlank(ipAddress) || UNKNOWN.equalsIgnoreCase(ipAddress)) {
                 ipAddress = request.getHeader("WL-Proxy-Client-IP");
-                builder.append("WL-Proxy-Client-IP:").append(ipAddress).append(".");
+                builder.append("\nWL-Proxy-Client-IP:").append(ipAddress).append(".");
             }
             if (isBlank(ipAddress) || UNKNOWN.equalsIgnoreCase(ipAddress)) {
                 ipAddress = request.getHeader("Http-Client-IP");
-                builder.append("Http-Client-IP:").append(ipAddress).append(".");
+                builder.append("\nHttp-Client-IP:").append(ipAddress).append(".");
             }
             if (isBlank(ipAddress) || UNKNOWN.equalsIgnoreCase(ipAddress)) {
                 ipAddress = request.getRemoteAddr();
                 if (ipAddress.equals(LOCALHOST_V4) || ipAddress.equals(LOCALHOST_V6)) {
                     ipAddress = LOCALHOST_V4;
-                    log.warn("未解析到远程地址");
                 }
-                builder.append("request.getRemoteAddr():").append(ipAddress).append(".");
+                builder.append("\nrequest.getRemoteAddr():").append(ipAddress).append(".");
             }
             // 对于通过多个代理的情况，第一个IP为客户端真实IP,多个IP按照','分割
             if (isNotBlank(ipAddress) && ipAddress.indexOf(",") > 0) {

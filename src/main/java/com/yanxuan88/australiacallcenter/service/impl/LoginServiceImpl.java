@@ -9,10 +9,9 @@ import com.yanxuan88.australiacallcenter.model.entity.SysUser;
 import com.yanxuan88.australiacallcenter.model.enums.LoginOperationEnum;
 import com.yanxuan88.australiacallcenter.model.enums.LoginStatusEnum;
 import com.yanxuan88.australiacallcenter.model.enums.UserStatusEnum;
-import com.yanxuan88.australiacallcenter.model.vo.LoginCaptchaVO;
-import com.yanxuan88.australiacallcenter.model.vo.UserBaseVO;
-import com.yanxuan88.australiacallcenter.model.vo.UserLoginInfoVO;
+import com.yanxuan88.australiacallcenter.model.vo.*;
 import com.yanxuan88.australiacallcenter.service.ILoginService;
+import com.yanxuan88.australiacallcenter.service.IMenuService;
 import com.yanxuan88.australiacallcenter.service.IUserService;
 import com.yanxuan88.australiacallcenter.util.JWTUtil;
 import com.yanxuan88.australiacallcenter.util.RequestAttrUtil;
@@ -28,9 +27,11 @@ import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import static com.yanxuan88.australiacallcenter.common.Constant.*;
 import static com.yanxuan88.australiacallcenter.exception.BaseResultCodeEnum.*;
@@ -47,6 +48,9 @@ public class LoginServiceImpl implements ILoginService, ApplicationEventPublishe
 
     @Autowired
     private IUserService userService;
+
+    @Autowired
+    private IMenuService menuService;
 
     private ApplicationEventPublisher publisher;
 
@@ -66,8 +70,7 @@ public class LoginServiceImpl implements ILoginService, ApplicationEventPublishe
      * 1. 校验验证码。如果key不存在，提示验证码过期，前端需要刷新验证码；如果验证码不匹配，提示验证码不正确
      * 2. 从sys_user查询用户数据。如果用户不存在，提示用户不存在；如果用户存在，密码不匹配，提示密码错误。
      * 3. 查询用户权限
-     * 4. 缓存用户登录信息
-     * 5. 删除验证码缓存，组装VO，返回给前端
+     * 4. 删除验证码缓存，缓存用户登录信息，组装VO，返回给前端
      *
      * @param username 用户名
      * @param password 密码
@@ -128,16 +131,25 @@ public class LoginServiceImpl implements ILoginService, ApplicationEventPublishe
         // 记录登录成功日志
         logLogin.setStatus(LoginStatusEnum.SUCCESS.getCode());
         publisher.publishEvent(new SysLoginLogEvent(logLogin));
-        // 3. todo
-
-        // 4. todo
-
-        // 5.
+        // 3.
+        List<MenuVO> menus = menuService.menus(user.getUserId());
+        // 4.
         redisClient.delete(captchaCacheKey);
         String uuid = UUID.randomUUID().toString();
         String authenticationToken = JWTUtil.generateToken(Collections.singletonMap(TOKEN_UUID, uuid));
 
         UserLoginInfoVO result = new UserLoginInfoVO()
+                .setPermissions(menus.stream()
+                        .map(e -> new UserPermissionVO()
+                                .setId(e.getId())
+                                .setParentId(e.getParentId())
+                                .setIcon(e.getIcon())
+                                .setPerms(e.getPerms())
+                                .setType(e.getType())
+                                .setSort(e.getSort())
+                                .setName(e.getName())
+                                .setUrl(e.getUrl()))
+                        .collect(Collectors.toList()))
                 .setUser(new UserBaseVO().setMobile(user.getMobile())
                         .setEmail(user.getEmail())
                         .setUsername(user.getUsername())

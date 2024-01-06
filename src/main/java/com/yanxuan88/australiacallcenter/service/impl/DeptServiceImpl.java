@@ -2,6 +2,7 @@ package com.yanxuan88.australiacallcenter.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yanxuan88.australiacallcenter.annotation.SysLog;
 import com.yanxuan88.australiacallcenter.exception.BizException;
 import com.yanxuan88.australiacallcenter.mapper.SysDeptMapper;
 import com.yanxuan88.australiacallcenter.model.dto.AddDeptDTO;
@@ -21,7 +22,6 @@ import java.util.Objects;
 
 import static com.yanxuan88.australiacallcenter.common.Constant.COMMA_SPLIT_REG;
 
-@Slf4j
 @Service
 public class DeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> implements IDeptService {
     @Autowired
@@ -37,8 +37,8 @@ public class DeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impleme
      * @return true/false
      */
     @Override
+    @SysLog("新增机构")
     public synchronized DeptVO addDept(AddDeptDTO dept) {
-        log.info("创建机构数据，参数={}", dept);
         // 1.
         Long pid = dept.getPid();
         String pids = "0";
@@ -81,7 +81,6 @@ public class DeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impleme
 
     @Override
     public List<DeptVO> depts() {
-        log.info("查询机构数据");
         return baseMapper.selectDepts();
     }
 
@@ -95,8 +94,8 @@ public class DeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impleme
      * @return true/false
      */
     @Override
+    @SysLog("删除机构")
     public synchronized boolean remDept(Long id) {
-        log.info("删除机构数据，id={}", id);
         SysDept dept = getById(id);
         if (dept == null) {
             throw new BizException("机构数据不存在");
@@ -121,8 +120,8 @@ public class DeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impleme
      * @return DeptVO
      */
     @Override
+    @SysLog("编辑机构")
     public synchronized DeptVO editDept(EditDeptDTO dept) {
-        log.info("编辑机构数据，dept={}", dept);
         // 1.
         Long id = dept.getId();
         Long pid = dept.getPid();
@@ -148,7 +147,6 @@ public class DeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impleme
         String childrenPidsPrefix = entity.getPids() + "," + id;
         List<SysDept> list = new ArrayList<>();
         if (!Objects.equals(pid, entity.getPid())) {
-            log.info("修改了上级机构");
             String[] pidList = pids.split(COMMA_SPLIT_REG);
             if (Sets.newHashSet(pidList).contains("" + id)) {
                 throw new BizException("上级机构不能为下级机构");
@@ -159,7 +157,6 @@ public class DeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impleme
             // 上级机构改变
             list.addAll(baseMapper.selectSubDepts(id));
             if (list.size() > 0) {
-                log.info("有子机构");
                 int maxChildrenLevel = list.stream().map(SysDept::getPids).mapToInt(e -> e.substring(childrenPidsPrefix.length()).split(COMMA_SPLIT_REG).length).max().orElse(0);
                 if (pids.split(COMMA_SPLIT_REG).length + maxChildrenLevel > 3) {
                     throw new BizException("子机构层级超过3级");
@@ -171,7 +168,6 @@ public class DeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impleme
 
         String name = dept.getName().trim();
         if (!name.equals(entity.getName())) {
-            log.info("修改了名称");
             SysDept oDept = getOne(Wrappers.<SysDept>lambdaQuery().eq(SysDept::getPid, pid).eq(SysDept::getName, name).eq(SysDept::getIsDeleted, Boolean.FALSE), false);
             if (oDept != null) {
                 throw new BizException("名称重复，请更换名称");
