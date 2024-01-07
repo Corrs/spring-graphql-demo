@@ -30,6 +30,7 @@ public class LogLoginController {
 
     /**
      * 查询登录日志
+     *
      * @return
      */
     @Authenticated
@@ -42,7 +43,7 @@ public class LogLoginController {
                         .like(StringUtils.hasText(cond.getUsername()), SysLogLogin::getCreateName, cond.getUsername())
                         .orderByDesc(SysLogLogin::getCreateTime));
         Page<LogLoginVO> voPage = new Page<>(page.getCurrent(), page.getSize(), page.getTotal());
-        voPage.setRecords(page.getRecords().stream().map(e->new LogLoginVO(e)).collect(Collectors.toList()));
+        voPage.setRecords(page.getRecords().stream().map(e -> new LogLoginVO(e)).collect(Collectors.toList()));
         return RelayUtil.build(voPage);
     }
 

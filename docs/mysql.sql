@@ -99,7 +99,7 @@ CREATE TABLE `sys_dict_data` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_dict_type_value` (`dict_type_id`,`dict_value`),
   KEY `idx_sort` (`sort`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='字典数据';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='字典数据';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -108,7 +108,7 @@ CREATE TABLE `sys_dict_data` (
 
 LOCK TABLES `sys_dict_data` WRITE;
 /*!40000 ALTER TABLE `sys_dict_data` DISABLE KEYS */;
-INSERT INTO `sys_dict_data` VALUES (1,1,'女','0','女士',1,1,'2024-01-05 21:27:23',1,'2024-01-05 21:27:49'),(2,1,'男','1','男士',2,1,'2024-01-05 21:27:35',NULL,NULL),(3,1,'保密','2','保密',3,1,'2024-01-05 21:27:45',NULL,NULL),(4,2,'菜单','1','配置路由和菜单权限',1,1,'2024-01-05 21:28:12',1,'2024-01-05 21:28:43'),(5,2,'按钮','2','配置按钮权限',2,1,'2024-01-05 21:28:33',NULL,NULL);
+INSERT INTO `sys_dict_data` VALUES (1,1,'女','0','女士',1,1,'2024-01-05 21:27:23',1,'2024-01-05 21:27:49'),(2,1,'男','1','男士',2,1,'2024-01-05 21:27:35',NULL,NULL),(3,1,'保密','2','保密',3,1,'2024-01-05 21:27:45',NULL,NULL),(4,2,'菜单','1','配置路由和菜单权限',1,1,'2024-01-05 21:28:12',1,'2024-01-05 21:28:43'),(5,2,'按钮','2','配置按钮权限',2,1,'2024-01-05 21:28:33',NULL,NULL),(6,3,'停用','0','',1,1,'2024-01-07 15:11:48',1,'2024-01-07 15:12:08'),(7,3,'正常','1','',2,1,'2024-01-07 15:11:54',1,'2024-01-07 15:12:12');
 /*!40000 ALTER TABLE `sys_dict_data` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -132,7 +132,7 @@ CREATE TABLE `sys_dict_type` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `dict_type` (`dict_type`),
   KEY `idx_sort` (`sort`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='字典类型';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='字典类型';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -141,7 +141,7 @@ CREATE TABLE `sys_dict_type` (
 
 LOCK TABLES `sys_dict_type` WRITE;
 /*!40000 ALTER TABLE `sys_dict_type` DISABLE KEYS */;
-INSERT INTO `sys_dict_type` VALUES (1,'gender','性别','性别 0女 1男 2保密',1,1,'2024-01-05 21:26:41',NULL,NULL),(2,'menu_type','菜单类型','菜单类型 1菜单 2按钮',2,1,'2024-01-05 21:27:11',NULL,NULL);
+INSERT INTO `sys_dict_type` VALUES (1,'gender','性别','性别 0女 1男 2保密',1,1,'2024-01-05 21:26:41',NULL,NULL),(2,'menu_type','菜单类型','菜单类型 1菜单 2按钮',2,1,'2024-01-05 21:27:11',NULL,NULL),(3,'user_status','用户状态','用户状态 0停用 1正常',3,1,'2024-01-07 15:11:35',1,'2024-01-07 15:12:02');
 /*!40000 ALTER TABLE `sys_dict_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -224,7 +224,7 @@ CREATE TABLE `sys_log_login` (
   PRIMARY KEY (`id`),
   KEY `idx_status` (`status`),
   KEY `idx_create_time` (`create_time`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='登录日志';
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='登录日志';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -233,7 +233,7 @@ CREATE TABLE `sys_log_login` (
 
 LOCK TABLES `sys_log_login` WRITE;
 /*!40000 ALTER TABLE `sys_log_login` DISABLE KEYS */;
-INSERT INTO `sys_log_login` VALUES (1,0,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-05 21:25:55'),(2,0,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-06 13:48:32'),(3,1,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-06 15:56:28'),(4,0,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-06 15:56:48'),(5,1,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-06 16:06:37'),(6,0,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-06 16:07:00'),(7,1,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-06 16:24:24'),(8,0,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-06 16:24:32'),(9,0,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-06 16:25:03'),(10,1,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-06 16:26:19'),(11,0,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-06 16:26:24'),(12,1,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-06 16:28:46'),(13,0,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-06 16:28:52'),(14,1,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-06 16:45:13'),(15,0,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-06 16:45:21'),(16,1,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-06 16:53:09'),(17,0,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-06 16:53:16');
+INSERT INTO `sys_log_login` VALUES (1,0,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-05 21:25:55'),(2,0,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-06 13:48:32'),(3,1,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-06 15:56:28'),(4,0,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-06 15:56:48'),(5,1,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-06 16:06:37'),(6,0,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-06 16:07:00'),(7,1,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-06 16:24:24'),(8,0,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-06 16:24:32'),(9,0,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-06 16:25:03'),(10,1,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-06 16:26:19'),(11,0,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-06 16:26:24'),(12,1,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-06 16:28:46'),(13,0,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-06 16:28:52'),(14,1,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-06 16:45:13'),(15,0,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-06 16:45:21'),(16,1,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-06 16:53:09'),(17,0,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-06 16:53:16'),(18,0,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-06 20:24:52'),(19,1,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-06 20:30:59'),(20,0,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-06 20:31:05'),(21,1,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-06 22:36:37'),(22,0,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-06 22:36:52'),(23,1,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-06 23:04:59'),(24,0,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-06 23:05:05'),(25,0,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-07 11:11:57'),(26,1,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-07 11:20:52'),(27,0,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-07 11:21:29'),(28,1,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-07 11:47:50'),(29,0,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-07 11:48:02'),(30,1,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-07 11:49:53'),(31,0,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-07 11:51:56'),(32,1,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-07 13:53:04'),(33,0,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-07 13:53:12'),(34,1,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-07 14:55:11'),(35,0,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-07 14:55:17'),(36,1,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-07 14:56:04'),(37,0,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-07 14:56:12'),(38,1,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-07 18:01:58'),(39,0,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','曹书博曹书博曹书博',2,'2024-01-07 18:02:16'),(40,1,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','曹书博曹书博曹书博',2,'2024-01-07 18:16:35'),(41,0,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-07 18:16:50'),(42,1,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-07 18:17:31'),(43,0,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-07 18:17:38'),(44,1,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-07 18:22:54'),(45,0,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','曹书博曹书博曹书博',2,'2024-01-07 18:23:15'),(46,0,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','曹书博曹书博曹书博',2,'2024-01-07 18:24:47'),(47,0,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-07 18:25:25'),(48,1,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-07 18:25:46'),(49,0,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','曹书博曹书博曹书博',2,'2024-01-07 18:26:06'),(50,0,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','曹书博曹书博曹书博',2,'2024-01-07 18:30:44'),(51,1,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','曹书博曹书博曹书博',2,'2024-01-07 18:31:39'),(52,0,1,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1','admin',1,'2024-01-07 18:31:47');
 /*!40000 ALTER TABLE `sys_log_login` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -247,10 +247,8 @@ DROP TABLE IF EXISTS `sys_log_operation`;
 CREATE TABLE `sys_log_operation` (
   `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
   `operation` varchar(50) DEFAULT NULL COMMENT '用户操作',
-  `request_uri` varchar(200) DEFAULT NULL COMMENT '请求URI',
-  `request_method` varchar(20) DEFAULT NULL COMMENT '请求方式',
   `request_params` text COMMENT '请求参数',
-  `request_time` int unsigned NOT NULL COMMENT '请求时长(毫秒)',
+  `request_time` bigint unsigned NOT NULL COMMENT '请求时长(毫秒)',
   `user_agent` varchar(500) DEFAULT NULL COMMENT '用户代理',
   `ip` varchar(32) DEFAULT NULL COMMENT '操作IP',
   `status` tinyint unsigned NOT NULL COMMENT '状态  0：失败   1：成功',
@@ -259,7 +257,7 @@ CREATE TABLE `sys_log_operation` (
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`),
   KEY `idx_create_time` (`create_time`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='操作日志';
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='操作日志';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -268,6 +266,7 @@ CREATE TABLE `sys_log_operation` (
 
 LOCK TABLES `sys_log_operation` WRITE;
 /*!40000 ALTER TABLE `sys_log_operation` DISABLE KEYS */;
+INSERT INTO `sys_log_operation` VALUES (1,'新增菜单','[{\"type\":2,\"parentId\":8,\"name\":\"查询\",\"url\":\"\",\"sort\":0,\"perms\":\"\",\"icon\":\"layui-icon-home\"}]',91,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1',1,'admin',1,'2024-01-07 16:40:46'),(2,'删除菜单','[35]',19,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1',1,'admin',1,'2024-01-07 16:47:19'),(3,'新增用户','[{\"realName\":\"曹书博\",\"username\":\"曹书博曹书博曹书博\",\"email\":\"1417200023@qq.com\",\"mobile\":\"15965788957\",\"deptId\":16,\"gender\":1,\"roleId\":1}]',183,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1',1,'admin',1,'2024-01-07 17:58:59'),(4,'角色分配权限','[{\"roleId\":1,\"perms\":[1,2,3,14,15,16,18,5,6,7,8,9]},1]',43,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1',1,'admin',1,'2024-01-07 18:18:17'),(5,'角色分配权限','[{\"roleId\":2,\"perms\":[10]},1]',238,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1',0,'admin',1,'2024-01-07 18:21:09'),(6,'角色分配权限','[{\"roleId\":2,\"perms\":[10]},1]',16,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1',0,'admin',1,'2024-01-07 18:21:12'),(7,'角色分配权限','[{\"roleId\":2,\"perms\":[10]},1]',16,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1',0,'admin',1,'2024-01-07 18:21:14'),(8,'角色分配权限','[{\"roleId\":2,\"perms\":[10]},1]',18,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1',0,'admin',1,'2024-01-07 18:21:16'),(9,'角色分配权限','[{\"roleId\":2,\"perms\":[10]},1]',13,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1',0,'admin',1,'2024-01-07 18:21:17'),(10,'角色分配权限','[{\"roleId\":2,\"perms\":[10]},1]',22,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1',1,'admin',1,'2024-01-07 18:22:06'),(11,'角色分配权限','[{\"roleId\":1,\"perms\":[1,2,3,14,15,16,18,5,6,7,8,9]},1]',28,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1',1,'admin',1,'2024-01-07 18:22:11'),(12,'新增用户','[{\"realName\":\"曹书博\",\"username\":\"caoshubo\",\"email\":\"1417200023@qq.com\",\"mobile\":\"15965788957\",\"deptId\":16,\"gender\":1,\"roleId\":1}]',94,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0','127.0.0.1',1,'admin',1,'2024-01-07 18:32:25');
 /*!40000 ALTER TABLE `sys_log_operation` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -293,7 +292,7 @@ CREATE TABLE `sys_menu` (
   `update_user` bigint DEFAULT NULL,
   `is_deleted` tinyint(1) NOT NULL,
   PRIMARY KEY (`menu_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='菜单管理';
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='菜单管理';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -302,7 +301,7 @@ CREATE TABLE `sys_menu` (
 
 LOCK TABLES `sys_menu` WRITE;
 /*!40000 ALTER TABLE `sys_menu` DISABLE KEYS */;
-INSERT INTO `sys_menu` VALUES (1,0,'系统管理','/system','',1,'layui-icon-set',10,'2024-01-06 14:08:45',NULL,1,NULL,0),(2,1,'用户管理','/system/user','',1,'layui-icon-username',0,'2024-01-06 14:24:36',NULL,1,NULL,0),(3,1,'角色管理','/system/role','',1,'layui-icon-user',0,'2024-01-06 14:34:28',NULL,1,NULL,0),(4,1,'菜单管理','/system/menu','',1,'layui-icon-spread-left',0,'2024-01-06 14:35:55',NULL,1,NULL,0),(5,1,'机构管理','/system/organization','',1,'layui-icon-transfer',0,'2024-01-06 14:40:10',NULL,1,NULL,0),(6,1,'字典管理','/system/dictionary','',1,'layui-icon-read',0,'2024-01-06 14:41:12',NULL,1,NULL,0),(7,1,'文件管理','/system/file','',1,'layui-icon-file',0,'2024-01-06 14:43:55',NULL,1,NULL,0),(8,1,'登录日志','/system/login','',1,'layui-icon-date',0,'2024-01-06 14:44:56',NULL,1,NULL,0),(9,1,'操作日志','/system/option','',1,'layui-icon-survey',0,'2024-01-06 14:45:23',NULL,1,NULL,0),(10,4,'新建','','sys:menu:save',2,'',0,'2024-01-06 14:58:08',NULL,1,NULL,0),(11,4,'修改','','sys:menu:update',2,'',0,'2024-01-06 14:58:31',NULL,1,NULL,0),(12,4,'删除','','sys:menu:delete',2,'',0,'2024-01-06 14:58:49',NULL,1,NULL,0),(13,4,'查询','','sys:menu:search',2,'',4,'2024-01-06 15:32:48','2024-01-06 15:59:45',1,1,1);
+INSERT INTO `sys_menu` VALUES (1,0,'系统管理','/system','',1,'layui-icon-set',10,'2024-01-06 14:08:45',NULL,1,NULL,0),(2,1,'用户管理','/system/user','',1,'layui-icon-username',1,'2024-01-06 14:24:36','2024-01-06 20:30:17',1,1,0),(3,1,'角色管理','/system/role','',1,'layui-icon-user',2,'2024-01-06 14:34:28','2024-01-06 20:30:25',1,1,0),(4,1,'菜单管理','/system/menu','',1,'layui-icon-spread-left',4,'2024-01-06 14:35:55','2024-01-06 20:30:35',1,1,0),(5,1,'机构管理','/system/organization','',1,'layui-icon-transfer',3,'2024-01-06 14:40:10','2024-01-06 20:30:30',1,1,0),(6,1,'字典管理','/system/dictionary','',1,'layui-icon-read',5,'2024-01-06 14:41:12','2024-01-06 20:30:43',1,1,0),(7,1,'文件管理','/system/file','',1,'layui-icon-file',6,'2024-01-06 14:43:55','2024-01-06 20:30:49',1,1,0),(8,1,'登录日志','/system/login','',1,'layui-icon-date',7,'2024-01-06 14:44:56','2024-01-06 20:30:53',1,1,0),(9,1,'操作日志','/system/option','',1,'layui-icon-survey',8,'2024-01-06 14:45:23','2024-01-06 20:30:56',1,1,0),(10,4,'新建','','sys:menu:save',2,'',0,'2024-01-06 14:58:08',NULL,1,NULL,0),(11,4,'修改','','sys:menu:update',2,'',0,'2024-01-06 14:58:31',NULL,1,NULL,0),(12,4,'删除','','sys:menu:delete',2,'',0,'2024-01-06 14:58:49',NULL,1,NULL,0),(13,4,'查询','','sys:menu:search',2,'',4,'2024-01-06 15:32:48','2024-01-06 15:59:45',1,1,1),(14,3,'新增','','sys:role:save',2,'',1,'2024-01-06 22:36:02',NULL,1,NULL,0),(15,3,'编辑','','sys:role:update',2,'',2,'2024-01-06 22:36:19',NULL,1,NULL,0),(16,3,'删除','','sys:role:delete',2,'',3,'2024-01-06 22:36:34',NULL,1,NULL,0),(17,3,'分配权限','','sys:role:permissions',2,'',4,'2024-01-06 23:04:57','2024-01-07 11:38:27',1,1,1),(18,3,'分配权限','','sys:role:perms',2,'',4,'2024-01-07 11:38:16','2024-01-07 11:38:39',1,1,0),(19,5,'新增','','sys:dept:save',2,'',1,'2024-01-07 13:40:26',NULL,1,NULL,0),(20,5,'编辑','','sys:dept:update',2,'',2,'2024-01-07 13:40:44',NULL,1,NULL,0),(21,5,'删除','','sys:dept:delete',2,'',3,'2024-01-07 13:41:02',NULL,1,NULL,0),(22,6,'新增','','sys:dict:save',2,'',1,'2024-01-07 13:47:42',NULL,1,NULL,0),(23,6,'编辑','','sys:dict:update',2,'',2,'2024-01-07 13:49:02',NULL,1,NULL,0),(24,6,'删除','','sys:dict:delete',2,'',3,'2024-01-07 13:49:20',NULL,1,NULL,0),(25,6,'新增字典值','','sys:dictdata:save',2,'',4,'2024-01-07 13:49:57','2024-01-07 13:51:44',1,1,0),(26,6,'编辑字典值','','sys:dictdata:update',2,'',5,'2024-01-07 13:52:18',NULL,1,NULL,0),(27,6,'删除字典值','','sys:dictdata:delete',2,'',6,'2024-01-07 13:52:45',NULL,1,NULL,0),(28,2,'重置密码','','sys:user:resetpassword',2,'',0,'2024-01-07 14:21:08',NULL,1,NULL,0),(29,2,'新增','','sys:user:save',2,'',1,'2024-01-07 14:21:28',NULL,1,NULL,0),(30,2,'编辑','','sys:user:update',2,'',2,'2024-01-07 14:54:00',NULL,1,NULL,0),(31,2,'锁定/解锁','','sys:user:lock',2,'',3,'2024-01-07 14:54:36',NULL,1,NULL,0),(32,2,'重置密码','','sys:user:resetpassword',2,'',4,'2024-01-07 14:55:09','2024-01-07 15:57:13',1,1,1),(33,2,'删除','','sys:user:delete',2,'',5,'2024-01-07 14:56:01',NULL,1,NULL,0),(34,8,'查看','','',2,'',0,'2024-01-07 15:58:54','2024-01-07 15:59:34',1,1,1),(35,8,'查询','','',2,'',0,'2024-01-07 16:40:46','2024-01-07 16:47:19',1,1,1);
 /*!40000 ALTER TABLE `sys_menu` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -323,7 +322,7 @@ CREATE TABLE `sys_role` (
   `update_user` bigint DEFAULT NULL,
   `is_deleted` tinyint(1) NOT NULL,
   PRIMARY KEY (`role_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='角色';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='角色';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -332,6 +331,7 @@ CREATE TABLE `sys_role` (
 
 LOCK TABLES `sys_role` WRITE;
 /*!40000 ALTER TABLE `sys_role` DISABLE KEYS */;
+INSERT INTO `sys_role` VALUES (1,'管理员','管理员角色','2024-01-06 22:37:04','2024-01-06 22:41:02',1,1,0),(2,'话务员','话务员角色','2024-01-06 22:41:14','2024-01-06 23:09:00',1,1,0);
 /*!40000 ALTER TABLE `sys_role` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -350,9 +350,9 @@ CREATE TABLE `sys_role_menu` (
   `update_time` datetime DEFAULT NULL,
   `create_user` bigint NOT NULL,
   `update_user` bigint DEFAULT NULL,
-  `is_deleted` tinyint(1) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='角色与菜单对应关系';
+  PRIMARY KEY (`id`),
+  KEY `idx_role` (`role_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='角色与菜单对应关系';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -361,6 +361,7 @@ CREATE TABLE `sys_role_menu` (
 
 LOCK TABLES `sys_role_menu` WRITE;
 /*!40000 ALTER TABLE `sys_role_menu` DISABLE KEYS */;
+INSERT INTO `sys_role_menu` VALUES (64,2,10,'2024-01-07 18:22:06',NULL,1,NULL),(65,1,1,'2024-01-07 18:22:11',NULL,1,NULL),(66,1,2,'2024-01-07 18:22:11',NULL,1,NULL),(67,1,3,'2024-01-07 18:22:11',NULL,1,NULL),(68,1,14,'2024-01-07 18:22:11',NULL,1,NULL),(69,1,15,'2024-01-07 18:22:11',NULL,1,NULL),(70,1,16,'2024-01-07 18:22:11',NULL,1,NULL),(71,1,18,'2024-01-07 18:22:11',NULL,1,NULL),(72,1,5,'2024-01-07 18:22:11',NULL,1,NULL),(73,1,6,'2024-01-07 18:22:11',NULL,1,NULL),(74,1,7,'2024-01-07 18:22:11',NULL,1,NULL),(75,1,8,'2024-01-07 18:22:11',NULL,1,NULL),(76,1,9,'2024-01-07 18:22:11',NULL,1,NULL);
 /*!40000 ALTER TABLE `sys_role_menu` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -381,6 +382,7 @@ CREATE TABLE `sys_user` (
   `email` varchar(100) DEFAULT NULL COMMENT '邮箱',
   `mobile` varchar(100) DEFAULT NULL COMMENT '手机号',
   `dept_id` bigint DEFAULT NULL COMMENT '部门ID',
+  `gender` tinyint unsigned DEFAULT '1' COMMENT '性别 0女 1男 2保密',
   `super_admin` tinyint unsigned DEFAULT NULL COMMENT '超级管理员   0：否   1：是',
   `status` tinyint DEFAULT NULL COMMENT '状态  0：禁用   1：正常',
   `create_time` datetime NOT NULL,
@@ -390,8 +392,8 @@ CREATE TABLE `sys_user` (
   `is_deleted` bit(1) NOT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `username` (`username`),
-  INDEX idx_dept(dept_id)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='系统用户';
+  KEY `idx_dept` (`dept_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='系统用户';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -400,7 +402,7 @@ CREATE TABLE `sys_user` (
 
 LOCK TABLES `sys_user` WRITE;
 /*!40000 ALTER TABLE `sys_user` DISABLE KEYS */;
-INSERT INTO `sys_user` VALUES (1,'admin','管理员','','{bcrypt}$2a$10$umbdzri52hrdtA6KMcmakOOCFbGku9LQHdZlWAUwUMEDYYNPKayta','4b083d8bff412020','test@xxx.com','13612345678',1,1,1,'2023-11-11 11:11:11',NULL,0,NULL,_binary '\0');
+INSERT INTO `sys_user` VALUES (1,'admin','管理员','','{bcrypt}$2a$10$umbdzri52hrdtA6KMcmakOOCFbGku9LQHdZlWAUwUMEDYYNPKayta','4b083d8bff412020','test@xxx.com','13612345678',1,1,1,1,'2023-11-11 11:11:11',NULL,0,NULL,_binary '\0'),(2,'曹书博曹书博曹书博','曹书博',NULL,'{bcrypt}$2a$10$qBTNr8YhW9YSwQHh9mmUduTj4FCokPN095IgsA8UzEZbAsPSOFISC','27da072690fa6b1e','1417200023@qq.com','15965788957',16,1,NULL,NULL,'2024-01-07 17:58:59',NULL,1,NULL,_binary '\0'),(3,'caoshubo','曹书博',NULL,'{bcrypt}$2a$10$YVyi5b23efWgQvjVL3ZuUu6c6FByYKMkGjbu6yrk0Bn..ZvHreXLG','c7f39e4ca8028e00','1417200023@qq.com','15965788957',16,1,NULL,NULL,'2024-01-07 18:32:25',NULL,1,NULL,_binary '\0');
 /*!40000 ALTER TABLE `sys_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -419,9 +421,9 @@ CREATE TABLE `sys_user_role` (
   `update_time` datetime DEFAULT NULL,
   `create_user` bigint NOT NULL,
   `update_user` bigint DEFAULT NULL,
-  `is_deleted` tinyint(1) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用户与角色对应关系';
+  PRIMARY KEY (`id`),
+  KEY `idx_user` (`user_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用户与角色对应关系';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -430,6 +432,7 @@ CREATE TABLE `sys_user_role` (
 
 LOCK TABLES `sys_user_role` WRITE;
 /*!40000 ALTER TABLE `sys_user_role` DISABLE KEYS */;
+INSERT INTO `sys_user_role` VALUES (1,2,1,'2024-01-07 17:58:59',NULL,1,NULL),(2,3,1,'2024-01-07 18:32:25',NULL,1,NULL);
 /*!40000 ALTER TABLE `sys_user_role` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -442,4 +445,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-01-06 17:00:08
+-- Dump completed on 2024-01-07 18:34:46

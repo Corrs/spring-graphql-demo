@@ -5,7 +5,13 @@ import com.yanxuan88.australiacallcenter.mapper.SysUserRoleMapper;
 import com.yanxuan88.australiacallcenter.model.entity.SysUserRole;
 import com.yanxuan88.australiacallcenter.service.IUserRoleService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUserRole> implements IUserRoleService {
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void add(Long userId, Long roleId) {
+        save(new SysUserRole().setRoleId(roleId).setUserId(userId));
+    }
 }

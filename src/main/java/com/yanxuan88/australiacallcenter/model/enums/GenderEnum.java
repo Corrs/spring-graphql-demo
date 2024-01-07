@@ -2,12 +2,13 @@ package com.yanxuan88.australiacallcenter.model.enums;
 
 import com.yanxuan88.australiacallcenter.common.IDict;
 
-public enum UserStatusEnum implements IDict<Integer> {
-    DISABLE(0, "停用"),
-    ENABLED(1, "正常"),
+public enum GenderEnum implements IDict<Integer> {
+    GIRL(0, "女"),
+    BOY(1, "男"),
+    KNOWN(2, "保密")
     ;
 
-    UserStatusEnum(int code, String text) {
+    GenderEnum(int code, String text) {
         init(code, text);
     }
 }

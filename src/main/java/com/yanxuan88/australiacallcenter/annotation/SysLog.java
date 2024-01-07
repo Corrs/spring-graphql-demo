@@ -7,4 +7,5 @@ import java.lang.annotation.*;
 @Documented
 public @interface SysLog {
     String value();
+    boolean saveToDB() default true;
 }

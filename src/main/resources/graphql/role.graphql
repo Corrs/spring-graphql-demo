@@ -1,6 +1,10 @@
 extend type Query {
     "分页查询角色"
     roles(p: Page!, roleName: String): RoleConnection
+    "查询所有角色"
+    roleList: [RoleVO]
+    "查询角色分配的权限id集合"
+    rolePerms(roleId: Long!): [Long]
 }
 
 extend type Mutation {
@@ -10,6 +14,13 @@ extend type Mutation {
     editRole(role: EditRoleDTO!): Boolean
     "删除角色"
     remRole(id: Long!): Boolean
+    "分配权限"
+    assignPerms(perms: AssignPermsDTO!): Boolean
+}
+
+input AssignPermsDTO {
+    roleId: Long!
+    perms: [Long!]
 }
 
 input AddRoleDTO {

@@ -3,4 +3,26 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yanxuan88.australiacallcenter.mapper.SysMenuMapper">
 
+    <select id="selectUserMenus" resultType="com.yanxuan88.australiacallcenter.model.entity.SysMenu">
+        select m.menu_id as id,
+            parent_id,
+            name,
+            url,
+            perms,
+            type,
+            icon,
+            sort,
+            create_time,
+            create_user,
+            update_time,
+            update_user
+        from sys_menu m
+        inner join (
+            select rm.menu_id
+            from sys_user_role ur
+            inner join sys_role r on r.role_id=ur.role_id
+            inner join sys_role_menu rm on rm.role_id=r.role_id
+            where ur.user_id=#{userId}
+        ) t on t.menu_id=m.menu_id
+    </select>
 </mapper>

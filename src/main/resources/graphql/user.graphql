@@ -1,0 +1,16 @@
+extend type Mutation {
+    "重置密码"
+    resetPassword(userId: Long!): Boolean
+    "新增用户"
+    addUser(user: AddUserDTO!): Boolean
+}
+
+input AddUserDTO {
+    realName: String!
+    username: String!
+    email: String
+    mobile: String
+    deptId: Long!
+    gender: Int
+    roleId: Long
+}

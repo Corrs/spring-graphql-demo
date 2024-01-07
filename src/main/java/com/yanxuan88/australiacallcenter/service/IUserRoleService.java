@@ -4,4 +4,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.yanxuan88.australiacallcenter.model.entity.SysUserRole;
 
 public interface IUserRoleService extends IService<SysUserRole> {
+    void add(Long userId, Long roleId);
 }

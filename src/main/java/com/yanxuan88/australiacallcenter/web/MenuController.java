@@ -68,7 +68,7 @@ public class MenuController {
     @PreAuthorize("hasAuthority('sys:menu:delete')")
     @MutationMapping
     public boolean remMenu(@Argument @Valid @NotNull(message = "菜单标识不能为空")
-                               @Min(value = 1, message = "菜单不存在") Long id) {
+                           @Min(value = 1, message = "菜单不存在") Long id) {
         return menuService.rem(id);
     }
 }

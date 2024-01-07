@@ -54,11 +54,11 @@ public class MenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impleme
     @Override
     public List<MenuVO> menus(Long userId) {
         List<SysMenu> menus = new ArrayList<>();
-        if (userId == Constant.SUPER_ADMIN) {
+        if (userId == Constant.SUPER_ADMIN_USER_ID) {
             // 超级管理员，查所有
             menus.addAll(list());
         } else {
-            // todo 需要搞完用户、角色后再写
+            menus.addAll(baseMapper.selectUserMenus(userId));
         }
         return menus.stream()
                 .map(e -> new MenuVO()

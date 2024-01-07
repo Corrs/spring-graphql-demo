@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
 import javax.validation.Valid;
@@ -49,7 +50,7 @@ public class DictController {
      * @param dictType 参数
      * @return true/false
      */
-    @Authenticated
+    @PreAuthorize("hasAuthority('sys:dict:save')")
     @MutationMapping
     public boolean addDictType(@Valid @Argument AddDictTypeDTO dictType) {
         return dictTypeService.add(dictType);
@@ -61,7 +62,7 @@ public class DictController {
      * @param dictType 参数
      * @return true/false
      */
-    @Authenticated
+    @PreAuthorize("hasAuthority('sys:dict:update')")
     @MutationMapping
     public boolean editDictType(@Valid @Argument EditDictTypeDTO dictType) {
         return dictTypeService.edit(dictType);
@@ -73,10 +74,9 @@ public class DictController {
      * @param id 字典标识
      * @return true/false
      */
-    @Authenticated
+    @PreAuthorize("hasAuthority('sys:dict:delete')")
     @MutationMapping
-    public boolean remDictType(@Argument @Valid @NotNull(message = "字典标识不能为空")
-                                   @Min(value = 1, message = "字典不存在") Long id) {
+    public boolean remDictType(@Argument @Valid @NotNull(message = "字典标识不能为空") @Min(value = 1, message = "字典不存在") Long id) {
         return dictTypeService.rem(id);
     }
 }

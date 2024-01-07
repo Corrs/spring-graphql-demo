@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
 import javax.validation.Valid;
@@ -33,7 +34,7 @@ public class DeptController {
      * @param dept 部门数据
      * @return DeptVO
      */
-    @Authenticated
+    @PreAuthorize("hasAuthority('sys:dept:save')")
     @MutationMapping
     public DeptVO addDept(@Argument @Valid AddDeptDTO dept) {
         return deptService.addDept(dept);
@@ -56,10 +57,10 @@ public class DeptController {
      * @param id 部门id
      * @return true/false
      */
-    @Authenticated
+    @PreAuthorize("hasAuthority('sys:dept:delete')")
     @MutationMapping
     public boolean remDept(@Argument @Valid @NotNull(message = "机构标识不能为空")
-                               @Min(value = 1L, message = "机构不存在") Long id) {
+                           @Min(value = 1L, message = "机构不存在") Long id) {
         return deptService.remDept(id);
     }
 
@@ -69,7 +70,7 @@ public class DeptController {
      * @param dept 部门数据
      * @return DeptVO
      */
-    @Authenticated
+    @PreAuthorize("hasAuthority('sys:dept:update')")
     @MutationMapping
     public DeptVO editDept(@Argument @Valid EditDeptDTO dept) {
         return deptService.editDept(dept);

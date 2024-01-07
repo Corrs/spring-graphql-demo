@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
 import javax.validation.Valid;
@@ -50,7 +51,7 @@ public class DictDataController {
      * @param dictData 参数
      * @return true/false
      */
-    @Authenticated
+    @PreAuthorize("hasAuthority('sys:dictdata:save')")
     @MutationMapping
     public boolean addDictData(@Argument @Valid AddDictDataDTO dictData) {
         return dictDataService.add(dictData);
@@ -62,7 +63,7 @@ public class DictDataController {
      * @param dictData 参数
      * @return true/false
      */
-    @Authenticated
+    @PreAuthorize("hasAuthority('sys:dictdata:update')")
     @MutationMapping
     public boolean editDictData(@Argument @Valid EditDictDataDTO dictData) {
         return dictDataService.edit(dictData);
@@ -71,14 +72,14 @@ public class DictDataController {
     /**
      * 删除字典数据
      *
-     * @param ids
-     * @return
+     * @param ids 字典数据标识
+     * @return true/false
      */
-    @Authenticated
+    @PreAuthorize("hasAuthority('sys:dictdata:delete')")
     @MutationMapping
     public boolean remDictData(@Argument @Valid
-                                   @Size(max = 100, message = "一次性可删除1-100个字典数据")
-                                   @NotEmpty(message = "字典数据标识不能为空") List<Long> ids) {
+                               @Size(max = 100, message = "一次性可删除1-100个字典数据")
+                               @NotEmpty(message = "字典数据标识不能为空") List<Long> ids) {
         return dictDataService.rem(ids);
     }
 }
