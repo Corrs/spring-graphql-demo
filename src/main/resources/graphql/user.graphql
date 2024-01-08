@@ -1,8 +1,49 @@
+extend type Query {
+    "分页查询用户"
+    users(p: Page!, query: UserQueryDTO): UserConnection
+}
+
 extend type Mutation {
     "重置密码"
     resetPassword(userId: Long!): Boolean
     "新增用户"
     addUser(user: AddUserDTO!): Boolean
+    "删除用户"
+    remUser(userId: Long!): Boolean
+    "切换用户状态"
+    chgUserStatus(userId: Long!): Boolean
+}
+
+input UserQueryDTO {
+    startTime: LocalDateTime
+    endTime: LocalDateTime
+    username: String
+    gender: Int
+    deptId: Long
+}
+
+type UserConnection implements Connection {
+    pageInfo: PageInfo!
+    total: Long
+    edges: [UserEdge]
+}
+
+type UserEdge implements Edge {
+    cursor: String!
+    node: UserVO
+}
+
+type UserVO implements EdgeNode {
+    id: Long!
+    username: String
+    realName: String
+    gender: Int
+    email: String
+    mobile: String
+    status: Int
+    createTime: LocalDateTime
+    roleId: Long
+    deptId: Long
 }
 
 input AddUserDTO {
