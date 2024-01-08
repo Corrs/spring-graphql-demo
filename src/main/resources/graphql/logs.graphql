@@ -1,5 +1,12 @@
 extend type Query {
   loginLogs(cond: LogLoginQueryDTO!): LoginLogConnection
+  operationLogs(p: Page!, query: OperationLogQueryDTO!): OperationLogConnection
+}
+
+input OperationLogQueryDTO {
+  startTime: LocalDateTime!
+  endTime: LocalDateTime!
+  status: Int
 }
 
 input LogLoginQueryDTO {
@@ -15,6 +22,29 @@ input LogLoginQueryDTO {
   current: Long=1
   "行数，默认10"
   limit: Long=10
+}
+
+type OperationLogConnection implements Connection {
+  pageInfo: PageInfo!
+  edges: [OperationLogEdge]
+  total: Long
+}
+
+type OperationLogEdge implements Edge {
+  cursor: String!
+  node: OperationLogVO
+}
+
+type OperationLogVO implements EdgeNode {
+  id: Long!
+  requestParams: String
+  createTime: LocalDateTime
+  status: Int
+  username: String
+  operation: String
+  requestTime: Long
+  userAgent: String
+  ip: String
 }
 
 type LoginLogConnection implements Connection {
