@@ -13,10 +13,8 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
-import org.springframework.data.relational.core.sql.In;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
@@ -46,18 +44,19 @@ public class SysLogAspect implements ApplicationEventPublisherAware {
         Integer operationStatus = null;
         StopWatch watch = new StopWatch();
         watch.start();
+        String requestParams = MAPPER.writeValueAsString(pjp.getArgs());
         try {
             Object retVal = pjp.proceed();
             watch.stop();
             operationRequestTime = watch.getLastTaskTimeMillis();
             operationStatus = SUCCESS.getCode();
-            log.info("\n请求描述：{}\n请求参数：{}\n处理结果：{}\n处理时长：{}ms", sysLog.value(), pjp.getArgs(), retVal, operationRequestTime);
+            log.info("\n请求描述：{}\n请求参数：{}\n处理结果：{}\n处理时长：{}ms", sysLog.value(), requestParams, retVal, operationRequestTime);
             return retVal;
         } catch (Throwable e) {
             watch.stop();
             operationRequestTime = watch.getLastTaskTimeMillis();
             operationStatus = FAIL.getCode();
-            log.error("\n请求描述：{}\n请求参数：{}\n异常信息：{}\n处理时长：{}ms", sysLog.value(), pjp.getArgs(), e.getMessage(), operationRequestTime);
+            log.error("\n请求描述：{}\n请求参数：{}\n异常信息：{}\n处理时长：{}ms", sysLog.value(), requestParams, e.getMessage(), operationRequestTime);
             throw new BizException(e);
         } finally {
             if (sysLog.saveToDB()) {
@@ -66,7 +65,7 @@ public class SysLogAspect implements ApplicationEventPublisherAware {
                 UserLoginInfo user = SecurityUtil.getUserLoginInfo();
                 SysLogOperation logOperation = new SysLogOperation()
                         .setRequestTime(operationRequestTime)
-                        .setRequestParams(MAPPER.writeValueAsString(pjp.getArgs()))
+                        .setRequestParams(requestParams)
                         .setOperation(sysLog.value())
                         .setIp(ip)
                         .setStatus(operationStatus)
@@ -83,4 +82,5 @@ public class SysLogAspect implements ApplicationEventPublisherAware {
     public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
         eventPublisher = applicationEventPublisher;
     }
+
 }

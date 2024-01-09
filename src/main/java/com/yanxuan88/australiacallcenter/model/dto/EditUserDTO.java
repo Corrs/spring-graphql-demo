@@ -10,7 +10,10 @@ import org.hibernate.validator.constraints.Range;
 import javax.validation.constraints.*;
 
 @Data
-public class AddUserDTO {
+public class EditUserDTO {
+    @Min(value = 1, message = "用户不存在")
+    @NotNull(message = "用户标识不能为空")
+    private Long id;
     @Length(max = 50, message = "真实姓名长度应在50字以内")
     @NotBlank(message = "真实姓名不能为空")
     private String realName;

@@ -60,9 +60,8 @@ public class LocalDateTimeScalar implements Coercing<LocalDateTime, String> {
     private LocalDateTime parseDateFromVariable(Object input) {
         if (input instanceof String) {
             String possibleDateValue = input.toString();
-            if (looksLikeAnDate(possibleDateValue)) {
-                return parse(possibleDateValue);
-            }
+            if (isBlank(possibleDateValue)) return null;
+            if (looksLikeAnDate(possibleDateValue)) return parse(possibleDateValue);
         }
         throw new CoercingParseValueException("无法将变量【" + input + "】解析为日期");
     }
@@ -70,14 +69,17 @@ public class LocalDateTimeScalar implements Coercing<LocalDateTime, String> {
     private LocalDateTime parseDateFromAstLiteral(Object input) {
         if (input instanceof StringValue) {
             String possibleDateValue = ((StringValue) input).getValue();
-            if (looksLikeAnDate(possibleDateValue)) {
-                return parse(possibleDateValue);
-            }
+            if (isBlank(possibleDateValue)) return null;
+            if (looksLikeAnDate(possibleDateValue)) return parse(possibleDateValue);
         }
         throw new CoercingParseLiteralException("数据不是日期 : '" + input + "'");
     }
 
     private LocalDateTime parse(String dateStr) {
         return LocalDateTime.from(LocalDateTime.parse(dateStr, DTF).toInstant(DEFAULT_ZONE_OFFSET).atOffset(DEFAULT_ZONE_OFFSET));
+    }
+
+    private boolean isBlank(String str) {
+        return str == null || str.trim().length() <= 0;
     }
 }

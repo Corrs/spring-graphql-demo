@@ -13,7 +13,7 @@ public class UserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUserR
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void add(Long userId, Long roleId) {
-        save(new SysUserRole().setRoleId(roleId).setUserId(userId));
+        saveOrUpdate(new SysUserRole().setRoleId(roleId).setUserId(userId), Wrappers.<SysUserRole>lambdaQuery().eq(SysUserRole::getUserId, userId));
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -21,4 +21,5 @@ public class UserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUserR
     public void removeByUserId(Long userId) {
         remove(Wrappers.<SysUserRole>lambdaQuery().eq(SysUserRole::getUserId, userId));
     }
+
 }

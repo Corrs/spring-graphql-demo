@@ -3,6 +3,7 @@ package com.yanxuan88.australiacallcenter.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yanxuan88.australiacallcenter.model.dto.AddUserDTO;
+import com.yanxuan88.australiacallcenter.model.dto.EditUserDTO;
 import com.yanxuan88.australiacallcenter.model.dto.PageDTO;
 import com.yanxuan88.australiacallcenter.model.dto.UserQueryDTO;
 import com.yanxuan88.australiacallcenter.model.entity.SysUser;
@@ -24,4 +25,6 @@ public interface IUserService extends IService<SysUser> {
     boolean rem(Long userId);
 
     boolean chgUserStatus(Long userId);
+
+    boolean edit(EditUserDTO user);
 }

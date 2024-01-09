@@ -17,6 +17,8 @@ public class PageDTO {
             OrderItem orderItem = Boolean.TRUE.equals(asc) ? OrderItem.asc(column) : OrderItem.desc(column);
             page.addOrder(orderItem);
         }
+        // tip mybatis-plus中存在bug，一直报 optimize this sql to a count sql has exception 警告
+        page.setOptimizeCountSql(false);
         return page;
     }
 }

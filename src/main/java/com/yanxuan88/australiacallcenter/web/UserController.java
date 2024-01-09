@@ -3,6 +3,7 @@ package com.yanxuan88.australiacallcenter.web;
 import com.yanxuan88.australiacallcenter.annotation.Authenticated;
 import com.yanxuan88.australiacallcenter.graphql.util.RelayUtil;
 import com.yanxuan88.australiacallcenter.model.dto.AddUserDTO;
+import com.yanxuan88.australiacallcenter.model.dto.EditUserDTO;
 import com.yanxuan88.australiacallcenter.model.dto.PageDTO;
 import com.yanxuan88.australiacallcenter.model.dto.UserQueryDTO;
 import com.yanxuan88.australiacallcenter.model.vo.UserVO;
@@ -61,6 +62,17 @@ public class UserController {
     @MutationMapping
     public boolean addUser(@Argument @Valid AddUserDTO user) {
         return userService.add(user);
+    }
+
+    /**
+     * 编辑用户
+     * @param user 用户
+     * @return true/false
+     */
+    @MutationMapping
+    @PreAuthorize("hasAuthority('sys:user:update')")
+    public boolean editUser(@Argument @Valid EditUserDTO user) {
+        return userService.edit(user);
     }
 
     /**

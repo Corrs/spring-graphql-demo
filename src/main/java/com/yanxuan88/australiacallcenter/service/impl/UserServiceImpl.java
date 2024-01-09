@@ -3,12 +3,14 @@ package com.yanxuan88.australiacallcenter.service.impl;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import com.google.common.base.Strings;
 import com.yanxuan88.australiacallcenter.annotation.SysLog;
 import com.yanxuan88.australiacallcenter.common.Constant;
 import com.yanxuan88.australiacallcenter.exception.BizException;
 import com.yanxuan88.australiacallcenter.mapper.SysUserMapper;
 import com.yanxuan88.australiacallcenter.model.dto.AddUserDTO;
+import com.yanxuan88.australiacallcenter.model.dto.EditUserDTO;
 import com.yanxuan88.australiacallcenter.model.dto.PageDTO;
 import com.yanxuan88.australiacallcenter.model.dto.UserQueryDTO;
 import com.yanxuan88.australiacallcenter.model.entity.SysUser;
@@ -78,19 +80,24 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
                 .setMobile(Strings.nullToEmpty(user.getMobile()).trim())
                 .setEmail(Strings.nullToEmpty(user.getEmail()).trim())
                 .setPassword(passwordEncoder.encode(SecurityUtil.pwd(salt, Constant.DEFAULT_PASSWORD_MD5)));
+        boolean result = false;
         try {
-            boolean result = save(entity);
-            if (result && user.getRoleId() != null) {
-                userRoleService.add(entity.getUserId(), user.getRoleId());
-            }
-            return result;
+            result = save(entity);
         } catch (DuplicateKeyException e) {
             throw new BizException("用户名已存在");
         }
+
+        if (result && user.getRoleId() != null) {
+            userRoleService.add(entity.getUserId(), user.getRoleId());
+        }
+        return result;
     }
 
     @Override
     public Page<UserVO> users(PageDTO p, UserQueryDTO query) {
+        if (SecurityUtil.isSuperAdmin()) {
+            return baseMapper.allUsers(p.page(), query);
+        }
         return baseMapper.users(p.page(), query);
     }
 
@@ -122,5 +129,48 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
                 .setUserId(userId)
                 .setStatus(record.getStatus() == DISABLE.getCode() ? ENABLED.getCode() : DISABLE.getCode());
         return updateById(entity);
+    }
+
+    /**
+     * 编辑用户
+     *
+     * @param user 参数
+     * @return true/false
+     */
+    @SysLog("编辑用户")
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public boolean edit(EditUserDTO user) {
+        if (!SecurityUtil.isSuperAdmin()) {
+            SysUser record = getById(user.getId());
+            if (record == null) {
+                throw new BizException("用户不存在");
+            }
+        }
+        String username = user.getUsername().trim();
+        if (BLACK_USER_LIST.contains(username)) {
+            throw new BizException("非法用户名");
+        }
+        SysUser entity = new SysUser().setUserId(user.getId())
+                .setGender(user.getGender())
+                .setUsername(username)
+                .setDeptId(user.getDeptId())
+                .setRealName(user.getRealName().trim())
+                .setMobile(Strings.nullToEmpty(user.getMobile()).trim())
+                .setEmail(Strings.nullToEmpty(user.getEmail()).trim());
+        boolean result = false;
+        try {
+            result = !SecurityUtil.isSuperAdmin() ? updateById(entity) : SqlHelper.retBool(baseMapper.saUpdate(entity));
+        } catch (DuplicateKeyException e) {
+            throw new BizException("用户名已存在");
+        }
+        if (result) {
+            if (user.getRoleId() != null && user.getRoleId() > 0) {
+                userRoleService.add(entity.getUserId(), user.getRoleId());
+            } else {
+                userRoleService.removeByUserId(entity.getUserId());
+            }
+        }
+        return result;
     }
 }

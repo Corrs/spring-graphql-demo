@@ -14,6 +14,7 @@ import com.yanxuan88.australiacallcenter.model.entity.SysMenu;
 import com.yanxuan88.australiacallcenter.model.enums.MenuTypeEnum;
 import com.yanxuan88.australiacallcenter.model.vo.MenuVO;
 import com.yanxuan88.australiacallcenter.service.IMenuService;
+import com.yanxuan88.australiacallcenter.util.SecurityUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -54,7 +55,7 @@ public class MenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impleme
     @Override
     public List<MenuVO> menus(Long userId) {
         List<SysMenu> menus = new ArrayList<>();
-        if (userId == Constant.SUPER_ADMIN_USER_ID) {
+        if (SecurityUtil.isSuperAdmin(userId)) {
             // 超级管理员，查所有
             menus.addAll(list());
         } else {

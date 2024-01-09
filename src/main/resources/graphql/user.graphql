@@ -8,6 +8,8 @@ extend type Mutation {
     resetPassword(userId: Long!): Boolean
     "新增用户"
     addUser(user: AddUserDTO!): Boolean
+    "编辑用户"
+    editUser(user: EditUserDTO!): Boolean
     "删除用户"
     remUser(userId: Long!): Boolean
     "切换用户状态"
@@ -47,6 +49,17 @@ type UserVO implements EdgeNode {
 }
 
 input AddUserDTO {
+    realName: String!
+    username: String!
+    email: String
+    mobile: String
+    deptId: Long!
+    gender: Int
+    roleId: Long
+}
+
+input EditUserDTO {
+    id: Long!
     realName: String!
     username: String!
     email: String

@@ -7,4 +7,5 @@ public interface IUserRoleService extends IService<SysUserRole> {
     void add(Long userId, Long roleId);
 
     void removeByUserId(Long userId);
+
 }

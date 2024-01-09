@@ -10,6 +10,9 @@ import java.util.concurrent.TimeUnit;
 import static java.time.ZoneId.SHORT_IDS;
 
 public interface Constant {
+    String MOBILE_REG= "^[0,1]\\d{10,14}$";
+    String EMAIL_REG= "^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$";
+    String USERNAME_REG = "^[a-zA-Z][1-9a-zA-Z]+$";
     List<String> BLACK_USER_LIST = Collections.unmodifiableList(Arrays.asList("admin", "superadmin", "root", "administrator", "Administrator"));
     String DEFAULT_PASSWORD_MD5 = "14e1b600b1fd579f47433b88e8d85291";
     long SUPER_ADMIN_USER_ID = 1L;

@@ -7,7 +7,10 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 import java.util.UUID;
+
+import static com.yanxuan88.australiacallcenter.common.Constant.SUPER_ADMIN_USER_ID;
 
 public final class SecurityUtil {
     /**
@@ -49,5 +52,13 @@ public final class SecurityUtil {
 
     public static String pwd(String salt, String pwd) {
         return Hashing.md5().newHasher().putString(salt + pwd, StandardCharsets.UTF_8).hash().toString();
+    }
+
+    public static boolean isSuperAdmin() {
+        return isSuperAdmin(Optional.ofNullable(getUserLoginInfo()).map(UserLoginInfo::getUserId).orElse(null));
+    }
+
+    public static boolean isSuperAdmin(Long userId) {
+        return userId == SUPER_ADMIN_USER_ID;
     }
 }

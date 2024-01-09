@@ -78,7 +78,15 @@ public class SecurityConfiguration {
                         .anyRequest().permitAll()
                 )
                 .headers(headers -> headers
-                        .cacheControl(withDefaults())
+                        .cacheControl()
+                        .and()
+                        .httpStrictTransportSecurity()
+                        .and()
+                        .contentTypeOptions()
+                        .and()
+                        .xssProtection()
+                        .and()
+                        .frameOptions().disable()
                 )
                 // 使用token，禁用session
                 .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
