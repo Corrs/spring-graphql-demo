@@ -2,10 +2,7 @@ package com.yanxuan88.australiacallcenter.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.yanxuan88.australiacallcenter.model.dto.AddUserDTO;
-import com.yanxuan88.australiacallcenter.model.dto.EditUserDTO;
-import com.yanxuan88.australiacallcenter.model.dto.PageDTO;
-import com.yanxuan88.australiacallcenter.model.dto.UserQueryDTO;
+import com.yanxuan88.australiacallcenter.model.dto.*;
 import com.yanxuan88.australiacallcenter.model.entity.SysUser;
 import com.yanxuan88.australiacallcenter.model.vo.UserVO;
 
@@ -27,4 +24,6 @@ public interface IUserService extends IService<SysUser> {
     boolean chgUserStatus(Long userId);
 
     boolean edit(EditUserDTO user);
+
+    boolean modifyPassword(ModifyPasswordDTO pwd);
 }

@@ -7,19 +7,20 @@ import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import com.google.common.base.Strings;
 import com.yanxuan88.australiacallcenter.annotation.SysLog;
 import com.yanxuan88.australiacallcenter.common.Constant;
+import com.yanxuan88.australiacallcenter.event.model.LogoutEvent;
 import com.yanxuan88.australiacallcenter.exception.BizException;
 import com.yanxuan88.australiacallcenter.mapper.SysUserMapper;
-import com.yanxuan88.australiacallcenter.model.dto.AddUserDTO;
-import com.yanxuan88.australiacallcenter.model.dto.EditUserDTO;
-import com.yanxuan88.australiacallcenter.model.dto.PageDTO;
-import com.yanxuan88.australiacallcenter.model.dto.UserQueryDTO;
+import com.yanxuan88.australiacallcenter.model.dto.*;
 import com.yanxuan88.australiacallcenter.model.entity.SysUser;
 import com.yanxuan88.australiacallcenter.model.enums.UserStatusEnum;
 import com.yanxuan88.australiacallcenter.model.vo.UserVO;
 import com.yanxuan88.australiacallcenter.service.IUserRoleService;
 import com.yanxuan88.australiacallcenter.service.IUserService;
+import com.yanxuan88.australiacallcenter.util.RequestAttrUtil;
 import com.yanxuan88.australiacallcenter.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,11 +29,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static com.yanxuan88.australiacallcenter.common.Constant.BLACK_USER_LIST;
+import static com.yanxuan88.australiacallcenter.common.Constant.TOKEN_CACHE;
 import static com.yanxuan88.australiacallcenter.model.enums.UserStatusEnum.DISABLE;
 import static com.yanxuan88.australiacallcenter.model.enums.UserStatusEnum.ENABLED;
 
 @Service
-public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements IUserService {
+public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements IUserService, ApplicationEventPublisherAware {
+    private ApplicationEventPublisher eventPublisher;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
@@ -147,13 +150,8 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
                 throw new BizException("用户不存在");
             }
         }
-        String username = user.getUsername().trim();
-        if (BLACK_USER_LIST.contains(username)) {
-            throw new BizException("非法用户名");
-        }
         SysUser entity = new SysUser().setUserId(user.getId())
                 .setGender(user.getGender())
-                .setUsername(username)
                 .setDeptId(user.getDeptId())
                 .setRealName(user.getRealName().trim())
                 .setMobile(Strings.nullToEmpty(user.getMobile()).trim())
@@ -165,12 +163,35 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
             throw new BizException("用户名已存在");
         }
         if (result) {
-            if (user.getRoleId() != null && user.getRoleId() > 0) {
-                userRoleService.add(entity.getUserId(), user.getRoleId());
-            } else {
-                userRoleService.removeByUserId(entity.getUserId());
-            }
+
         }
         return result;
+    }
+
+    @SysLog("修改密码")
+    @Override
+    public boolean modifyPassword(ModifyPasswordDTO pwd) {
+        Long userId = SecurityUtil.getUserLoginInfo().getUserId();
+        SysUser user = getById(userId);
+        if (user == null) {
+            throw new BizException("用户不存在");
+        }
+        if (!passwordEncoder.matches(SecurityUtil.pwd(user.getSalt(), pwd.getOldPassword()), user.getPassword())) {
+            throw new BizException("原密码不正确");
+        }
+
+        SysUser entity = new SysUser()
+                .setUserId(userId)
+                .setPassword(passwordEncoder.encode(SecurityUtil.pwd(user.getSalt(), pwd.getPassword())));
+        boolean result = updateById(entity);
+        if (result) {
+            eventPublisher.publishEvent(new LogoutEvent((String) RequestAttrUtil.getAttribute(TOKEN_CACHE)));
+        }
+        return result;
+    }
+
+    @Override
+    public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
+        eventPublisher = applicationEventPublisher;
     }
 }

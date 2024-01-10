@@ -2,10 +2,7 @@ package com.yanxuan88.australiacallcenter.web;
 
 import com.yanxuan88.australiacallcenter.annotation.Authenticated;
 import com.yanxuan88.australiacallcenter.graphql.util.RelayUtil;
-import com.yanxuan88.australiacallcenter.model.dto.AddUserDTO;
-import com.yanxuan88.australiacallcenter.model.dto.EditUserDTO;
-import com.yanxuan88.australiacallcenter.model.dto.PageDTO;
-import com.yanxuan88.australiacallcenter.model.dto.UserQueryDTO;
+import com.yanxuan88.australiacallcenter.model.dto.*;
 import com.yanxuan88.australiacallcenter.model.vo.UserVO;
 import com.yanxuan88.australiacallcenter.service.IUserService;
 import graphql.relay.Connection;
@@ -66,6 +63,7 @@ public class UserController {
 
     /**
      * 编辑用户
+     *
      * @param user 用户
      * @return true/false
      */
@@ -96,8 +94,20 @@ public class UserController {
      */
     @PreAuthorize("hasAuthority('sys:user:lock')")
     @MutationMapping
-    public boolean chgUserStatus (@Argument @Valid @NotNull(message = "用户标识不能为空")
+    public boolean chgUserStatus(@Argument @Valid @NotNull(message = "用户标识不能为空")
                                  @Min(value = 1, message = "用户不存在") Long userId) {
         return userService.chgUserStatus(userId);
+    }
+
+    /**
+     * 修改密码
+     *
+     * @param pwd 参数
+     * @return true/false
+     */
+    @Authenticated
+    @MutationMapping
+    public boolean modifyPassword(@Argument @Valid ModifyPasswordDTO pwd) {
+        return userService.modifyPassword(pwd);
     }
 }

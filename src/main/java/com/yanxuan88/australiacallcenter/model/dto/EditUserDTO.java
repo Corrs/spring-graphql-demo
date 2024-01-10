@@ -17,10 +17,6 @@ public class EditUserDTO {
     @Length(max = 50, message = "真实姓名长度应在50字以内")
     @NotBlank(message = "真实姓名不能为空")
     private String realName;
-    @Pattern(regexp = Constant.USERNAME_REG, message = "用户名格式不正确")
-    @Length(min = 8, max = 50, message = "用户名长度应在8-50字以内")
-    @NotBlank(message = "用户名不能为空")
-    private String username;
     @DesensitizeEmail
     @Email(regexp = Constant.EMAIL_REG, message = "邮箱格式不正确")
     @Length(max = 50, message = "邮箱长度应在50字以内")

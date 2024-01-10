@@ -18,4 +18,5 @@ public class UserVO {
     private String mobile;
     private Integer gender;
     private Integer status;
+    private Boolean isDeleted;
 }

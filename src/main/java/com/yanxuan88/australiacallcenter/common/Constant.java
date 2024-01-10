@@ -10,9 +10,10 @@ import java.util.concurrent.TimeUnit;
 import static java.time.ZoneId.SHORT_IDS;
 
 public interface Constant {
+    String PASSWORD_REG = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,30}$";
     String MOBILE_REG= "^[0,1]\\d{10,14}$";
     String EMAIL_REG= "^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$";
-    String USERNAME_REG = "^[a-zA-Z][1-9a-zA-Z]+$";
+    String USERNAME_REG = "^[a-zA-Z][0-9a-zA-Z]{7,49}$";
     List<String> BLACK_USER_LIST = Collections.unmodifiableList(Arrays.asList("admin", "superadmin", "root", "administrator", "Administrator"));
     String DEFAULT_PASSWORD_MD5 = "14e1b600b1fd579f47433b88e8d85291";
     long SUPER_ADMIN_USER_ID = 1L;
@@ -23,6 +24,7 @@ public interface Constant {
     Long SESSION_EXPIRE = 2L;
     TimeUnit SESSION_EXPIRE_UNIT = TimeUnit.HOURS;
     String TOKEN_PAYLOAD_KEY = "uuid";
+    String TOKEN_CACHE = "tokenCache";
     String HEADER_CAPTCHA_KEY = "captchaKey";
     ZoneId DEFAULT_ZONE_ID = ZoneId.of("CTT", SHORT_IDS);
     DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd").withZone(DEFAULT_ZONE_ID);

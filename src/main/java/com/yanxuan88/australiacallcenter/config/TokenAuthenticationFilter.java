@@ -49,6 +49,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                 DecodedJWT decodedJWT = JWTUtil.decodedJWT(token);
                 String uuid = decodedJWT.getClaim(Constant.TOKEN_PAYLOAD_KEY).asString();
                 String sessionCacheKey = SESSION_KEY.concat(uuid);
+                request.setAttribute(TOKEN_CACHE, sessionCacheKey);
                 List<Object> objects = redisClient.piPipelined(operations -> {
                     redisClient.get(sessionCacheKey);
                     redisClient.expire(sessionCacheKey, SESSION_EXPIRE, SESSION_EXPIRE_UNIT);

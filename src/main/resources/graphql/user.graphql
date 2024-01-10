@@ -14,6 +14,13 @@ extend type Mutation {
     remUser(userId: Long!): Boolean
     "切换用户状态"
     chgUserStatus(userId: Long!): Boolean
+    "修改密码"
+    modifyPassword(pwd: ModifyPasswordDTO!): Boolean
+}
+
+input ModifyPasswordDTO {
+    password: String!
+    oldPassword: String!
 }
 
 input UserQueryDTO {
@@ -46,6 +53,7 @@ type UserVO implements EdgeNode {
     createTime: LocalDateTime
     roleId: Long
     deptId: Long
+    isDeleted: Boolean
 }
 
 input AddUserDTO {
@@ -61,7 +69,6 @@ input AddUserDTO {
 input EditUserDTO {
     id: Long!
     realName: String!
-    username: String!
     email: String
     mobile: String
     deptId: Long!

@@ -5,7 +5,6 @@
     <update id="saUpdate">
         UPDATE `sys_user`
         SET dept_id=#{entity.deptId},
-            username=#{entity.username},
             gender=#{entity.gender},
             real_name=#{entity.realName},
             mobile=#{entity.mobile},
@@ -14,13 +13,14 @@
     </update>
     <select id="users" resultType="com.yanxuan88.australiacallcenter.model.vo.UserVO">
         select u.user_id as id,
-            username,
-            real_name,
-            `email`,
-            mobile,
-            dept_id,
-            gender,
-            `status`,
+            u.username,
+            u.real_name,
+            u.`email`,
+            u.mobile,
+            u.dept_id,
+            u.gender,
+            u.`status`,
+            u.is_deleted,
             u.create_time,
             ur.role_id
         from sys_user u
@@ -36,13 +36,14 @@
     </select>
     <select id="allUsers" resultType="com.yanxuan88.australiacallcenter.model.vo.UserVO">
         select u.user_id as id,
-            username,
-            real_name,
-            `email`,
-            mobile,
-            dept_id,
-            gender,
-            `status`,
+            u.username,
+            u.real_name,
+            u.`email`,
+            u.mobile,
+            u.dept_id,
+            u.gender,
+            u.`status`,
+            u.is_deleted,
             u.create_time,
             ur.role_id
         from sys_user u
