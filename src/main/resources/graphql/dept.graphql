@@ -5,11 +5,11 @@ extend type Query {
 
 extend type Mutation {
   "新增部门"
-  addDept(dept: AddDeptDTO!): DeptVO!
+  addDept(dept: AddDeptDTO!): Boolean!
   "删除部门"
   remDept(id: Long!): Boolean!
   "编辑部门"
-  editDept(dept: EditDeptDTO!): DeptVO!
+  editDept(dept: EditDeptDTO!): Boolean!
 }
 
 input EditDeptDTO {

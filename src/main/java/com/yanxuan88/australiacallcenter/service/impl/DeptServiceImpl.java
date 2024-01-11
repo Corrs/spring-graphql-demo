@@ -13,7 +13,6 @@ import com.yanxuan88.australiacallcenter.model.vo.DeptVO;
 import com.yanxuan88.australiacallcenter.service.IDeptService;
 import com.yanxuan88.australiacallcenter.service.IUserService;
 import graphql.com.google.common.collect.Sets;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -43,11 +42,10 @@ public class DeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impleme
      */
     @Override
     @SysLog("新增机构")
-    public synchronized DeptVO addDept(AddDeptDTO dept) {
+    public synchronized boolean addDept(AddDeptDTO dept) {
         // 1.
         Long pid = dept.getPid();
         String pids = "0";
-        String pname = "";
         if (pid > 0) {
             SysDept pDept = getById(pid);
             if (pDept == null) {
@@ -57,7 +55,6 @@ public class DeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impleme
             if (pids.split(COMMA_SPLIT_REG).length > 3) {
                 throw new BizException("只允许创建3级机构");
             }
-            pname = pDept.getName();
         }
         // 2.
         String name = dept.getName().trim();
@@ -76,12 +73,7 @@ public class DeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impleme
         if (!save(entity)) {
             throw new BizException("机构创建失败");
         }
-        return new DeptVO()
-                .setId(entity.getId())
-                .setPname(pname)
-                .setName(name)
-                .setSort(dept.getSort())
-                .setPid(pid);
+        return true;
     }
 
     @Override
@@ -130,7 +122,7 @@ public class DeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impleme
      */
     @Override
     @SysLog("编辑机构")
-    public synchronized DeptVO editDept(EditDeptDTO dept) {
+    public synchronized boolean editDept(EditDeptDTO dept) {
         // 1.
         Long id = dept.getId();
         Long pid = dept.getPid();
@@ -143,14 +135,12 @@ public class DeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impleme
         }
         // 2.
         String pids = "0";
-        String pname = "";
         if (pid > 0) {
             SysDept pDept = getById(pid);
             if (pDept == null) {
                 throw new BizException("上级机构不存在");
             }
             pids = pDept.getPids() + "," + pid;
-            pname = pDept.getName();
         }
 
         String childrenPidsPrefix = entity.getPids() + "," + id;
@@ -189,6 +179,6 @@ public class DeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impleme
         if (!updateBatchById(list)) {
             throw new BizException("机构编辑失败");
         }
-        return new DeptVO().setId(id).setPid(pid).setName(name).setPname(pname).setSort(dept.getSort());
+        return true;
     }
 }

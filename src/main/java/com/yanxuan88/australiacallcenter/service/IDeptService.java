@@ -9,11 +9,11 @@ import com.yanxuan88.australiacallcenter.model.vo.DeptVO;
 import java.util.List;
 
 public interface IDeptService extends IService<SysDept> {
-    DeptVO addDept(AddDeptDTO dept);
+    boolean addDept(AddDeptDTO dept);
 
     List<DeptVO> depts();
 
     boolean remDept(Long id);
 
-    DeptVO editDept(EditDeptDTO dept);
+    boolean editDept(EditDeptDTO dept);
 }

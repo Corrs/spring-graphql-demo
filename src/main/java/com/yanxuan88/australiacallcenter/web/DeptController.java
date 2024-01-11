@@ -36,7 +36,7 @@ public class DeptController {
      */
     @PreAuthorize("hasAuthority('sys:dept:save')")
     @MutationMapping
-    public DeptVO addDept(@Argument @Valid AddDeptDTO dept) {
+    public boolean addDept(@Argument @Valid AddDeptDTO dept) {
         return deptService.addDept(dept);
     }
 
@@ -72,7 +72,7 @@ public class DeptController {
      */
     @PreAuthorize("hasAuthority('sys:dept:update')")
     @MutationMapping
-    public DeptVO editDept(@Argument @Valid EditDeptDTO dept) {
+    public boolean editDept(@Argument @Valid EditDeptDTO dept) {
         return deptService.editDept(dept);
     }
 

@@ -42,4 +42,8 @@ public final class DesensitizeUtil {
     public static String masking(String value) {
         return isBlank(value) ? null : Strings.repeat(SYMBOL, value.length());
     }
+
+    public static String desensitize(String str) {
+        return isBlank(str) ? "" : Strings.repeat(SYMBOL, str.trim().length());
+    }
 }
