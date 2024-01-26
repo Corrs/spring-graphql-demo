@@ -3,6 +3,7 @@ package com.yanxuan88.australiacallcenter.service.impl;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yanxuan88.australiacallcenter.annotation.SysLog;
+import com.yanxuan88.australiacallcenter.config.RedisClient;
 import com.yanxuan88.australiacallcenter.exception.BizException;
 import com.yanxuan88.australiacallcenter.mapper.SysDeptMapper;
 import com.yanxuan88.australiacallcenter.model.dto.AddDeptDTO;
@@ -30,6 +31,9 @@ public class DeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impleme
     private TransactionTemplate transactionTemplate;
     @Autowired
     private IUserService userService;
+    @Autowired
+    private RedisClient redisClient;
+    private static final String LOCK_KEY = "dept";
 
     /**
      * 创建部门，暂时先不加分布式锁
@@ -42,38 +46,39 @@ public class DeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impleme
      */
     @Override
     @SysLog("新增机构")
-    public synchronized boolean addDept(AddDeptDTO dept) {
-        // 1.
-        Long pid = dept.getPid();
-        String pids = "0";
-        if (pid > 0) {
-            SysDept pDept = getById(pid);
-            if (pDept == null) {
-                throw new BizException("上级机构不存在");
+    public boolean addDept(AddDeptDTO dept) {
+        return redisClient.doWithLock(LOCK_KEY, lock -> {
+            // 1.
+            Long pid = dept.getPid();
+            String pids = "0";
+            if (pid > 0) {
+                SysDept pDept = getById(pid);
+                if (pDept == null) {
+                    throw new BizException("上级机构不存在");
+                }
+                pids = pDept.getPids() + "," + pid;
+                if (pids.split(COMMA_SPLIT_REG).length > 3) {
+                    throw new BizException("只允许创建3级机构");
+                }
             }
-            pids = pDept.getPids() + "," + pid;
-            if (pids.split(COMMA_SPLIT_REG).length > 3) {
-                throw new BizException("只允许创建3级机构");
+            // 2.
+            String name = dept.getName().trim();
+            SysDept oDept = getOne(Wrappers.<SysDept>lambdaQuery().eq(SysDept::getPid, pid).eq(SysDept::getName, name).eq(SysDept::getIsDeleted, Boolean.FALSE), false);
+            if (oDept != null) {
+                throw new BizException("名称重复，请更换名称");
             }
-        }
-        // 2.
-        String name = dept.getName().trim();
-        SysDept oDept = getOne(Wrappers.<SysDept>lambdaQuery().eq(SysDept::getPid, pid).eq(SysDept::getName, name).eq(SysDept::getIsDeleted, Boolean.FALSE), false);
-        if (oDept != null) {
-            throw new BizException("名称重复，请更换名称");
-        }
 
+            SysDept entity = new SysDept()
+                    .setName(name)
+                    .setPid(pid)
+                    .setPids(pids)
+                    .setSort(dept.getSort());
 
-        SysDept entity = new SysDept()
-                .setName(name)
-                .setPid(pid)
-                .setPids(pids)
-                .setSort(dept.getSort());
-
-        if (!save(entity)) {
-            throw new BizException("机构创建失败");
-        }
-        return true;
+            if (!save(entity)) {
+                throw new BizException("机构创建失败");
+            }
+            return true;
+        });
     }
 
     @Override
@@ -92,22 +97,24 @@ public class DeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impleme
      */
     @Override
     @SysLog("删除机构")
-    public synchronized boolean remDept(Long id) {
-        SysDept dept = getById(id);
-        if (dept == null) {
-            throw new BizException("机构数据不存在");
-        }
-        SysDept child = getOne(Wrappers.<SysDept>lambdaQuery().eq(SysDept::getPid, id).eq(SysDept::getIsDeleted, Boolean.FALSE), false);
-        if (child != null) {
-            throw new BizException("请先删除子机构");
-        }
-        // 判断部门下是否有用户
-        List<SysUser> users = userService.queryByDept(id);
-        if (!CollectionUtils.isEmpty(users)) {
-            throw new BizException("请先移除部门下的用户数据");
-        }
+    public boolean remDept(Long id) {
+        return redisClient.doWithLock(LOCK_KEY, lock -> {
+            SysDept dept = getById(id);
+            if (dept == null) {
+                throw new BizException("机构数据不存在");
+            }
+            SysDept child = getOne(Wrappers.<SysDept>lambdaQuery().eq(SysDept::getPid, id).eq(SysDept::getIsDeleted, Boolean.FALSE), false);
+            if (child != null) {
+                throw new BizException("请先删除子机构");
+            }
+            // 判断部门下是否有用户
+            List<SysUser> users = userService.queryByDept(id);
+            if (!CollectionUtils.isEmpty(users)) {
+                throw new BizException("请先移除部门下的用户数据");
+            }
 
-        return removeById(id);
+            return removeById(id);
+        });
     }
 
     /**
@@ -122,63 +129,64 @@ public class DeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impleme
      */
     @Override
     @SysLog("编辑机构")
-    public synchronized boolean editDept(EditDeptDTO dept) {
-        // 1.
-        Long id = dept.getId();
-        Long pid = dept.getPid();
-        if (id.equals(pid)) {
-            throw new BizException("上级机构与本机构相同");
-        }
-        SysDept entity = getById(id);
-        if (entity == null) {
-            throw new BizException("机构数据不存在");
-        }
-        // 2.
-        String pids = "0";
-        if (pid > 0) {
-            SysDept pDept = getById(pid);
-            if (pDept == null) {
-                throw new BizException("上级机构不存在");
+    public boolean editDept(EditDeptDTO dept) {
+        return redisClient.doWithLock(LOCK_KEY, lock -> {
+            // 1.
+            Long id = dept.getId();
+            Long pid = dept.getPid();
+            if (id.equals(pid)) {
+                throw new BizException("上级机构与本机构相同");
             }
-            pids = pDept.getPids() + "," + pid;
-        }
-
-        String childrenPidsPrefix = entity.getPids() + "," + id;
-        List<SysDept> list = new ArrayList<>();
-        if (!Objects.equals(pid, entity.getPid())) {
-            String[] pidList = pids.split(COMMA_SPLIT_REG);
-            if (Sets.newHashSet(pidList).contains("" + id)) {
-                throw new BizException("上级机构不能为下级机构");
+            SysDept entity = getById(id);
+            if (entity == null) {
+                throw new BizException("机构数据不存在");
             }
-            if (pidList.length > 3) {
-                throw new BizException("机构层级超过3级");
-            }
-            // 上级机构改变
-            list.addAll(baseMapper.selectSubDepts(id));
-            if (list.size() > 0) {
-                int maxChildrenLevel = list.stream().map(SysDept::getPids).mapToInt(e -> e.substring(childrenPidsPrefix.length()).split(COMMA_SPLIT_REG).length).max().orElse(0);
-                if (pids.split(COMMA_SPLIT_REG).length + maxChildrenLevel > 3) {
-                    throw new BizException("子机构层级超过3级");
+            // 2.
+            String pids = "0";
+            if (pid > 0) {
+                SysDept pDept = getById(pid);
+                if (pDept == null) {
+                    throw new BizException("上级机构不存在");
                 }
-                String replace = pids + ",";
-                list.forEach(e -> e.setPids(e.getPids().replace(entity.getPids() + ",", replace)));
+                pids = pDept.getPids() + "," + pid;
             }
-        }
 
-        String name = dept.getName().trim();
-        if (!name.equals(entity.getName())) {
-            SysDept oDept = getOne(Wrappers.<SysDept>lambdaQuery().eq(SysDept::getPid, pid).eq(SysDept::getName, name).eq(SysDept::getIsDeleted, Boolean.FALSE), false);
-            if (oDept != null) {
-                throw new BizException("名称重复，请更换名称");
+            String childrenPidsPrefix = entity.getPids() + "," + id;
+            List<SysDept> list = new ArrayList<>();
+            if (!Objects.equals(pid, entity.getPid())) {
+                String[] pidList = pids.split(COMMA_SPLIT_REG);
+                if (Sets.newHashSet(pidList).contains("" + id)) {
+                    throw new BizException("上级机构不能为下级机构");
+                }
+                if (pidList.length > 3) {
+                    throw new BizException("机构层级超过3级");
+                }
+                // 上级机构改变
+                list.addAll(baseMapper.selectSubDepts(id));
+                if (list.size() > 0) {
+                    int maxChildrenLevel = list.stream().map(SysDept::getPids).mapToInt(e -> e.substring(childrenPidsPrefix.length()).split(COMMA_SPLIT_REG).length).max().orElse(0);
+                    if (pids.split(COMMA_SPLIT_REG).length + maxChildrenLevel > 3) {
+                        throw new BizException("子机构层级超过3级");
+                    }
+                    String replace = pids + ",";
+                    list.forEach(e -> e.setPids(e.getPids().replace(entity.getPids() + ",", replace)));
+                }
             }
-        }
 
+            String name = dept.getName().trim();
+            if (!name.equals(entity.getName())) {
+                SysDept oDept = getOne(Wrappers.<SysDept>lambdaQuery().eq(SysDept::getPid, pid).eq(SysDept::getName, name).eq(SysDept::getIsDeleted, Boolean.FALSE), false);
+                if (oDept != null) {
+                    throw new BizException("名称重复，请更换名称");
+                }
+            }
 
-        entity.setPid(pid).setPids(pids).setName(name).setSort(dept.getSort());
-        list.add(entity);
-        if (!updateBatchById(list)) {
-            throw new BizException("机构编辑失败");
-        }
-        return true;
+            entity.setPid(pid).setPids(pids).setName(name).setSort(dept.getSort());
+            list.add(entity);
+            if (!updateBatchById(list)) {
+                throw new BizException("机构编辑失败");
+            }
+            return true;
+        });
     }
 }

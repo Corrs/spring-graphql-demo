@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yanxuan88.australiacallcenter.annotation.SysLog;
+import com.yanxuan88.australiacallcenter.config.RedisClient;
 import com.yanxuan88.australiacallcenter.exception.BizException;
 import com.yanxuan88.australiacallcenter.mapper.SysDictDataMapper;
 import com.yanxuan88.australiacallcenter.model.dto.AddDictDataDTO;
@@ -13,6 +14,7 @@ import com.yanxuan88.australiacallcenter.model.dto.PageDTO;
 import com.yanxuan88.australiacallcenter.model.entity.SysDictData;
 import com.yanxuan88.australiacallcenter.model.vo.DictDataVO;
 import com.yanxuan88.australiacallcenter.service.IDictDataService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -23,6 +25,10 @@ import java.util.stream.Collectors;
 
 @Service
 public class DictDataServiceImpl extends ServiceImpl<SysDictDataMapper, SysDictData> implements IDictDataService {
+    @Autowired
+    private RedisClient redisClient;
+    private static final String LOCK_KEY = "dictData";
+
     @Override
     public Page<DictDataVO> page(PageDTO p, DictDataQueryDTO query) {
         Page<SysDictData> page = page(p.page(), Wrappers.<SysDictData>lambdaQuery()
@@ -50,49 +56,52 @@ public class DictDataServiceImpl extends ServiceImpl<SysDictDataMapper, SysDictD
 
     @Override
     @SysLog("新增字典数据")
-    public synchronized boolean add(AddDictDataDTO dictData) {
-        String dictValue = dictData.getDictValue().trim();
-        Long dictTypeId = dictData.getDictTypeId();
-        SysDictData record = getOne(Wrappers.<SysDictData>lambdaQuery().eq(SysDictData::getDictTypeId, dictTypeId).eq(SysDictData::getDictValue, dictValue), false);
-        if (record != null) {
-            throw new BizException("字典值重复");
-        }
-        SysDictData entity = new SysDictData();
-        entity.setDictLabel(dictData.getDictLabel().trim());
-        entity.setDictTypeId(dictTypeId);
-        entity.setDictValue(dictValue);
-        entity.setSort(dictData.getSort());
-        entity.setRemark(Optional.ofNullable(dictData.getRemark()).map(String::trim).orElse(""));
-        boolean result = save(entity);
-        return result;
+    public boolean add(AddDictDataDTO dictData) {
+        return redisClient.doWithLock(LOCK_KEY, lock -> {
+            String dictValue = dictData.getDictValue().trim();
+            Long dictTypeId = dictData.getDictTypeId();
+            SysDictData record = getOne(Wrappers.<SysDictData>lambdaQuery().eq(SysDictData::getDictTypeId, dictTypeId).eq(SysDictData::getDictValue, dictValue), false);
+            if (record != null) {
+                throw new BizException("字典值重复");
+            }
+            SysDictData entity = new SysDictData();
+            entity.setDictLabel(dictData.getDictLabel().trim());
+            entity.setDictTypeId(dictTypeId);
+            entity.setDictValue(dictValue);
+            entity.setSort(dictData.getSort());
+            entity.setRemark(Optional.ofNullable(dictData.getRemark()).map(String::trim).orElse(""));
+            boolean result = save(entity);
+            return result;
+        });
     }
 
     @Override
     @SysLog("删除字典数据")
-    public synchronized boolean rem(List<Long> ids) {
-        return removeBatchByIds(ids);
+    public boolean rem(List<Long> ids) {
+        return redisClient.doWithLock(LOCK_KEY, lock -> removeBatchByIds(ids));
     }
 
     @Override
     @SysLog("修改字典数据")
-    public synchronized boolean edit(EditDictDataDTO dictData) {
-        Long id = dictData.getId();
-        SysDictData entity = getById(id);
-        if (entity == null) {
-            throw new BizException("字典数据不存在");
-        }
-        String dictValue = dictData.getDictValue().trim();
-        if (!entity.getDictValue().equals(dictValue)) {
-            SysDictData record = getOne(Wrappers.<SysDictData>lambdaQuery().eq(SysDictData::getDictTypeId, entity.getDictTypeId()).eq(SysDictData::getDictValue, dictValue), false);
-            if (record != null) {
-                throw new BizException("字典值重复");
+    public boolean edit(EditDictDataDTO dictData) {
+        return redisClient.doWithLock(LOCK_KEY, lock -> {
+            Long id = dictData.getId();
+            SysDictData entity = getById(id);
+            if (entity == null) {
+                throw new BizException("字典数据不存在");
             }
-            entity.setDictValue(dictValue);
-        }
-        entity.setSort(dictData.getSort());
-        entity.setDictLabel(dictData.getDictLabel().trim());
-        entity.setRemark(Optional.ofNullable(dictData.getRemark()).map(String::trim).orElse(""));
-        boolean result = updateById(entity);
-        return result;
+            String dictValue = dictData.getDictValue().trim();
+            if (!entity.getDictValue().equals(dictValue)) {
+                SysDictData record = getOne(Wrappers.<SysDictData>lambdaQuery().eq(SysDictData::getDictTypeId, entity.getDictTypeId()).eq(SysDictData::getDictValue, dictValue), false);
+                if (record != null) {
+                    throw new BizException("字典值重复");
+                }
+                entity.setDictValue(dictValue);
+            }
+            entity.setSort(dictData.getSort());
+            entity.setDictLabel(dictData.getDictLabel().trim());
+            entity.setRemark(Optional.ofNullable(dictData.getRemark()).map(String::trim).orElse(""));
+            return updateById(entity);
+        });
     }
 }

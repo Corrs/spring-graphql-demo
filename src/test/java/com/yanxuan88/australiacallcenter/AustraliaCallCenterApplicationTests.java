@@ -1,14 +1,23 @@
 package com.yanxuan88.australiacallcenter;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.integration.core.MessagingTemplate;
+import org.springframework.integration.redis.channel.SubscribableRedisChannel;
+import org.springframework.integration.redis.util.RedisLockRegistry;
+import org.springframework.integration.support.MessageBuilder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
 
 @SpringBootTest
 class AustraliaCallCenterApplicationTests {
@@ -16,6 +25,10 @@ class AustraliaCallCenterApplicationTests {
     PasswordEncoder passwordEncoder;
     @Autowired
     RedisTemplate<String, Object> redisTemplate;
+    @Autowired
+    SubscribableRedisChannel redisChannel;
+    @Autowired
+    RedisLockRegistry redisLockRegistry;
 
     @Test
     void test() {
@@ -69,6 +82,21 @@ class AustraliaCallCenterApplicationTests {
                     ", birth=" + birth +
                     '}';
         }
+    }
+
+    @Test
+    void testSendRedisMsg() throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        MessagingTemplate template = new MessagingTemplate();
+        template.send(redisChannel, MessageBuilder.withPayload(mapper.writeValueAsString(Collections.singletonMap("k", "213123"))).build());
+    }
+    @Test
+    void testRedisLockRegistry() throws InterruptedException {
+        // 需要注意，这个redis分布式锁没有看门狗，不会自动续期
+        Lock lock = redisLockRegistry.obtain("aaaaaa");
+        lock.lock();
+        TimeUnit.SECONDS.sleep(20L);
+        lock.unlock();
     }
 
 }

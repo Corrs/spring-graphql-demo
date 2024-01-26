@@ -8,13 +8,17 @@ import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.*;
 import org.springframework.data.redis.core.script.RedisScript;
+import org.springframework.integration.redis.util.RedisLockRegistry;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
 import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * Redis工具类
@@ -27,6 +31,8 @@ import java.util.function.Consumer;
 public final class RedisClient {
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
+    @Autowired
+    private RedisLockRegistry redisLockRegistry;
 
     /**
      * 指定缓存失效时间
@@ -663,6 +669,16 @@ public final class RedisClient {
         final RedisConnectionFactory connectionFactory = redisTemplate.getConnectionFactory();
         if (connectionFactory == null) return null;
         return connectionFactory.getConnection();
+    }
+
+    public <R> R doWithLock(Object lockKey, Function<Lock, R> fun) {
+        Lock lock = redisLockRegistry.obtain(lockKey);
+        try {
+            lock.lock();
+            return fun.apply(lock);
+        } finally {
+            lock.unlock();
+        }
     }
 }
 
