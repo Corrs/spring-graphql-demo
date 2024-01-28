@@ -404,6 +404,42 @@ LOCK TABLES `sys_user_role` WRITE;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
+
+--
+-- Table structure for table `sys_user_role`
+--
+
+DROP TABLE IF EXISTS `sys_dynamic_job`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sys_dynamic_job` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `job_name` VARCHAR(190) NOT NULL COMMENT '任务名称',
+  `job_group` VARCHAR(190) NOT NULL COMMENT '任务组',
+  `description` VARCHAR(250) NULL COMMENT '任务描述',
+  `job_class_name` VARCHAR(250) NOT NULL COMMENT '任务类全路径',
+  `job_data` json NULL COMMENT '任务携带的参数',
+  `status` bit NOT NULL DEFAULT 1 COMMENT '任务状态 0暂停 1运行中',
+  `trigger_type` tinyint NOT NULL COMMENT '触发器类型 0 cron 1 simple 2 calendar 3 dailytime',
+  `trigger_rule` json NOT NULL COMMENT '触发规则',
+  `first_runtime` datetime NULL COMMENT '首次执行时间',
+  `create_time` datetime NOT NULL,
+  `update_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='定时任务表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sys_dynamic_job`
+--
+
+LOCK TABLES `sys_dynamic_job` WRITE;
+/*!40000 ALTER TABLE `sys_dynamic_job` DISABLE KEYS */;
+/*!40000 ALTER TABLE `sys_dynamic_job` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;

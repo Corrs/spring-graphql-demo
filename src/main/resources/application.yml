@@ -79,8 +79,7 @@ spring:
   redis:
     database: 0
     host: 127.0.0.1
-    #    password: yx123123=
-    #    host: 192.168.110.108
+    password: yx123123=
     client-type: lettuce
     lettuce:
       pool:
@@ -136,8 +135,6 @@ server:
       dir: /Volumes/k1/logs/undertow
 spring:
   profiles: mac
-  redis:
-    password: yx123123=
 log-home: /Volumes/k1/logs/${spring.application.name}
 
 ---

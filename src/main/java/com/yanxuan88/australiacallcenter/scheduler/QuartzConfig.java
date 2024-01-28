@@ -2,6 +2,7 @@ package com.yanxuan88.australiacallcenter.scheduler;
 
 import org.quartz.Calendar;
 import org.quartz.JobDetail;
+import org.quartz.Scheduler;
 import org.quartz.Trigger;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
@@ -46,5 +47,4 @@ public class QuartzConfig {
         properties.putAll(source);
         return properties;
     }
-
 }

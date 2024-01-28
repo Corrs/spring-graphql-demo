@@ -5,7 +5,6 @@ import com.yanxuan88.australiacallcenter.model.entity.SysMenu;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.Collection;
 import java.util.List;
 
 @Mapper
