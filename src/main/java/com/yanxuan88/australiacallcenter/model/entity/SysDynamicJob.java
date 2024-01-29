@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
 
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
  * @since 2024-01-26 20:24:38
  */
 @Data
+@Accessors(chain = true)
 @TableName("`sys_dynamic_job`")
 public class SysDynamicJob {
     @TableId(type = IdType.AUTO)

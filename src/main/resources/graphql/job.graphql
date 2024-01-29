@@ -1,0 +1,62 @@
+extend type Query {
+  dynamicJobs(page: Page!, query: DynamicJobQueryDTO!): DynamicJobConnection
+}
+
+extend type Mutation {
+  remDynamicJob(id: Long!): Boolean
+  switchJob(id: Long!): Boolean!
+  editDynamicJob(job: EditDynamicJobDTO!): Boolean
+  addDynamicJob(job: AddDynamicJobDTO!): Boolean
+}
+
+input EditDynamicJobDTO {
+  id: Long!
+  description: String
+  status: Boolean
+  triggerType: Int
+  triggerRule: String
+  firstRuntime: LocalDateTime
+}
+
+input AddDynamicJobDTO {
+  jobName: String!
+  jobGroup: String!
+  description: String
+  jobClassName: String!
+  jobData: String
+  status: Boolean
+  triggerType: Int
+  triggerRule: String
+  firstRuntime: LocalDateTime
+}
+
+type DynamicJobConnection implements Connection {
+  pageInfo: PageInfo!
+  edges: [DynamicJobEdge]
+  total: Long
+}
+
+type DynamicJobEdge implements Edge {
+  cursor: String!
+  node: DynamicJobVO
+}
+
+type DynamicJobVO implements EdgeNode {
+  id: Long!
+  jobName: String
+  jobGroup: String
+  jobClassName: String
+  jobData: String
+  description: String
+  status: Boolean
+  triggerType: Int
+  triggerRule: String
+  firstRuntime: LocalDateTime
+  createTime: LocalDateTime
+  updateTime: LocalDateTime
+}
+
+input DynamicJobQueryDTO {
+  name: String
+  group: String
+}

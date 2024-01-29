@@ -34,11 +34,17 @@ spring:
     properties:
       org:
         quartz:
+          threadPool:
+            class: org.quartz.simpl.SimpleThreadPool
+            threadCount: 3
+            threadPriority: 2
+            threadsInheritContextClassLoaderOfInitializingThread: true
           jobStore:
             class: org.quartz.impl.jdbcjobstore.JobStoreTX
             driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
             tablePrefix: QRTZ_
-            useProperties: true
+            misfireThreshold: 60000
+            useProperties: false # true时JobDataMap的value只能是String类型
             isClustered: true
             dataSource: QuartzDS
           dataSource:

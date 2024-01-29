@@ -1,6 +1,7 @@
 package com.yanxuan88.australiacallcenter.web;
 
 import com.yanxuan88.australiacallcenter.annotation.Authenticated;
+import com.yanxuan88.australiacallcenter.annotation.SaAuthorize;
 import com.yanxuan88.australiacallcenter.model.dto.AddMenuDTO;
 import com.yanxuan88.australiacallcenter.model.dto.EditMenuDTO;
 import com.yanxuan88.australiacallcenter.model.vo.MenuVO;
@@ -10,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
 import javax.validation.Valid;
@@ -41,7 +41,7 @@ public class MenuController {
      * @param menu 参数
      * @return true/false
      */
-    @PreAuthorize("hasAuthority('sys:menu:save')")
+    @SaAuthorize
     @MutationMapping
     public boolean addMenu(@Argument @Valid AddMenuDTO menu) {
         return menuService.add(menu);
@@ -53,7 +53,7 @@ public class MenuController {
      * @param menu 菜单
      * @return true/false
      */
-    @PreAuthorize("hasAuthority('sys:menu:update')")
+    @SaAuthorize
     @MutationMapping
     public boolean editMenu(@Argument @Valid EditMenuDTO menu) {
         return menuService.edit(menu);
@@ -65,7 +65,7 @@ public class MenuController {
      * @param id 菜单id
      * @return true/false
      */
-    @PreAuthorize("hasAuthority('sys:menu:delete')")
+    @SaAuthorize
     @MutationMapping
     public boolean remMenu(@Argument @Valid @NotNull(message = "菜单标识不能为空")
                            @Min(value = 1, message = "菜单不存在") Long id) {

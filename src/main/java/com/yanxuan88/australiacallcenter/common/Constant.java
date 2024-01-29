@@ -1,6 +1,7 @@
 package com.yanxuan88.australiacallcenter.common;
 
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
@@ -27,6 +28,7 @@ public interface Constant {
     String TOKEN_CACHE = "tokenCache";
     String HEADER_CAPTCHA_KEY = "captchaKey";
     ZoneId DEFAULT_ZONE_ID = ZoneId.of("CTT", SHORT_IDS);
+    ZoneOffset DEFAULT_ZONE_OFFSET = ZoneOffset.of("+08:00");
     DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd").withZone(DEFAULT_ZONE_ID);
     DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").withZone(DEFAULT_ZONE_ID);
     /**
