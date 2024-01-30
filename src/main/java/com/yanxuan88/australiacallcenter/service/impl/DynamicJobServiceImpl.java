@@ -16,6 +16,7 @@ import com.yanxuan88.australiacallcenter.model.vo.DynamicJobVO;
 import com.yanxuan88.australiacallcenter.scheduler.SchedulerUtil;
 import com.yanxuan88.australiacallcenter.service.IDynamicJobService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -90,6 +91,9 @@ public class DynamicJobServiceImpl extends ServiceImpl<SysDynamicJobMapper, SysD
             throw new BizException("首次运行时间必须是未来时间");
         }
 
+        Integer oldTriggerType = entity.getTriggerType();
+        String oldTriggerRule = entity.getTriggerRule();
+        Boolean oldStatus = entity.getStatus();
         String triggerRule = job.getTriggerRule().trim();
         Boolean status = job.getStatus();
         entity.setUpdateTime(now).setFirstRuntime(firstRuntime)
@@ -99,10 +103,10 @@ public class DynamicJobServiceImpl extends ServiceImpl<SysDynamicJobMapper, SysD
         if (result) {
             String jobName = entity.getJobName();
             String jobGroup = entity.getJobGroup();
-            if (!firstRuntime.equals(oldRuntime) || job.getTriggerType() != entity.getTriggerType() || !triggerRule.equals(triggerRule)) {
+            if (!firstRuntime.equals(oldRuntime) || job.getTriggerType() != oldTriggerType || !triggerRule.equals(oldTriggerRule)) {
                 SchedulerUtil.rescheduleJob(jobName, jobGroup, entity.getTriggerType(), entity.getTriggerRule(), firstRuntime);
             }
-            if (!entity.getStatus().equals(status)) {
+            if (!oldStatus.equals(status)) {
                 if (Boolean.TRUE.equals(status)) SchedulerUtil.resumeJob(jobName, jobGroup);
                 else SchedulerUtil.pauseJob(jobName, jobGroup);
             }
