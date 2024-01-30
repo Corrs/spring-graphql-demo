@@ -69,6 +69,8 @@ spring:
     restart:
       enabled: true
   graphql:
+    websocket:
+      path: /graphql
     graphiql:
       enabled: true
     schema:

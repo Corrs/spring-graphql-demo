@@ -7,17 +7,19 @@ import com.yanxuan88.australiacallcenter.graphql.util.RelayUtil;
 import graphql.relay.Connection;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.graphql.data.method.annotation.Argument;
-import org.springframework.graphql.data.method.annotation.MutationMapping;
-import org.springframework.graphql.data.method.annotation.QueryMapping;
-import org.springframework.graphql.data.method.annotation.SchemaMapping;
+import org.springframework.graphql.data.method.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import javax.servlet.http.Part;
 import java.io.IOException;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.Stream;
 
 @Slf4j
 @Controller
@@ -72,5 +74,12 @@ public class HelloController {
             }
         });
         return false;
+    }
+
+    @SubscriptionMapping
+    public Flux<String> greeting() {
+        return Flux.fromStream(Stream.generate(() -> "Hello GraphQL " + UUID.randomUUID()))
+                .delayElements(Duration.ofSeconds(5))
+                .take(10);
     }
 }

@@ -9,6 +9,10 @@ extend type Mutation {
   upload2(id: Int, input: [Upload]): Boolean
 }
 
+extend type Subscription {
+  greeting: String
+}
+
 input UploadDTO {
   id: Int
   file: [Upload]
