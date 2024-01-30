@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import com.google.common.base.Strings;
 import com.yanxuan88.australiacallcenter.annotation.SysLog;
 import com.yanxuan88.australiacallcenter.common.Constant;
+import com.yanxuan88.australiacallcenter.event.listener.LogMessageGateway;
 import com.yanxuan88.australiacallcenter.event.model.LogoutEvent;
 import com.yanxuan88.australiacallcenter.exception.BizException;
 import com.yanxuan88.australiacallcenter.mapper.SysUserMapper;
@@ -19,8 +20,6 @@ import com.yanxuan88.australiacallcenter.service.IUserService;
 import com.yanxuan88.australiacallcenter.util.RequestAttrUtil;
 import com.yanxuan88.australiacallcenter.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,12 +33,13 @@ import static com.yanxuan88.australiacallcenter.model.enums.UserStatusEnum.DISAB
 import static com.yanxuan88.australiacallcenter.model.enums.UserStatusEnum.ENABLED;
 
 @Service
-public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements IUserService, ApplicationEventPublisherAware {
-    private ApplicationEventPublisher eventPublisher;
+public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements IUserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
     private IUserRoleService userRoleService;
+    @Autowired
+    LogMessageGateway logMessageGateway;
 
     @Override
     public SysUser queryByUsername(String username) {
@@ -185,13 +185,8 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
                 .setPassword(passwordEncoder.encode(SecurityUtil.pwd(user.getSalt(), pwd.getPassword())));
         boolean result = updateById(entity);
         if (result) {
-            eventPublisher.publishEvent(new LogoutEvent((String) RequestAttrUtil.getAttribute(TOKEN_CACHE)));
+            logMessageGateway.sendToLogger(new LogoutEvent((String) RequestAttrUtil.getAttribute(TOKEN_CACHE)));
         }
         return result;
-    }
-
-    @Override
-    public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
-        eventPublisher = applicationEventPublisher;
     }
 }

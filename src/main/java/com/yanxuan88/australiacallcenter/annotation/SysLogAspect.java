@@ -2,7 +2,7 @@ package com.yanxuan88.australiacallcenter.annotation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yanxuan88.australiacallcenter.common.UserLoginInfo;
-import com.yanxuan88.australiacallcenter.event.model.SysLogEvent;
+import com.yanxuan88.australiacallcenter.event.listener.LogMessageGateway;
 import com.yanxuan88.australiacallcenter.exception.BizException;
 import com.yanxuan88.australiacallcenter.model.entity.SysLogOperation;
 import com.yanxuan88.australiacallcenter.util.RequestAttrUtil;
@@ -13,8 +13,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.ApplicationEventPublisherAware;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
@@ -29,10 +28,12 @@ import static com.yanxuan88.australiacallcenter.model.enums.OperationStatusEnum.
 @Slf4j
 @Aspect
 @Component
-public class SysLogAspect implements ApplicationEventPublisherAware {
+public class SysLogAspect {
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
-    private ApplicationEventPublisher eventPublisher;
+    @Autowired
+    private LogMessageGateway logMessageGateway;
+
     @Pointcut("@annotation(com.yanxuan88.australiacallcenter.annotation.SysLog)")
     public void sysLog() {
     }
@@ -73,14 +74,9 @@ public class SysLogAspect implements ApplicationEventPublisherAware {
                         .setCreateTime(LocalDateTime.now())
                         .setCreateName(Optional.ofNullable(user).map(UserLoginInfo::getUsername).orElse(""))
                         .setCreateUser(Optional.ofNullable(user).map(UserLoginInfo::getUserId).orElse(null));
-                eventPublisher.publishEvent(new SysLogEvent(logOperation));
+                logMessageGateway.sendToLogger(logOperation);
             }
         }
-    }
-
-    @Override
-    public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
-        eventPublisher = applicationEventPublisher;
     }
 
 }

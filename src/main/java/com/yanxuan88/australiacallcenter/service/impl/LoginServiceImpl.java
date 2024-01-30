@@ -2,7 +2,7 @@ package com.yanxuan88.australiacallcenter.service.impl;
 
 import com.wf.captcha.SpecCaptcha;
 import com.yanxuan88.australiacallcenter.config.RedisClient;
-import com.yanxuan88.australiacallcenter.event.model.SysLoginLogEvent;
+import com.yanxuan88.australiacallcenter.event.listener.LogMessageGateway;
 import com.yanxuan88.australiacallcenter.exception.BizException;
 import com.yanxuan88.australiacallcenter.model.entity.SysLogLogin;
 import com.yanxuan88.australiacallcenter.model.entity.SysUser;
@@ -18,8 +18,6 @@ import com.yanxuan88.australiacallcenter.util.RequestAttrUtil;
 import com.yanxuan88.australiacallcenter.util.SecurityUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -38,10 +36,13 @@ import static com.yanxuan88.australiacallcenter.exception.BaseResultCodeEnum.*;
 
 @Slf4j
 @Service
-public class LoginServiceImpl implements ILoginService, ApplicationEventPublisherAware {
+public class LoginServiceImpl implements ILoginService {
     private static final String CACHE_LOGIN_CAPTCHA_PREFIX = "cache:loginCaptcha:";
     @Autowired
     private RedisClient redisClient;
+
+    @Autowired
+    private LogMessageGateway logMessageGateway;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -51,8 +52,6 @@ public class LoginServiceImpl implements ILoginService, ApplicationEventPublishe
 
     @Autowired
     private IMenuService menuService;
-
-    private ApplicationEventPublisher publisher;
 
     @Override
     public LoginCaptchaVO createLoginCaptcha(String loginCaptchaKey) {
@@ -109,7 +108,7 @@ public class LoginServiceImpl implements ILoginService, ApplicationEventPublishe
         // 用户不存在
         if (user == null) {
             logLogin.setStatus(LoginStatusEnum.FAIL.getCode());
-            publisher.publishEvent(new SysLoginLogEvent(logLogin));
+            logMessageGateway.sendToLogger(logLogin);
             throw new BizException(USER_NOT_FOUND);
         }
 
@@ -117,20 +116,20 @@ public class LoginServiceImpl implements ILoginService, ApplicationEventPublishe
         // 密码不正确
         if (!passwordEncoder.matches(SecurityUtil.pwd(user.getSalt(), password), user.getPassword())) {
             logLogin.setStatus(LoginStatusEnum.FAIL.getCode());
-            publisher.publishEvent(new SysLoginLogEvent(logLogin));
+            logMessageGateway.sendToLogger(logLogin);
             throw new BizException(PASSWORD_FAIL);
         }
 
         // 账号锁定
         if (user.getStatus() == UserStatusEnum.DISABLE.getCode()) {
             logLogin.setStatus(LoginStatusEnum.LOCK.getCode());
-            publisher.publishEvent(new SysLoginLogEvent(logLogin));
+            logMessageGateway.sendToLogger(logLogin);
             throw new BizException(ACCOUNT_DISABLE);
         }
 
         // 记录登录成功日志
         logLogin.setStatus(LoginStatusEnum.SUCCESS.getCode());
-        publisher.publishEvent(new SysLoginLogEvent(logLogin));
+        logMessageGateway.sendToLogger(logLogin);
         // 3.
         List<MenuVO> menus = menuService.menus(user.getUserId());
         // 4.
@@ -176,7 +175,7 @@ public class LoginServiceImpl implements ILoginService, ApplicationEventPublishe
                     logLogin.setCreateUser(user.getUserId());
                     logLogin.setCreateName(user.getUsername());
                     logLogin.setCreateTime(LocalDateTime.now());
-                    publisher.publishEvent(new SysLoginLogEvent(logLogin));
+                    logMessageGateway.sendToLogger(logLogin);
                     String name = StringUtils.hasText(user.getRealName()) ? user.getRealName() : user.getUsername();
                     log.info("用户【{}】退出登录", name);
                     redisClient.delete(user.getSessionCacheKey());
@@ -184,8 +183,4 @@ public class LoginServiceImpl implements ILoginService, ApplicationEventPublishe
         return true;
     }
 
-    @Override
-    public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
-        this.publisher = applicationEventPublisher;
-    }
 }

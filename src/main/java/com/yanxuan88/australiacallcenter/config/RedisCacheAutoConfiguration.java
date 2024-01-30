@@ -28,10 +28,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.RedisSerializer;
-import org.springframework.integration.channel.QueueChannel;
-import org.springframework.integration.redis.channel.SubscribableRedisChannel;
-import org.springframework.integration.redis.store.RedisMessageStore;
-import org.springframework.integration.redis.util.RedisLockRegistry;
 import org.springframework.integration.support.json.JacksonJsonUtils;
 import org.springframework.util.StringUtils;
 
@@ -55,33 +51,6 @@ import static com.yanxuan88.australiacallcenter.common.Constant.DATE_TIME_FORMAT
 @Import({RedisClient.class})
 @EnableConfigurationProperties(CacheProperties.class)
 public class RedisCacheAutoConfiguration extends CachingConfigurerSupport {
-
-    @Bean
-    public RedisMessageStore redisMessageStore() {
-        RedisMessageStore store = new RedisMessageStore(connectionFactory);
-        store.setValueSerializer(redisValueSerializer());
-        return store;
-    }
-
-    @Bean
-    public SubscribableRedisChannel redisChannel() {
-        return new SubscribableRedisChannel(connectionFactory, "si.test.topic");
-    }
-
-    @Bean
-    public QueueChannel queueChannel() {
-        QueueChannel channel = new QueueChannel();
-
-        return channel;
-    }
-
-    @Bean
-    public RedisLockRegistry redisLockRegistry() {
-        RedisLockRegistry lockRegistry = new RedisLockRegistry(connectionFactory, "lock", 30000L);
-        lockRegistry.setRedisLockType(RedisLockRegistry.RedisLockType.PUB_SUB_LOCK);
-        return lockRegistry;
-    }
-
     /**
      * redis 连接工厂
      */
