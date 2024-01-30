@@ -63,7 +63,7 @@ public class DynamicJobServiceImpl extends ServiceImpl<SysDynamicJobMapper, SysD
             String triggerRule = Strings.nullToEmpty(job.getTriggerRule()).trim();
             String jobClassName = job.getJobClassName().trim();
             String description = job.getDescription();
-            SysDynamicJob entity = new SysDynamicJob().setJobName(jobName).setJobGroup(jobGroup).setJobClassName(jobClassName).setDescription(description).setJobData(jobData).setTriggerType(triggerType).setTriggerRule(triggerRule).setCreateTime(LocalDateTime.now()).setFirstRuntime(firstRuntime).setStatus(job.getStatus());
+            SysDynamicJob entity = new SysDynamicJob().setJobName(jobName).setJobGroup(jobGroup).setJobClassName(jobClassName).setDescription(description).setJobData(Strings.emptyToNull(jobData)).setTriggerType(triggerType).setTriggerRule(triggerRule).setCreateTime(LocalDateTime.now()).setFirstRuntime(firstRuntime).setStatus(job.getStatus());
             boolean result = save(entity);
             if (result) {
                 SchedulerUtil.addJob(jobClassName, jobName, jobGroup, description, jobData, triggerType, triggerRule, firstRuntime);

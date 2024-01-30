@@ -4,7 +4,7 @@ extend type Query {
 
 extend type Mutation {
   remDynamicJob(id: Long!): Boolean
-  switchJob(id: Long!): Boolean!
+  switchDynamicJob(id: Long!): Boolean!
   editDynamicJob(job: EditDynamicJobDTO!): Boolean
   addDynamicJob(job: AddDynamicJobDTO!): Boolean
 }

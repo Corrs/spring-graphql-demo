@@ -86,7 +86,7 @@ public class DynamicJobController {
     @Valid
     @SaAuthorize
     @MutationMapping
-    public boolean switchJob(@Argument @NotNull(message = "任务标识不能为空")
+    public boolean switchDynamicJob(@Argument @NotNull(message = "任务标识不能为空")
                              @Min(value = 1, message = "任务不存在") Long id) {
         return dynamicJobService.switchJob(id);
     }
