@@ -3,7 +3,9 @@ package com.yanxuan88.australiacallcenter.web;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.Lists;
 import com.yanxuan88.australiacallcenter.annotation.Authenticated;
+import com.yanxuan88.australiacallcenter.annotation.SaAuthorize;
 import com.yanxuan88.australiacallcenter.graphql.util.RelayUtil;
+import com.yanxuan88.australiacallcenter.util.SecurityUtil;
 import graphql.relay.Connection;
 import lombok.extern.slf4j.Slf4j;
 import org.reactivestreams.Publisher;
@@ -76,8 +78,10 @@ public class HelloController {
         return false;
     }
 
+    @SaAuthorize
     @SubscriptionMapping
     public Publisher<String> greeting() {
+//        System.out.println(SecurityUtil.getUserLoginInfo());
         return Flux.fromStream(Stream.generate(() -> "Hello GraphQL " + UUID.randomUUID()))
                 .delayElements(Duration.ofSeconds(1))
                 .take(10);

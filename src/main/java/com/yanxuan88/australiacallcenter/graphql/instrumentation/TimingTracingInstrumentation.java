@@ -25,6 +25,7 @@ import java.util.concurrent.CompletableFuture;
  */
 @Slf4j
 public class TimingTracingInstrumentation extends SimpleInstrumentation {
+    private static final String SUBSCRIPTION_FLAG = "Subscription";
     @Override
     public InstrumentationState createState() {
         return new TracingState();
@@ -50,9 +51,11 @@ public class TimingTracingInstrumentation extends SimpleInstrumentation {
         }
 
         return environment -> {
+            TracingState tracingState = parameters.getInstrumentationState();
             String datafetcherTag = findDatafetcherTag(parameters);
+            tracingState.controlType = datafetcherTag.split("\\.")[0];
             log.info("Datafetcher {} begin execution", datafetcherTag);
-            long startTime = System.currentTimeMillis();
+            long startTime = tracingState.startTime;
             Object result = dataFetcher.get(environment);
             if (result instanceof CompletableFuture) {
                 ((CompletableFuture<?>) result).whenComplete((r, ex) -> {
@@ -79,9 +82,10 @@ public class TimingTracingInstrumentation extends SimpleInstrumentation {
         responseHeaders.put("myHeader", "hello");
         extensions.put("responseHeaders", responseHeaders);*/
         TracingState tracingState = parameters.getInstrumentationState();
-        long totalTime = System.currentTimeMillis() - tracingState.startTime;
-        log.info("Total execution time: {}ms", totalTime);
-
+        if (!SUBSCRIPTION_FLAG.equals(tracingState.controlType)) {
+            long totalTime = System.currentTimeMillis() - tracingState.startTime;
+            log.info("Total execution time: {}ms", totalTime);
+        }
         return super.instrumentExecutionResult(new ExecutionResultImpl(executionResult.getData(), executionResult.getErrors(), extensions), parameters);
     }
 
@@ -99,5 +103,6 @@ public class TimingTracingInstrumentation extends SimpleInstrumentation {
 
     static class TracingState implements InstrumentationState {
         long startTime;
+        String controlType;
     }
 }

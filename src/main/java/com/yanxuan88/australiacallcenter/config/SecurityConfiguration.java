@@ -1,6 +1,5 @@
 package com.yanxuan88.australiacallcenter.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -22,7 +21,6 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -43,8 +41,6 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfiguration {
-    @Autowired
-    private RedisClient redisClient;
     private static final String CORS_ALLOWED_ALL = "*";
 
     /**
@@ -90,7 +86,7 @@ public class SecurityConfiguration {
                 )
                 // 使用token，禁用session
                 .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(new TokenAuthenticationFilter(redisClient), BasicAuthenticationFilter.class)
+//                .addFilterBefore(new TokenAuthenticationFilter(redisClient), BasicAuthenticationFilter.class)
                 .build();
     }
 
