@@ -48,15 +48,16 @@ public class GraphQlConfig {
         return builder -> builder
                 .exceptionResolvers(Lists.newArrayList(new SecurityDataFetcherExceptionResolver(), new MyExceptionResolver(), new ValidationExceptionResolver()))
                 .configureGraphQl(graphQlBuilder -> graphQlBuilder
-                // 缓存文档，而不是缓存结果，
-                .preparsedDocumentProvider(new PersistedQuerySupport(InMemoryPersistedQueryCache.newInMemoryPersistedQueryCache().build()) {
-                    @Override
-                    protected Optional<Object> getPersistedQueryId(ExecutionInput executionInput) {
-                        return Optional.ofNullable(Base64.getEncoder().encodeToString(executionInput.getQuery().getBytes(StandardCharsets.UTF_8)));
-                    }
-                })
-                .instrumentation(new TimingTracingInstrumentation())
-        );
+                        // 缓存文档，而不是缓存结果，
+                        .preparsedDocumentProvider(new PersistedQuerySupport(InMemoryPersistedQueryCache.newInMemoryPersistedQueryCache().build()) {
+                            @Override
+                            protected Optional<Object> getPersistedQueryId(ExecutionInput executionInput) {
+                                return Optional.ofNullable(Base64.getEncoder().encodeToString(executionInput.getQuery().getBytes(StandardCharsets.UTF_8)));
+                            }
+                        })
+                        .instrumentation(new TimingTracingInstrumentation())
+                )
+                ;
     }
 
     @Bean

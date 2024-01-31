@@ -15,18 +15,9 @@ server:
     enabled: true
   http2:
     enabled: true
-  undertow:
+  tomcat:
     accesslog:
       enabled: true
-      pattern: "%t %a %r %s (%D ms)"
-      options:
-        server:
-          record-request-start-time: true
-    buffer-size: 1024
-    direct-buffers: true
-    threads:
-      io: 8
-      worker: 256
 spring:
   application:
     name: @artifactId@
@@ -125,7 +116,14 @@ spring:
 logging:
   config: classpath:logback-spring.xml
   level:
+    reactor:
+      netty: debug
     notprivacysafe: INFO
+    org:
+      springframework:
+        web: debug
+        http: debug
+        graphql: debug
 mybatis-plus:
   global-config:
     db-config:
@@ -138,18 +136,18 @@ mybatis-plus:
 
 ---
 server:
-  undertow:
+  tomcat:
     accesslog:
-      dir: /Volumes/k1/logs/undertow
+      directory: /Volumes/k1/logs/tomcat
 spring:
   profiles: mac
 log-home: /Volumes/k1/logs/${spring.application.name}
 
 ---
 server:
-  undertow:
+  tomcat:
     accesslog:
-      dir: D:/logs/undertow
+      directory: D:/logs/undertow
 spring:
   profiles: win
 log-home: D:/logs/${spring.application.name}

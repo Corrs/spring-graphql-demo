@@ -13,7 +13,6 @@ import graphql.schema.GraphQLNonNull;
 import graphql.schema.GraphQLObjectType;
 import graphql.schema.GraphQLOutputType;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
@@ -25,7 +24,6 @@ import java.util.concurrent.CompletableFuture;
  * @since 2023/11/30 下午4:54:49
  */
 @Slf4j
-@Component
 public class TimingTracingInstrumentation extends SimpleInstrumentation {
     @Override
     public InstrumentationState createState() {

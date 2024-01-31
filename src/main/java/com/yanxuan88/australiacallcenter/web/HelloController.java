@@ -6,12 +6,12 @@ import com.yanxuan88.australiacallcenter.annotation.Authenticated;
 import com.yanxuan88.australiacallcenter.graphql.util.RelayUtil;
 import graphql.relay.Connection;
 import lombok.extern.slf4j.Slf4j;
+import org.reactivestreams.Publisher;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.graphql.data.method.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import javax.servlet.http.Part;
 import java.io.IOException;
@@ -77,9 +77,9 @@ public class HelloController {
     }
 
     @SubscriptionMapping
-    public Flux<String> greeting() {
+    public Publisher<String> greeting() {
         return Flux.fromStream(Stream.generate(() -> "Hello GraphQL " + UUID.randomUUID()))
-                .delayElements(Duration.ofSeconds(5))
+                .delayElements(Duration.ofSeconds(1))
                 .take(10);
     }
 }

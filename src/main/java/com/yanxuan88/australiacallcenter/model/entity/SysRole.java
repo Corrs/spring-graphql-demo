@@ -3,6 +3,7 @@ package com.yanxuan88.australiacallcenter.model.entity;
 import com.baomidou.mybatisplus.annotation.*;
 import com.yanxuan88.australiacallcenter.mysql.BaseEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
@@ -14,6 +15,7 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 @TableName("`sys_role`")
+@EqualsAndHashCode(callSuper = false)
 public class SysRole extends BaseEntity {
     @TableId(type = IdType.AUTO, value = "role_id")
     private Long id;

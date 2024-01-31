@@ -3,11 +3,13 @@ package com.yanxuan88.australiacallcenter.model.entity;
 import com.baomidou.mybatisplus.annotation.*;
 import com.yanxuan88.australiacallcenter.mysql.BaseEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 @Data
 @Accessors(chain = true)
 @TableName("`sys_user`")
+@EqualsAndHashCode(callSuper = false)
 public class SysUser extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long userId;

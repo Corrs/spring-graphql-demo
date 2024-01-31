@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.yanxuan88.australiacallcenter.mysql.BaseEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * 字典数据
@@ -14,6 +15,7 @@ import lombok.Data;
  */
 @Data
 @TableName("`sys_dict_data`")
+@EqualsAndHashCode(callSuper = false)
 public class SysDictData extends BaseEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
