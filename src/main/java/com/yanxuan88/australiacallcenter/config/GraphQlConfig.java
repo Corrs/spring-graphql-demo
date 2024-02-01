@@ -2,6 +2,7 @@ package com.yanxuan88.australiacallcenter.config;
 
 import com.yanxuan88.australiacallcenter.graphql.MyExceptionResolver;
 import com.yanxuan88.australiacallcenter.graphql.MyUploadGraphQlHttpHandler;
+import com.yanxuan88.australiacallcenter.graphql.SecuritySubscriptionExceptionResolver;
 import com.yanxuan88.australiacallcenter.graphql.ValidationExceptionResolver;
 import com.yanxuan88.australiacallcenter.graphql.instrumentation.TimingTracingInstrumentation;
 import com.yanxuan88.australiacallcenter.graphql.scalar.ScalarRegisterConfigurer;
@@ -47,6 +48,7 @@ public class GraphQlConfig {
     public GraphQlSourceBuilderCustomizer sourceBuilderCustomizer() {
         return builder -> builder
                 .exceptionResolvers(Lists.newArrayList(new SecurityDataFetcherExceptionResolver(), new MyExceptionResolver(), new ValidationExceptionResolver()))
+                .subscriptionExceptionResolvers(Lists.newArrayList(new SecuritySubscriptionExceptionResolver()))
                 .configureGraphQl(graphQlBuilder -> graphQlBuilder
                         // 缓存文档，而不是缓存结果，
                         .preparsedDocumentProvider(new PersistedQuerySupport(InMemoryPersistedQueryCache.newInMemoryPersistedQueryCache().build()) {

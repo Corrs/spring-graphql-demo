@@ -10,7 +10,7 @@ extend type Mutation {
 }
 
 extend type Subscription {
-  greeting: String
+  greeting(id: Int): String
 }
 
 input UploadDTO {

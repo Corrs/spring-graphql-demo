@@ -34,8 +34,13 @@ public class RedisSIConfig {
     }
 
     @Bean
-    public SubscribableRedisChannel redisChannel() {
-        return new SubscribableRedisChannel(connectionFactory, "si.test.topic");
+    public SubscribableRedisChannel noticeSubscribeChannel() {
+        return new SubscribableRedisChannel(connectionFactory, "notice.topic");
+    }
+
+    @Bean
+    public MessageChannel noticeChannel(RedisChannelMessageStore redisChannelMessageStore) {
+        return new QueueChannel(new MessageGroupQueue(redisChannelMessageStore, "noticeChannel"));
     }
 
     @Bean

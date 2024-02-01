@@ -5,27 +5,32 @@ import com.google.common.collect.Lists;
 import com.yanxuan88.australiacallcenter.annotation.Authenticated;
 import com.yanxuan88.australiacallcenter.annotation.SaAuthorize;
 import com.yanxuan88.australiacallcenter.graphql.util.RelayUtil;
-import com.yanxuan88.australiacallcenter.util.SecurityUtil;
 import graphql.relay.Connection;
 import lombok.extern.slf4j.Slf4j;
 import org.reactivestreams.Publisher;
+import org.reactivestreams.Subscriber;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.graphql.data.method.annotation.*;
+import org.springframework.integration.annotation.EndpointId;
+import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxSink;
 
 import javax.servlet.http.Part;
 import java.io.IOException;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
-import java.util.stream.Stream;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 
 @Slf4j
 @Controller
 public class HelloController {
+    final ConcurrentHashMap<Long, FluxSink<String>> map = new ConcurrentHashMap();
+
     @QueryMapping
 //    @PreAuthorize("hasPermission(null, 'hello1')")
     @PreAuthorize("hasAuthority('hello1')")
@@ -78,12 +83,28 @@ public class HelloController {
         return false;
     }
 
+    //    @PreAuthorize("hasAuthority('hello1')")
     @SaAuthorize
     @SubscriptionMapping
-    public Publisher<String> greeting() {
+    public Publisher<String> greeting(@Argument Integer id) {
+        System.out.println("id：" + id);
 //        System.out.println(SecurityUtil.getUserLoginInfo());
-        return Flux.fromStream(Stream.generate(() -> "Hello GraphQL " + UUID.randomUUID()))
-                .delayElements(Duration.ofSeconds(1))
-                .take(10);
+        return Flux.create(sink -> {
+            sink.onCancel(() -> map.remove(1L));
+            sink.onDispose(() -> map.remove(1L));
+            map.put(1L, sink);
+        });
+    }
+
+    @EndpointId("noticeMessageHandler")
+    @ServiceActivator(inputChannel = "noticeSubscribeChannel")
+    public void notify(Long userId) {
+        FluxSink<String> sink = map.get(userId);
+        if (sink != null) {
+            System.out.println("发送数据给前端");
+            sink.next("1");
+        } else {
+            System.out.println("未找到前端对象");
+        }
     }
 }

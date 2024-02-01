@@ -8,7 +8,7 @@ import org.springframework.integration.annotation.Router;
 @MessageEndpoint
 public class LogMessageRouter {
     @Router(inputChannel = "logChannel")
-    public String resolveLogChannel(Object obj) {
+    public String toChannel(Object obj) {
         return (obj instanceof SysLogLogin) ? "loginLogChannel" : ((obj instanceof SysLogOperation) ? "sysLogChannel" : "logoutChannel");
     }
 }
