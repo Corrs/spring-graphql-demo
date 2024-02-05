@@ -23,3 +23,10 @@ public LocalDateTime helloLocalDateTime() {
     return LocalDateTime.now();
 }
 ```
+
+## docker快速启动
+cache目录存放redis的配置文件
+db目录存放mysql配置文件、镜像构建文件和初始化脚本
+```shell
+docker-compose up -d
+```

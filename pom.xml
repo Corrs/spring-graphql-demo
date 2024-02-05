@@ -124,14 +124,14 @@
             <optional>true</optional>
         </dependency>
         <!--   深度学习     -->
-        <dependency>
+        <!--<dependency>
             <groupId>ai.djl</groupId>
             <artifactId>api</artifactId>
         </dependency>
         <dependency>
             <groupId>ai.djl.mxnet</groupId>
             <artifactId>mxnet-engine</artifactId>
-        </dependency>
+        </dependency>-->
         <!--   深度学习     -->
         <!-- Quartz -->
         <!--<dependency>
@@ -188,9 +188,17 @@
         </dependencies>
     </dependencyManagement>
     <repositories>
-        <repository>
+        <!--<repository>
             <id>djl.ai</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </repository>-->
+        <repository>
+            <url>https://repo.spring.io/milestone</url>
+            <id>milestone</id>
+        </repository>
+        <repository>
+            <url>https://repo.spring.io/snapshot</url>
+            <id>snapshot</id>
         </repository>
     </repositories>
     <build>
@@ -213,7 +221,7 @@
                     <fork>true</fork>
                     <addResources>true</addResources>
                     <mainClass>com.yanxuan88.australiacallcenter.AustraliaCallCenterApplication</mainClass>
-                    <skip>true</skip>
+                    <skip>false</skip>
                 </configuration>
                 <executions>
                     <execution>

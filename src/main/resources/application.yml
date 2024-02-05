@@ -133,6 +133,27 @@ mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     map-underscore-to-camel-case: true
+---
+server:
+  tomcat:
+    accesslog:
+      directory: /var/logs/tomcat
+spring:
+  profiles: prod
+  quartz:
+    properties:
+      org:
+        quartz:
+          dataSource:
+            QuartzDS:
+              URL: jdbc:mysql://${MYSQL_HOST:db}:3306/quartz?useUnicode=true&useSSL=true&serverTimezone=GMT%2B8&characterEncoding=utf-8
+  redis:
+    password:
+    host: ${REDIS_HOST:cache}
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:db}:3306/aus-call-center?useUnicode=true&useSSL=true&serverTimezone=GMT%2B8&characterEncoding=utf-8
+    password: ${MYSQL_PASSWORD:shanglian123}
+log-home: /var/logs/${spring.application.name}
 
 ---
 server:

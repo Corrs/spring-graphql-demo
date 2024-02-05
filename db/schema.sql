@@ -36,15 +36,6 @@ CREATE TABLE `sys_config` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `sys_config`
---
-
-LOCK TABLES `sys_config` WRITE;
-/*!40000 ALTER TABLE `sys_config` DISABLE KEYS */;
-/*!40000 ALTER TABLE `sys_config` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `sys_dept`
 --
 
@@ -68,14 +59,6 @@ CREATE TABLE `sys_dept` (
 ) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='部门管理';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `sys_dept`
---
-
-LOCK TABLES `sys_dept` WRITE;
-/*!40000 ALTER TABLE `sys_dept` DISABLE KEYS */;
-/*!40000 ALTER TABLE `sys_dept` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `sys_dict_data`
@@ -100,6 +83,7 @@ CREATE TABLE `sys_dict_data` (
   KEY `idx_sort` (`sort`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='字典数据';
 /*!40101 SET character_set_client = @saved_cs_client */;
+
 
 --
 -- Dumping data for table `sys_dict_data`
@@ -144,6 +128,7 @@ INSERT INTO `sys_dict_type` VALUES (1,'gender','性别','性别 0女 1男 2保�
 /*!40000 ALTER TABLE `sys_dict_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
+
 --
 -- Table structure for table `sys_log_error`
 --
@@ -166,14 +151,6 @@ CREATE TABLE `sys_log_error` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='异常日志';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `sys_log_error`
---
-
-LOCK TABLES `sys_log_error` WRITE;
-/*!40000 ALTER TABLE `sys_log_error` DISABLE KEYS */;
-/*!40000 ALTER TABLE `sys_log_error` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `sys_log_login`
@@ -197,14 +174,6 @@ CREATE TABLE `sys_log_login` (
 ) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='登录日志';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `sys_log_login`
---
-
-LOCK TABLES `sys_log_login` WRITE;
-/*!40000 ALTER TABLE `sys_log_login` DISABLE KEYS */;
-/*!40000 ALTER TABLE `sys_log_login` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `sys_log_operation`
@@ -229,14 +198,6 @@ CREATE TABLE `sys_log_operation` (
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='操作日志';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `sys_log_operation`
---
-
-LOCK TABLES `sys_log_operation` WRITE;
-/*!40000 ALTER TABLE `sys_log_operation` DISABLE KEYS */;
-/*!40000 ALTER TABLE `sys_log_operation` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `sys_menu`
@@ -269,7 +230,7 @@ CREATE TABLE `sys_menu` (
 
 LOCK TABLES `sys_menu` WRITE;
 /*!40000 ALTER TABLE `sys_menu` DISABLE KEYS */;
-INSERT INTO `sys_menu` VALUES (1,0,'系统管理','/system','',1,'layui-icon-set',10,'2024-01-06 14:08:45',NULL,1,NULL,0),(2,1,'用户管理','/system/user','',1,'layui-icon-username',1,'2024-01-06 14:24:36','2024-01-06 20:30:17',1,1,0),(3,1,'角色管理','/system/role','',1,'layui-icon-user',2,'2024-01-06 14:34:28','2024-01-06 20:30:25',1,1,0),(4,1,'菜单管理','/system/menu','',1,'layui-icon-spread-left',4,'2024-01-06 14:35:55','2024-01-06 20:30:35',1,1,0),(5,1,'机构管理','/system/organization','',1,'layui-icon-transfer',3,'2024-01-06 14:40:10','2024-01-06 20:30:30',1,1,0),(6,1,'字典管理','/system/dictionary','',1,'layui-icon-read',5,'2024-01-06 14:41:12','2024-01-06 20:30:43',1,1,0),(7,1,'文件管理','/system/file','',1,'layui-icon-file',6,'2024-01-06 14:43:55','2024-01-06 20:30:49',1,1,0),(8,1,'登录日志','/system/login','',1,'layui-icon-date',7,'2024-01-06 14:44:56','2024-01-06 20:30:53',1,1,0),(9,1,'操作日志','/system/option','',1,'layui-icon-survey',8,'2024-01-06 14:45:23','2024-01-06 20:30:56',1,1,0),(10,4,'新建','','sys:menu:save',2,'',0,'2024-01-06 14:58:08',NULL,1,NULL,0),(11,4,'修改','','sys:menu:update',2,'',0,'2024-01-06 14:58:31',NULL,1,NULL,0),(12,4,'删除','','sys:menu:delete',2,'',0,'2024-01-06 14:58:49',NULL,1,NULL,0),(13,4,'查询','','sys:menu:search',2,'',4,'2024-01-06 15:32:48','2024-01-06 15:59:45',1,1,1),(14,3,'新增','','sys:role:save',2,'',1,'2024-01-06 22:36:02',NULL,1,NULL,0),(15,3,'编辑','','sys:role:update',2,'',2,'2024-01-06 22:36:19',NULL,1,NULL,0),(16,3,'删除','','sys:role:delete',2,'',3,'2024-01-06 22:36:34',NULL,1,NULL,0),(17,3,'分配权限','','sys:role:permissions',2,'',4,'2024-01-06 23:04:57','2024-01-07 11:38:27',1,1,1),(18,3,'分配权限','','sys:role:perms',2,'',4,'2024-01-07 11:38:16','2024-01-07 11:38:39',1,1,0),(19,5,'新增','','sys:dept:save',2,'',1,'2024-01-07 13:40:26',NULL,1,NULL,0),(20,5,'编辑','','sys:dept:update',2,'',2,'2024-01-07 13:40:44',NULL,1,NULL,0),(21,5,'删除','','sys:dept:delete',2,'',3,'2024-01-07 13:41:02',NULL,1,NULL,0),(22,6,'新增','','sys:dict:save',2,'',1,'2024-01-07 13:47:42',NULL,1,NULL,0),(23,6,'编辑','','sys:dict:update',2,'',2,'2024-01-07 13:49:02',NULL,1,NULL,0),(24,6,'删除','','sys:dict:delete',2,'',3,'2024-01-07 13:49:20',NULL,1,NULL,0),(25,6,'新增字典值','','sys:dictdata:save',2,'',4,'2024-01-07 13:49:57','2024-01-07 13:51:44',1,1,0),(26,6,'编辑字典值','','sys:dictdata:update',2,'',5,'2024-01-07 13:52:18',NULL,1,NULL,0),(27,6,'删除字典值','','sys:dictdata:delete',2,'',6,'2024-01-07 13:52:45',NULL,1,NULL,0),(28,2,'重置密码','','sys:user:resetpassword',2,'',0,'2024-01-07 14:21:08',NULL,1,NULL,0),(29,2,'新增','','sys:user:save',2,'',1,'2024-01-07 14:21:28',NULL,1,NULL,0),(30,2,'编辑','','sys:user:update',2,'',2,'2024-01-07 14:54:00',NULL,1,NULL,0),(31,2,'锁定/解锁','','sys:user:lock',2,'',3,'2024-01-07 14:54:36',NULL,1,NULL,0),(32,2,'重置密码','','sys:user:resetpassword',2,'',4,'2024-01-07 14:55:09','2024-01-07 15:57:13',1,1,1),(33,2,'删除','','sys:user:delete',2,'',5,'2024-01-07 14:56:01',NULL,1,NULL,0),(34,8,'查看','','',2,'',0,'2024-01-07 15:58:54','2024-01-07 15:59:34',1,1,1),(35,8,'查询','','',2,'',0,'2024-01-07 16:40:46','2024-01-07 16:47:19',1,1,1);
+INSERT INTO `sys_menu` VALUES (1,0,'系统管理','/system','',1,'layui-icon-set',10,'2024-01-06 14:08:45',NULL,1,NULL,0),(2,1,'用户管理','/system/user','',1,'layui-icon-username',1,'2024-01-06 14:24:36','2024-01-06 20:30:17',1,1,0),(3,1,'角色管理','/system/role','',1,'layui-icon-user',2,'2024-01-06 14:34:28','2024-01-06 20:30:25',1,1,0),(4,1,'菜单管理','/system/menu','',1,'layui-icon-spread-left',4,'2024-01-06 14:35:55','2024-01-06 20:30:35',1,1,0),(5,1,'机构管理','/system/organization','',1,'layui-icon-transfer',3,'2024-01-06 14:40:10','2024-01-06 20:30:30',1,1,0),(6,1,'字典管理','/system/dictionary','',1,'layui-icon-read',5,'2024-01-06 14:41:12','2024-01-06 20:30:43',1,1,0),(7,1,'文件管理','/system/file','',1,'layui-icon-file',6,'2024-01-06 14:43:55','2024-01-06 20:30:49',1,1,0),(8,1,'登录日志','/system/login','',1,'layui-icon-date',8,'2024-01-06 14:44:56','2024-01-06 20:30:53',1,1,0),(9,1,'操作日志','/system/option','',1,'layui-icon-survey',9,'2024-01-06 14:45:23','2024-01-06 20:30:56',1,1,0),(10,4,'新建','','sys:menu:save',2,'',0,'2024-01-06 14:58:08',NULL,1,NULL,0),(11,4,'修改','','sys:menu:update',2,'',0,'2024-01-06 14:58:31',NULL,1,NULL,0),(12,4,'删除','','sys:menu:delete',2,'',0,'2024-01-06 14:58:49',NULL,1,NULL,0),(13,4,'查询','','sys:menu:search',2,'',4,'2024-01-06 15:32:48','2024-01-06 15:59:45',1,1,1),(14,3,'新增','','sys:role:save',2,'',1,'2024-01-06 22:36:02',NULL,1,NULL,0),(15,3,'编辑','','sys:role:update',2,'',2,'2024-01-06 22:36:19',NULL,1,NULL,0),(16,3,'删除','','sys:role:delete',2,'',3,'2024-01-06 22:36:34',NULL,1,NULL,0),(17,3,'分配权限','','sys:role:permissions',2,'',4,'2024-01-06 23:04:57','2024-01-07 11:38:27',1,1,1),(18,3,'分配权限','','sys:role:perms',2,'',4,'2024-01-07 11:38:16','2024-01-07 11:38:39',1,1,0),(19,5,'新增','','sys:dept:save',2,'',1,'2024-01-07 13:40:26',NULL,1,NULL,0),(20,5,'编辑','','sys:dept:update',2,'',2,'2024-01-07 13:40:44',NULL,1,NULL,0),(21,5,'删除','','sys:dept:delete',2,'',3,'2024-01-07 13:41:02',NULL,1,NULL,0),(22,6,'新增','','sys:dict:save',2,'',1,'2024-01-07 13:47:42',NULL,1,NULL,0),(23,6,'编辑','','sys:dict:update',2,'',2,'2024-01-07 13:49:02',NULL,1,NULL,0),(24,6,'删除','','sys:dict:delete',2,'',3,'2024-01-07 13:49:20',NULL,1,NULL,0),(25,6,'新增字典值','','sys:dictdata:save',2,'',4,'2024-01-07 13:49:57','2024-01-07 13:51:44',1,1,0),(26,6,'编辑字典值','','sys:dictdata:update',2,'',5,'2024-01-07 13:52:18',NULL,1,NULL,0),(27,6,'删除字典值','','sys:dictdata:delete',2,'',6,'2024-01-07 13:52:45',NULL,1,NULL,0),(28,2,'重置密码','','sys:user:resetpassword',2,'',0,'2024-01-07 14:21:08',NULL,1,NULL,0),(29,2,'新增','','sys:user:save',2,'',1,'2024-01-07 14:21:28',NULL,1,NULL,0),(30,2,'编辑','','sys:user:update',2,'',2,'2024-01-07 14:54:00',NULL,1,NULL,0),(31,2,'锁定/解锁','','sys:user:lock',2,'',3,'2024-01-07 14:54:36',NULL,1,NULL,0),(32,2,'重置密码','','sys:user:resetpassword',2,'',4,'2024-01-07 14:55:09','2024-01-07 15:57:13',1,1,1),(33,2,'删除','','sys:user:delete',2,'',5,'2024-01-07 14:56:01',NULL,1,NULL,0),(34,8,'查看','','',2,'',0,'2024-01-07 15:58:54','2024-01-07 15:59:34',1,1,1),(35,8,'查询','','',2,'',0,'2024-01-07 16:40:46','2024-01-07 16:47:19',1,1,1),(36,1,'定时任务管理','/system/job','',1,'layui-icon-log',7,'2024-01-29 16:21:26','2024-01-30 16:24:45',1,1,0);
 /*!40000 ALTER TABLE `sys_menu` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -294,16 +255,6 @@ CREATE TABLE `sys_role` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `sys_role`
---
-
-LOCK TABLES `sys_role` WRITE;
-/*!40000 ALTER TABLE `sys_role` DISABLE KEYS */;
-INSERT INTO `sys_role` VALUES (1,'管理员','管理员角色','2024-01-06 22:37:04','2024-01-06 22:41:02',1,1,0),(2,'话务员','话务员角色','2024-01-06 22:41:14','2024-01-06 23:09:00',1,1,0);
-/*!40000 ALTER TABLE `sys_role` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `sys_role_menu`
 --
 
@@ -323,15 +274,6 @@ CREATE TABLE `sys_role_menu` (
 ) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='角色与菜单对应关系';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `sys_role_menu`
---
-
-LOCK TABLES `sys_role_menu` WRITE;
-/*!40000 ALTER TABLE `sys_role_menu` DISABLE KEYS */;
-INSERT INTO `sys_role_menu` VALUES (64,2,10,'2024-01-07 18:22:06',NULL,1,NULL),(65,1,1,'2024-01-07 18:22:11',NULL,1,NULL),(66,1,2,'2024-01-07 18:22:11',NULL,1,NULL),(67,1,3,'2024-01-07 18:22:11',NULL,1,NULL),(68,1,14,'2024-01-07 18:22:11',NULL,1,NULL),(69,1,15,'2024-01-07 18:22:11',NULL,1,NULL),(70,1,16,'2024-01-07 18:22:11',NULL,1,NULL),(71,1,18,'2024-01-07 18:22:11',NULL,1,NULL),(72,1,5,'2024-01-07 18:22:11',NULL,1,NULL),(73,1,6,'2024-01-07 18:22:11',NULL,1,NULL),(74,1,7,'2024-01-07 18:22:11',NULL,1,NULL),(75,1,8,'2024-01-07 18:22:11',NULL,1,NULL),(76,1,9,'2024-01-07 18:22:11',NULL,1,NULL);
-/*!40000 ALTER TABLE `sys_role_menu` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `sys_user`
@@ -374,6 +316,7 @@ INSERT INTO `sys_user` VALUES (1,'admin','管理员','','{bcrypt}$2a$10$umbdzri5
 /*!40000 ALTER TABLE `sys_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
+
 --
 -- Table structure for table `sys_user_role`
 --
@@ -393,16 +336,6 @@ CREATE TABLE `sys_user_role` (
   KEY `idx_user` (`user_id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用户与角色对应关系';
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `sys_user_role`
---
-
-LOCK TABLES `sys_user_role` WRITE;
-/*!40000 ALTER TABLE `sys_user_role` DISABLE KEYS */;
-/*!40000 ALTER TABLE `sys_user_role` ENABLE KEYS */;
-UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 
 --
@@ -428,16 +361,6 @@ CREATE TABLE `sys_dynamic_job` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='定时任务表';
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `sys_dynamic_job`
---
-
-LOCK TABLES `sys_dynamic_job` WRITE;
-/*!40000 ALTER TABLE `sys_dynamic_job` DISABLE KEYS */;
-/*!40000 ALTER TABLE `sys_dynamic_job` ENABLE KEYS */;
-UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
