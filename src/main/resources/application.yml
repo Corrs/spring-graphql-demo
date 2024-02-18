@@ -1,4 +1,6 @@
 management:
+  server:
+    port: 18080
   endpoint:
     health:
       show-details: always
@@ -9,6 +11,7 @@ management:
     web:
       exposure:
         include: '*'
+    enabled-by-default: true
 server:
   port: 8080
   compression:
@@ -16,9 +19,14 @@ server:
   http2:
     enabled: true
   tomcat:
+    mbeanregistry:
+      enabled: true
     accesslog:
       enabled: true
 spring:
+  jmx:
+    enabled: true
+    default-domain:
   application:
     name: @artifactId@
   quartz:
@@ -131,7 +139,9 @@ mybatis-plus:
       logic-delete-value: 1
       logic-not-delete-value: 0
   configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    log-impl: org.apache.ibatis.logging.log4j2.Log4j2Impl
+    cache-enabled: true
+    localCacheScope: STATEMENT
     map-underscore-to-camel-case: true
 ---
 server:
@@ -140,6 +150,12 @@ server:
       directory: /var/logs/tomcat
 spring:
   profiles: prod
+  devtools:
+    restart:
+      enabled: false
+  graphql:
+    graphiql:
+      enabled: false
   quartz:
     properties:
       org:
@@ -154,7 +170,16 @@ spring:
     url: jdbc:mysql://${MYSQL_HOST:db}:3306/aus-call-center?useUnicode=true&useSSL=true&serverTimezone=GMT%2B8&characterEncoding=utf-8
     password: ${MYSQL_PASSWORD:shanglian123}
 log-home: /var/logs/${spring.application.name}
-
+logging:
+  level:
+    reactor:
+      netty: INFO
+    notprivacysafe: INFO
+    org:
+      springframework:
+        web: INFO
+        http: INFO
+        graphql: INFO
 ---
 server:
   tomcat:

@@ -12,6 +12,8 @@ services:
       - app
     ports:
       - 8080:8080
+      - 18080:18080
+      - 1099:1099
     volumes:
       - app-log:/workdir/logs
     depends_on:

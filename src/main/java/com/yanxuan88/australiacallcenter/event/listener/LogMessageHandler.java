@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.integration.annotation.EndpointId;
 import org.springframework.integration.annotation.ServiceActivator;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -24,6 +25,7 @@ public class LogMessageHandler {
     private RedisClient redisClient;
     @EndpointId("loginLogHandler")
     @ServiceActivator(inputChannel = "loginLogChannel")
+    @Async
     public void recordLoginLog(SysLogLogin obj) {
         if (obj == null) return;
         logLoginService.save(obj);
@@ -31,6 +33,7 @@ public class LogMessageHandler {
 
     @EndpointId("sysLogHandler")
     @ServiceActivator(inputChannel = "sysLogChannel")
+    @Async
     public void recordSysLog(SysLogOperation obj) {
         if (obj == null) return;
         logOperationService.save(obj);
@@ -38,6 +41,7 @@ public class LogMessageHandler {
 
     @EndpointId("logoutClearSessionHandler")
     @ServiceActivator(inputChannel = "logoutChannel")
+    @Async
     public void clearSession(Object obj) {
         if (obj == null || !StringUtils.hasText(((LogoutEvent)obj).getSessionCacheKey())) return;
         String sessionCacheKey = ((LogoutEvent)obj).getSessionCacheKey();

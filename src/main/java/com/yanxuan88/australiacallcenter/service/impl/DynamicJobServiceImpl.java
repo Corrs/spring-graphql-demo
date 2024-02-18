@@ -16,7 +16,6 @@ import com.yanxuan88.australiacallcenter.model.vo.DynamicJobVO;
 import com.yanxuan88.australiacallcenter.scheduler.SchedulerUtil;
 import com.yanxuan88.australiacallcenter.service.IDynamicJobService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;

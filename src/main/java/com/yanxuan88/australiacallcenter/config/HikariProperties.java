@@ -12,14 +12,4 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @ConfigurationProperties("spring.datasource.hikari")
 public class HikariProperties extends HikariConfig {
-    @Value("${loggingMeterPushMetricsStep:15}")
-    private int loggingMeterPushMetricsStep;
-
-    public int getLoggingMeterPushMetricsStep() {
-        return loggingMeterPushMetricsStep;
-    }
-
-    public void setLoggingMeterPushMetricsStep(int loggingMeterPushMetricsStep) {
-        this.loggingMeterPushMetricsStep = loggingMeterPushMetricsStep;
-    }
 }

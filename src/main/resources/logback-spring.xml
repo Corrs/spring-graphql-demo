@@ -77,6 +77,10 @@
         <appender-ref ref="ERROR-LOG"/>
     </appender>
 
+    <logger name="com.yanxuan88.australiacallcenter.mapper" level="debug">
+        <appender-ref ref="ASYNC-INFO" />
+    </logger>
+
     <!--<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
             <layout class="org.apache.skywalking.apm.toolkit.log.logback.v1.x.TraceIdPatternLogbackLayout">
