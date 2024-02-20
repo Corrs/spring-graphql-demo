@@ -11,6 +11,8 @@ import java.util.concurrent.TimeUnit;
 import static java.time.ZoneId.SHORT_IDS;
 
 public interface Constant {
+
+    String TRACE_ID = "traceId";
     String PASSWORD_REG = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,30}$";
     String MOBILE_REG= "^[0,1]\\d{10,14}$";
     String EMAIL_REG= "^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$";

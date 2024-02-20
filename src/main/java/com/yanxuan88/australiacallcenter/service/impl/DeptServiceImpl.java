@@ -3,7 +3,7 @@ package com.yanxuan88.australiacallcenter.service.impl;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yanxuan88.australiacallcenter.annotation.SysLog;
-import com.yanxuan88.australiacallcenter.config.RedisClient;
+import com.yanxuan88.australiacallcenter.config.JdbcLockClient;
 import com.yanxuan88.australiacallcenter.exception.BizException;
 import com.yanxuan88.australiacallcenter.mapper.SysDeptMapper;
 import com.yanxuan88.australiacallcenter.model.dto.AddDeptDTO;
@@ -32,7 +32,7 @@ public class DeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impleme
     @Autowired
     private IUserService userService;
     @Autowired
-    private RedisClient redisClient;
+    private JdbcLockClient jdbcLockClient;
     private static final String LOCK_KEY = "dept";
 
     /**
@@ -47,7 +47,7 @@ public class DeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impleme
     @Override
     @SysLog("新增机构")
     public boolean addDept(AddDeptDTO dept) {
-        return redisClient.doWithLock(LOCK_KEY, lock -> {
+        return jdbcLockClient.doWithLock(LOCK_KEY, lock -> {
             // 1.
             Long pid = dept.getPid();
             String pids = "0";
@@ -98,7 +98,7 @@ public class DeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impleme
     @Override
     @SysLog("删除机构")
     public boolean remDept(Long id) {
-        return redisClient.doWithLock(LOCK_KEY, lock -> {
+        return jdbcLockClient.doWithLock(LOCK_KEY, lock -> {
             SysDept dept = getById(id);
             if (dept == null) {
                 throw new BizException("机构数据不存在");
@@ -130,7 +130,7 @@ public class DeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impleme
     @Override
     @SysLog("编辑机构")
     public boolean editDept(EditDeptDTO dept) {
-        return redisClient.doWithLock(LOCK_KEY, lock -> {
+        return jdbcLockClient.doWithLock(LOCK_KEY, lock -> {
             // 1.
             Long id = dept.getId();
             Long pid = dept.getPid();

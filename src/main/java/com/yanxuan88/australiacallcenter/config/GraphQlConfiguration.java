@@ -31,7 +31,7 @@ import java.util.Optional;
 
 @Slf4j
 @Configuration
-public class GraphQlConfig {
+public class GraphQlConfiguration {
     private static MediaType[] SUPPORTED_MEDIA_TYPES = new MediaType[]{MediaType.MULTIPART_FORM_DATA};
 
     /**

@@ -13,9 +13,13 @@ import graphql.schema.GraphQLNonNull;
 import graphql.schema.GraphQLObjectType;
 import graphql.schema.GraphQLOutputType;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 
 import java.util.HashMap;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+
+import static com.yanxuan88.australiacallcenter.common.Constant.TRACE_ID;
 
 /**
  * 计时
@@ -26,6 +30,7 @@ import java.util.concurrent.CompletableFuture;
 @Slf4j
 public class TimingTracingInstrumentation extends SimpleInstrumentation {
     private static final String SUBSCRIPTION_FLAG = "Subscription";
+
     @Override
     public InstrumentationState createState() {
         return new TracingState();
@@ -54,6 +59,10 @@ public class TimingTracingInstrumentation extends SimpleInstrumentation {
             TracingState tracingState = parameters.getInstrumentationState();
             String datafetcherTag = findDatafetcherTag(parameters);
             tracingState.controlType = datafetcherTag.split("\\.")[0];
+            if (!SUBSCRIPTION_FLAG.equals(tracingState.controlType)) {
+                String traceId = UUID.randomUUID().toString();
+                MDC.put(TRACE_ID, traceId);
+            }
             log.info("Datafetcher {} begin execution", datafetcherTag);
             long startTime = tracingState.startTime;
             Object result = dataFetcher.get(environment);
@@ -85,6 +94,7 @@ public class TimingTracingInstrumentation extends SimpleInstrumentation {
         if (!SUBSCRIPTION_FLAG.equals(tracingState.controlType)) {
             long totalTime = System.currentTimeMillis() - tracingState.startTime;
             log.info("Total execution time: {}ms", totalTime);
+            MDC.remove(TRACE_ID);
         }
         return super.instrumentExecutionResult(new ExecutionResultImpl(executionResult.getData(), executionResult.getErrors(), extensions), parameters);
     }

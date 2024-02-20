@@ -13,15 +13,15 @@ import org.springframework.integration.store.MessageGroupQueue;
 import org.springframework.messaging.MessageChannel;
 
 @Configuration
-@AutoConfigureAfter(RedisCacheAutoConfiguration.class)
-public class RedisSIConfig {
+@AutoConfigureAfter(RedisConfiguration.class)
+public class RedisSIConfiguration {
     /**
      * redis 连接工厂
      */
     private final RedisConnectionFactory connectionFactory;
     private final GenericJackson2JsonRedisSerializer redisValueSerializer;
 
-    public RedisSIConfig(RedisConnectionFactory connectionFactory, GenericJackson2JsonRedisSerializer redisValueSerializer) {
+    public RedisSIConfiguration(RedisConnectionFactory connectionFactory, GenericJackson2JsonRedisSerializer redisValueSerializer) {
         this.connectionFactory = connectionFactory;
         this.redisValueSerializer = redisValueSerializer;
     }
@@ -63,10 +63,10 @@ public class RedisSIConfig {
         return new QueueChannel(new MessageGroupQueue(redisChannelMessageStore, "logoutChannel"));
     }
 
-    @Bean
-    public RedisLockRegistry redisLockRegistry() {
-        RedisLockRegistry lockRegistry = new RedisLockRegistry(connectionFactory, "lock", 30000L);
-        lockRegistry.setRedisLockType(RedisLockRegistry.RedisLockType.PUB_SUB_LOCK);
-        return lockRegistry;
-    }
+//    @Bean
+//    public RedisLockRegistry redisLockRegistry() {
+//        RedisLockRegistry lockRegistry = new RedisLockRegistry(connectionFactory, "lock", 30000L);
+//        lockRegistry.setRedisLockType(RedisLockRegistry.RedisLockType.PUB_SUB_LOCK);
+//        return lockRegistry;
+//    }
 }

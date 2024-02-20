@@ -23,6 +23,11 @@ server:
       enabled: true
     accesslog:
       enabled: true
+cache:
+  time-to-live: 15m
+  cache-null-values: false
+  enable-statistics: true
+  key-prefix: 'cache:${spring.application.name}:'
 spring:
   jmx:
     enabled: true
@@ -57,13 +62,6 @@ spring:
             instanceId: AUTO
     scheduler-name: "MyScheduler"
     job-store-type: "jdbc"
-  cache:
-    type: REDIS
-    redis:
-      time-to-live: 15m
-      cache-null-values: false
-      enable-statistics: true
-      key-prefix: 'cache:${spring.application.name}:'
   devtools:
     restart:
       enabled: true

@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.base.Strings;
 import com.yanxuan88.australiacallcenter.annotation.SysLog;
-import com.yanxuan88.australiacallcenter.config.RedisClient;
+import com.yanxuan88.australiacallcenter.config.JdbcLockClient;
 import com.yanxuan88.australiacallcenter.exception.BizException;
 import com.yanxuan88.australiacallcenter.mapper.SysDictTypeMapper;
 import com.yanxuan88.australiacallcenter.model.dto.AddDictTypeDTO;
@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 @Service
 public class DictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDictType> implements IDictTypeService {
     @Autowired
-    private RedisClient redisClient;
+    private JdbcLockClient jdbcLockClient;
     private static final String LOCK_KEY = "dictType";
 
     @Override
@@ -55,7 +55,7 @@ public class DictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDictT
     @Override
     @SysLog("新增字典")
     public boolean add(AddDictTypeDTO dictType) {
-        return redisClient.doWithLock(LOCK_KEY, lock -> {
+        return jdbcLockClient.doWithLock(LOCK_KEY, lock -> {
             String type = Strings.nullToEmpty(dictType.getDictType()).trim();
             SysDictType record = getOne(Wrappers.<SysDictType>lambdaQuery().eq(SysDictType::getDictType, type), false);
             if (record != null) {
@@ -73,7 +73,7 @@ public class DictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDictT
     @Override
     @SysLog("修改字典")
     public boolean edit(EditDictTypeDTO dictType) {
-        return redisClient.doWithLock(LOCK_KEY, lock -> {
+        return jdbcLockClient.doWithLock(LOCK_KEY, lock -> {
             SysDictType entity = getById(dictType.getId());
             if (entity == null) {
                 throw new BizException("字典数据不存在");
@@ -97,6 +97,6 @@ public class DictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDictT
     @SysLog("删除字典")
     public boolean rem(Long id) {
         // 暂时不级联删除 字典项数据
-        return redisClient.doWithLock(LOCK_KEY, lock -> removeById(id));
+        return jdbcLockClient.doWithLock(LOCK_KEY, lock -> removeById(id));
     }
 }

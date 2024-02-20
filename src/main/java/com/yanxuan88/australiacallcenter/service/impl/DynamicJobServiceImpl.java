@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.base.Strings;
-import com.yanxuan88.australiacallcenter.config.RedisClient;
+import com.yanxuan88.australiacallcenter.config.JdbcLockClient;
 import com.yanxuan88.australiacallcenter.exception.BizException;
 import com.yanxuan88.australiacallcenter.mapper.SysDynamicJobMapper;
 import com.yanxuan88.australiacallcenter.model.dto.AddDynamicJobDTO;
@@ -30,7 +30,7 @@ public class DynamicJobServiceImpl extends ServiceImpl<SysDynamicJobMapper, SysD
 
     private static final String LOCK_KEY_PREFIX = "dynamicJob";
     @Autowired
-    private RedisClient redisClient;
+    private JdbcLockClient jdbcLockClient;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -52,7 +52,7 @@ public class DynamicJobServiceImpl extends ServiceImpl<SysDynamicJobMapper, SysD
         String jobName = job.getJobName().trim();
         String jobGroup = job.getJobGroup().trim();
         String lockKey = LOCK_KEY_PREFIX + ":" + jobName + ":" + jobGroup;
-        return redisClient.doWithLock(lockKey, lock -> {
+        return jdbcLockClient.doWithLock(lockKey, lock -> {
             SysDynamicJob one = getOne(Wrappers.<SysDynamicJob>lambdaQuery().eq(SysDynamicJob::getJobName, jobName).eq(SysDynamicJob::getJobGroup, jobGroup), false);
             if (one != null) {
                 throw new BizException("存在相同名称相同分组的任务");

@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yanxuan88.australiacallcenter.annotation.SysLog;
-import com.yanxuan88.australiacallcenter.config.RedisClient;
+import com.yanxuan88.australiacallcenter.config.JdbcLockClient;
 import com.yanxuan88.australiacallcenter.exception.BizException;
 import com.yanxuan88.australiacallcenter.mapper.SysDictDataMapper;
 import com.yanxuan88.australiacallcenter.model.dto.AddDictDataDTO;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 @Service
 public class DictDataServiceImpl extends ServiceImpl<SysDictDataMapper, SysDictData> implements IDictDataService {
     @Autowired
-    private RedisClient redisClient;
+    private JdbcLockClient jdbcLockClient;
     private static final String LOCK_KEY = "dictData";
 
     @Override
@@ -57,7 +57,7 @@ public class DictDataServiceImpl extends ServiceImpl<SysDictDataMapper, SysDictD
     @Override
     @SysLog("新增字典数据")
     public boolean add(AddDictDataDTO dictData) {
-        return redisClient.doWithLock(LOCK_KEY, lock -> {
+        return jdbcLockClient.doWithLock(LOCK_KEY, lock -> {
             String dictValue = dictData.getDictValue().trim();
             Long dictTypeId = dictData.getDictTypeId();
             SysDictData record = getOne(Wrappers.<SysDictData>lambdaQuery().eq(SysDictData::getDictTypeId, dictTypeId).eq(SysDictData::getDictValue, dictValue), false);
@@ -78,13 +78,13 @@ public class DictDataServiceImpl extends ServiceImpl<SysDictDataMapper, SysDictD
     @Override
     @SysLog("删除字典数据")
     public boolean rem(List<Long> ids) {
-        return redisClient.doWithLock(LOCK_KEY, lock -> removeBatchByIds(ids));
+        return jdbcLockClient.doWithLock(LOCK_KEY, lock -> removeBatchByIds(ids));
     }
 
     @Override
     @SysLog("修改字典数据")
     public boolean edit(EditDictDataDTO dictData) {
-        return redisClient.doWithLock(LOCK_KEY, lock -> {
+        return jdbcLockClient.doWithLock(LOCK_KEY, lock -> {
             Long id = dictData.getId();
             SysDictData entity = getById(id);
             if (entity == null) {
