@@ -3,7 +3,7 @@ package com.yanxuan88.australiacallcenter.service.impl;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yanxuan88.australiacallcenter.annotation.SysLog;
-import com.yanxuan88.australiacallcenter.config.JdbcLockClient;
+import com.yanxuan88.australiacallcenter.mysql.JdbcLockClient;
 import com.yanxuan88.australiacallcenter.exception.BizException;
 import com.yanxuan88.australiacallcenter.mapper.SysDeptMapper;
 import com.yanxuan88.australiacallcenter.model.dto.AddDeptDTO;

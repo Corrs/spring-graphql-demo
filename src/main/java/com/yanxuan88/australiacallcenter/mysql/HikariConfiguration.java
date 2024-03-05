@@ -1,4 +1,4 @@
-package com.yanxuan88.australiacallcenter.config;
+package com.yanxuan88.australiacallcenter.mysql;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;

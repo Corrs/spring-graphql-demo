@@ -2,7 +2,7 @@ package com.yanxuan88.australiacallcenter.util;
 
 import com.google.common.hash.Hashing;
 import com.yanxuan88.australiacallcenter.common.UserLoginInfo;
-import com.yanxuan88.australiacallcenter.config.AusAuthenticationToken;
+import com.yanxuan88.australiacallcenter.graphql.AusAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 

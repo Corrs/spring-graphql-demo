@@ -1,4 +1,4 @@
-package com.yanxuan88.australiacallcenter.config;
+package com.yanxuan88.australiacallcenter.graphql;
 
 import com.yanxuan88.australiacallcenter.common.UserLoginInfo;
 import org.springframework.security.authentication.AbstractAuthenticationToken;

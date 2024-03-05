@@ -1,4 +1,4 @@
-package com.yanxuan88.australiacallcenter.config;
+package com.yanxuan88.australiacallcenter.redis;
 
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.context.annotation.Bean;

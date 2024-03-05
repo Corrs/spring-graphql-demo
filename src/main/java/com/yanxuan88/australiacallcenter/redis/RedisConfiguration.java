@@ -1,4 +1,4 @@
-package com.yanxuan88.australiacallcenter.config;
+package com.yanxuan88.australiacallcenter.redis;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;

@@ -1,7 +1,6 @@
 package com.yanxuan88.australiacallcenter.config;
 
-import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.autoconfigure.cache.CacheProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.convert.DurationStyle;
 import org.springframework.cache.CacheManager;
@@ -34,7 +33,7 @@ import static com.yanxuan88.australiacallcenter.common.Constant.DATE_TIME_FORMAT
  */
 @EnableCaching
 @Configuration
-@EnableConfigurationProperties(CacheConfiguration.CacheProperties.class)
+@EnableConfigurationProperties(CacheProperties.class)
 public class CacheConfiguration extends CachingConfigurerSupport {
 
     private static final String HASH = "#";
@@ -105,18 +104,19 @@ public class CacheConfiguration extends CachingConfigurerSupport {
      */
     RedisCacheConfiguration redisCacheConfiguration() {
         RedisCacheConfiguration cacheConfig = RedisCacheConfiguration.defaultCacheConfig().serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new RedisCacheValueSerializer()));
-        if (cacheProperties.getTimeToLive() != null) {
-            cacheConfig = cacheConfig.entryTtl(cacheProperties.getTimeToLive());
+        CacheProperties.Redis redis = cacheProperties.getRedis();
+        if (redis.getTimeToLive() != null) {
+            cacheConfig = cacheConfig.entryTtl(redis.getTimeToLive());
         }
-        if (!cacheProperties.isCacheNullValues()) {
+        if (!redis.isCacheNullValues()) {
             cacheConfig = cacheConfig.disableCachingNullValues();
         }
-        if (!cacheProperties.isUseKeyPrefix()) {
+        if (!redis.isUseKeyPrefix()) {
             cacheConfig = cacheConfig.disableKeyPrefix();
         }
         // 这里会影响最终生成的缓存key
-        if (StringUtils.hasText(cacheProperties.getKeyPrefix())) {
-            cacheConfig = cacheConfig.prefixCacheNameWith(cacheProperties.getKeyPrefix());
+        if (StringUtils.hasText(redis.getKeyPrefix())) {
+            cacheConfig = cacheConfig.prefixCacheNameWith(redis.getKeyPrefix());
         }
         return cacheConfig;
     }
@@ -136,13 +136,12 @@ public class CacheConfiguration extends CachingConfigurerSupport {
             if (cacheArray.length < 2) {
                 return super.createRedisCache(name, cacheConfig);
             }
-            String cacheName = cacheArray[0];
             if (cacheConfig != null) {
                 // 转换时间，支持时间单位例如：300ms，第二个参数是默认单位
-                Duration duration = DurationStyle.detectAndParse(cacheArray[1], ChronoUnit.SECONDS);
+                Duration duration = DurationStyle.detectAndParse(cacheArray[cacheArray.length - 1], ChronoUnit.SECONDS);
                 cacheConfig = cacheConfig.entryTtl(duration);
             }
-            return super.createRedisCache(cacheName, cacheConfig);
+            return super.createRedisCache(name, cacheConfig);
         }
     }
 
@@ -182,31 +181,5 @@ public class CacheConfiguration extends CachingConfigurerSupport {
             }
             return super.serialize(source);
         }
-    }
-
-    @Data
-    @ConfigurationProperties("cache")
-    public static class CacheProperties {
-        private Duration timeToLive;
-
-        /**
-         * Allow caching null values.
-         */
-        private boolean cacheNullValues = true;
-
-        /**
-         * Key prefix.
-         */
-        private String keyPrefix;
-
-        /**
-         * Whether to use the key prefix when writing to Redis.
-         */
-        private boolean useKeyPrefix = true;
-
-        /**
-         * Whether to enable cache statistics.
-         */
-        private boolean enableStatistics;
     }
 }

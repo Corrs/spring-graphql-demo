@@ -23,11 +23,6 @@ server:
       enabled: true
     accesslog:
       enabled: true
-cache:
-  time-to-live: 15m
-  cache-null-values: false
-  enable-statistics: true
-  key-prefix: 'cache:${spring.application.name}:'
 spring:
   jmx:
     enabled: true
@@ -81,6 +76,13 @@ spring:
       allowed-methods: POST
       allowed-headers: '*'
       allowed-origins: '*'
+  cache:
+    type: REDIS
+    redis:
+      time-to-live: 15m
+      cache-null-values: false
+      enable-statistics: true
+      key-prefix: 'cache:${spring.application.name}:'
   redis:
     database: 0
     host: 127.0.0.1

@@ -1,7 +1,7 @@
 package com.yanxuan88.australiacallcenter.service.impl;
 
 import com.wf.captcha.SpecCaptcha;
-import com.yanxuan88.australiacallcenter.config.RedisClient;
+import com.yanxuan88.australiacallcenter.redis.RedisClient;
 import com.yanxuan88.australiacallcenter.event.listener.LogMessageGateway;
 import com.yanxuan88.australiacallcenter.exception.BizException;
 import com.yanxuan88.australiacallcenter.model.entity.SysLogLogin;

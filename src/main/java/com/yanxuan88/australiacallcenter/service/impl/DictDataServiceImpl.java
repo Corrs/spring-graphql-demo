@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yanxuan88.australiacallcenter.annotation.SysLog;
-import com.yanxuan88.australiacallcenter.config.JdbcLockClient;
+import com.yanxuan88.australiacallcenter.mysql.JdbcLockClient;
 import com.yanxuan88.australiacallcenter.exception.BizException;
 import com.yanxuan88.australiacallcenter.mapper.SysDictDataMapper;
 import com.yanxuan88.australiacallcenter.model.dto.AddDictDataDTO;

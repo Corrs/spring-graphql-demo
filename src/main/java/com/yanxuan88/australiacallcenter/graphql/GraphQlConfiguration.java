@@ -1,4 +1,4 @@
-package com.yanxuan88.australiacallcenter.config;
+package com.yanxuan88.australiacallcenter.graphql;
 
 import com.yanxuan88.australiacallcenter.graphql.MyExceptionResolver;
 import com.yanxuan88.australiacallcenter.graphql.MyUploadGraphQlHttpHandler;

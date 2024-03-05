@@ -1,4 +1,4 @@
-package com.yanxuan88.australiacallcenter.config;
+package com.yanxuan88.australiacallcenter.mysql;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

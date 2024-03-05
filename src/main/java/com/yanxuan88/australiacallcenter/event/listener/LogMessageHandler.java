@@ -1,6 +1,6 @@
 package com.yanxuan88.australiacallcenter.event.listener;
 
-import com.yanxuan88.australiacallcenter.config.RedisClient;
+import com.yanxuan88.australiacallcenter.redis.RedisClient;
 import com.yanxuan88.australiacallcenter.event.model.LogoutEvent;
 import com.yanxuan88.australiacallcenter.model.entity.SysLogLogin;
 import com.yanxuan88.australiacallcenter.model.entity.SysLogOperation;
